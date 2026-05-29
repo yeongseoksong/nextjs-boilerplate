@@ -1,0 +1,23 @@
+/* ============================================================
+   SIWORKS · Mantine global overrides
+   Import AFTER '@mantine/core/styles.css'. Carries the brand
+   bits the JS theme object can't express globally.
+   ============================================================ */
+
+/* Noto Sans KR — swap for a self-hosted copy in production */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+:root {
+  /* Brand signature: tight tracking site-wide */
+  --mantine-tracking: -0.04em;
+}
+
+body {
+  letter-spacing: var(--mantine-tracking);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings inherit the tight tracking; eyebrows invert it
+.mantine-Title-root { letter-spacing: var(--mantine-tracking); }
+
+ */

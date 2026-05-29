@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn add:*)",
+      "Bash(yarn:*)",
+      "Bash(cmd:*)",
+      "Bash(/c/Users/infoAA/scoop/shims/yarn.cmd:*)",
+      "Bash(node:*)",
+      "Bash(powershell:*)",
+      "Bash(mkdir:*)"
+    ]
+  }
+}
