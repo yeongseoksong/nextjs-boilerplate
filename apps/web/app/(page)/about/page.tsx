@@ -1,8 +1,9 @@
 "use client";
 
 import { Container, Text } from "@mantine/core";
-import { PageLayout } from "../../../framework/ui/Templates/PageLayout";
-import { navItems } from "../../../framework/example/example";
+import { PageLayout } from "@framework/ui";
+import { navItems } from "../../../data";
+
 
 export default function AboutPage() {
   return (

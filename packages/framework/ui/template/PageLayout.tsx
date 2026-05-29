@@ -36,11 +36,9 @@ function PageHero({ title, description }: { title: ReactNode; description?: Reac
 
 export function PageLayout({ children, title, description }: PageLayoutProps) {
   return (
-
      <>
         <PageHero title={title} description={description} />
         {children}
-      </>
-
-  );
+    </>
+  )
 }

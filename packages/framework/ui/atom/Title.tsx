@@ -8,7 +8,6 @@ function createTitle(defaults: TitleProps) {
   return function SdTitle({ children, ...props }: Props) {
     const resolved = typeof children === "string" ? t(children) : children;
     
-    console.log(resolved)
     return (
       <MantineTitle {...defaults} {...props}>
         {resolved}

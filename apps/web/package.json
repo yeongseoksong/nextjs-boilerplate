@@ -1,5 +1,5 @@
 {
-  "name": "mantine-minimal-next-template",
+  "name": "web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
     "lint": "oxlint ."
   },
   "dependencies": {
+    "framework": "workspace:*",
     "@mantine/carousel": "^9.2.2",
     "@mantine/core": "^9.2.2",
     "@mantine/hooks": "^9.2.2",
@@ -26,5 +27,5 @@
     "postcss-simple-vars": "^7.0.1",
     "typescript": "6.0.2"
   },
-  "packageManager": "yarn@4.15.0"
+  "packageManager": "pnpm@10.11.0"
 }

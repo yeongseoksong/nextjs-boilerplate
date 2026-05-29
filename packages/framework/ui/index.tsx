@@ -1,7 +1,9 @@
 export * from "./atom"
 
-export * from "./Templates"
+export * from "./molecule"
 
 export * from "./organism"
+
+export * from "./template"
 
 export * from "./theme"

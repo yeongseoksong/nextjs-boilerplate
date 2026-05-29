@@ -6,9 +6,9 @@ import {
   ColorSchemeScript,
   mantineHtmlProps,
 } from "@mantine/core";
-import { theme } from "../framework/ui/theme";
-import { MainLayout } from "../framework/ui";
-import { navItems } from "../framework/example/example";
+import { theme } from "@framework/ui";
+import { MainLayout } from "@framework/ui";
+import { navItems,companyInfo } from "../data";
 
 export const metadata = {
   title: "Mantine Next.js template",
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <MantineProvider theme={theme}>
-         <MainLayout navItems={navItems}>{children}</MainLayout>;
+         <MainLayout navItems={navItems} companyInfo={companyInfo}>{children}</MainLayout>
         </MantineProvider>
       </body>
     </html>

@@ -1,23 +1,13 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es2015",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
     "incremental": true,
+    "paths": {
+      "@framework/ui": ["../../packages/framework/ui/index.tsx"],
+      "@framework/util": ["../../packages/framework/util/index.ts"],
+      "@framework/types": ["../../packages/framework/types/index.ts"]
+    },
     "plugins": [
       {
         "name": "next"

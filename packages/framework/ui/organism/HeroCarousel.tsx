@@ -1,19 +1,20 @@
 "use client";
 import { Carousel } from "@mantine/carousel";
 import { Box, Stack } from "@mantine/core";
-import { SdTextBox } from "./TextBox";
+import { SdTextBox } from "../molecule";
 import { HeroSlide } from "../../types";
+import { filterAndSort } from "../../util/sort.util";
 
-export type { HeroSlide };
 
 interface HeroCarouselProps {
   slides: HeroSlide[];
 }
 
 export function HeroCarousel({ slides }: HeroCarouselProps) {
+  const filterdSlides =filterAndSort(slides);
   return (
-    <Carousel withIndicators  height="88vh">
-      {slides.map((slide, i) => (
+    <Carousel withIndicators  height="70svh">
+      {filterdSlides.map((slide, i) => (
         <Carousel.Slide key={i}>
           <Box
             style={{

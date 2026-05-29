@@ -1,21 +1,8 @@
 "use client";
 
-import { createTheme, MantineColorsTuple, rem } from '@mantine/core';
-
-/* ============================================================
-   SIWORKS — Mantine theme
-   Maps the SIWORKS design system (see ../README.md and
-   ../colors_and_type.css) onto Mantine v7/v8.
-
-   Usage:
-     import { MantineProvider } from '@mantine/core';
-     import { siworksTheme } from './theme';
-     <MantineProvider theme={theme}>…</MantineProvider>
-   ============================================================ */
+import { Container, createTheme, Divider, MantineColorsTuple, rem } from '@mantine/core';
 
 
-
-// Brand blue — the logo "SI". index 6 ≈ #0B5ED7
 const primary: MantineColorsTuple = [
   '#e7f0fb',
   '#c8dcf4',
@@ -29,7 +16,6 @@ const primary: MantineColorsTuple = [
   '#052d68',
 ];
 
-// Brand orange — the logo "WORKS". Sparing accent only. index 5/6 ≈ #F7931E
 const secondary: MantineColorsTuple = [
   '#fef6e7',
   '#fde9c4',
@@ -57,7 +43,6 @@ const slate: MantineColorsTuple = [
   '#0f172a', // 9  slate-900
 ];
 
-// Accents that only ever appear inside gradients
 const cyan: MantineColorsTuple = [
   '#ecfeff', '#cffafe', '#a5f3fc', '#67e8f9', '#22d3ee',
   '#06b6d4', '#0891b2', '#0e7490', '#155e75', '#164e63',
@@ -78,8 +63,7 @@ export const theme = createTheme({
     "'Noto Sans KR', ui-sans-serif, system-ui, -apple-system, sans-serif",
   fontFamilyMonospace:
     "'Noto Sans KR', ui-monospace, monospace",
-  // Global tight tracking is the brand signature (-0.04em).
-  // Set this on the body in your global CSS — see README.
+
   headings: {
     fontFamily:
       "'Noto Sans KR', ui-sans-serif, system-ui, sans-serif",
@@ -104,17 +88,15 @@ export const theme = createTheme({
     xs: '1.4', sm: '1.45', md: '1.5', lg: '1.55', xl: '1.6',
   },
 
-  /* ---- Radii (the brand loves generous rounding) ---- */
   defaultRadius: 'md',
   radius: {
     xs: rem(6),
     sm: rem(8),
-    md: rem(10),  // base --radius
+    md: rem(10),  
     lg: rem(14),
     xl: rem(18),
   },
 
-  /* ---- Spacing ---- */
   spacing: {
     xs: rem(8),
     sm: rem(12),
@@ -123,7 +105,6 @@ export const theme = createTheme({
     xl: rem(32),
   },
 
-  /* ---- Shadows (mirror --shadow-* tokens) ---- */
   shadows: {
     xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
     sm: '0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06)',
@@ -140,7 +121,6 @@ export const theme = createTheme({
     xl: '88em',
   },
 
-  /* ---- Brand extras (gradients, surfaces, the logo blue) ---- */
   other: {
     logoSizes: {
       xs: { width: 72,  height: 22 },
@@ -165,12 +145,15 @@ export const theme = createTheme({
   defaultGradient: { from: 'primary.6', to: 'cyan.4', deg: 90 },
 
   components: {
+    Container:{
+      defaultProps:{size:'xl',h:'100%'}
+    },
     Logo: {
       defaultProps: { size: 'md' },
     },
     Button: {
       defaultProps: {
-        radius: 'xl',   // wide pill-ish; pass radius={9999} for a full pill
+        radius: 'xl',   
         fw: 700,
       },
     },
@@ -197,8 +180,11 @@ export const theme = createTheme({
     TextInput: {
       defaultProps: { radius: 'sm' },
     },
+    Divider:{
+      defaultProps: {c : 'slate.5'}
+    },
     Anchor: {
-      defaultProps: { c: 'primary.6' },
+      defaultProps: { c: 'slate.5' , fz:"sm", underline: "never"},
     },
   },
 });

@@ -17,14 +17,18 @@ interface HeaderProps {
 export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
   const [opened, { toggle, close }] = useDisclosure();
 
+  const visibleTopItems = navItems
+    .filter((item) => item.isShow && !item.parentId)
+    .sort((a, b) => a.order - b.order)
+
   return (
     <>
-      <Container size="xl" h="100%">
+      <Container h="100%">
         <Group justify="space-between" h="100%">
           <Logo />
           <Group gap="xl" visibleFrom="sm">
-            {navItems.map((item) => (
-              <Anchor key={item.label} href={item.href} c="slate.7" fw={500} underline="never" fz={15}>
+            {visibleTopItems.map((item) => (
+              <Anchor key={item.id} href={item.href} c="slate.7" fw={500} underline="never" fz={15}>
                 {item.label}
               </Anchor>
             ))}
@@ -42,8 +46,8 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
 
       <Drawer opened={opened} onClose={close} hiddenFrom="sm" size="xs">
         <Stack>
-          {navItems.map((item) => (
-            <Anchor key={item.label} href={item.href} c="slate.7" fw={500} underline="never" fz={16} onClick={close}>
+          {visibleTopItems.map((item) => (
+            <Anchor key={item.id} href={item.href} c="slate.7" fw={500} underline="never" fz={16} onClick={close}>
               {item.label}
             </Anchor>
           ))}
