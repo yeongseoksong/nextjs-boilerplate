@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, createTheme, Divider, MantineColorsTuple, rem } from '@mantine/core';
+import { createTheme, MantineColorsTuple, rem } from '@mantine/core';
 
 
 const primary: MantineColorsTuple = [
@@ -185,6 +185,14 @@ export const theme = createTheme({
     },
     Anchor: {
       defaultProps: { c: 'slate.5' , fz:"sm", underline: "never"},
+    },
+    Table: {
+      defaultProps: {
+        captionSide: "bottom",
+      },
+      styles: {
+        th: { color: "var(--mantine-color-slate-5)", fontWeight: "700" },
+      },
     },
   },
 });

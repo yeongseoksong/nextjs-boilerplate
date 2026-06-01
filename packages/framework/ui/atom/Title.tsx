@@ -18,11 +18,11 @@ function createTitle(defaults: TitleProps) {
 
 export const SdTitle = {
   /** 히어로 대제목 — h1, clamp 폰트 */
-  Display: createTitle({  order: 1 }),
+  Display: createTitle({  order: 2 }),
   /** 섹션 제목  */
-  Section: createTitle({ order: 2 }),
+  Section: createTitle({ order: 3 }),
   /** 카드·모달 제목 — */
-  Card:    createTitle({ order: 3 }),
+  Card:    createTitle({ order: 4 }),
   /** 소제목  */
-  Sub:     createTitle({ order: 4}),
+  Sub:     createTitle({ order: 5}),
 };

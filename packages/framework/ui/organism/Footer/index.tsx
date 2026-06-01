@@ -31,7 +31,7 @@ export function SdFooter({ company, utilityLinks, policyLinks }: SdFooterProps) 
         <Grid.Col span={{ base: 12, sm: 6 }}>
           <FooterNav items={visibleUtility ?? []} />
         </Grid.Col>
-      </Grid>s
+      </Grid>
     </Container>
   )
 }

@@ -13,7 +13,7 @@ interface HeroCarouselProps {
 export function HeroCarousel({ slides }: HeroCarouselProps) {
   const filterdSlides =filterAndSort(slides);
   return (
-    <Carousel withIndicators  height="70svh">
+    <Carousel withIndicators  height="70svh" >
       {filterdSlides.map((slide, i) => (
         <Carousel.Slide key={i}>
           <Box

@@ -44,5 +44,12 @@ export interface CompanyInfo {
   copyrightYear: number;
 }
 
+export interface TimelineEvent extends CommonInfo {
+  year: number;
+  month: number;
+  title?: string;
+  description: string;
+}
+
 
 export * from "./example"
