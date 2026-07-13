@@ -27,9 +27,9 @@ export function SdTimeline({ items }: SdTimelineProps) {
         >
           <Stack gap={6} mt="xs">
             {grouped[year].map((event) => (
-              <Group key={event.id} gap="md" align="flex-start" wrap="nowrap">
+              <Group key={event.id} gap="md" align="center" wrap="nowrap">
                 <SdText.Eyebrow miw={28}>{event.month}월</SdText.Eyebrow>
-                <SdText.Body style={{ flex: 1 }}>{event.description}</SdText.Body>
+                <SdText.Sub style={{ flex: 1 }} >{event.description}</SdText.Sub>
               </Group>
             ))}
           </Stack>

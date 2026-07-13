@@ -78,11 +78,11 @@ export const theme = createTheme({
     },
   },
   fontSizes: {
-    xs: rem(12),
-    sm: rem(14),
-    md: rem(16),
-    lg: rem(18),
-    xl: rem(20),
+    xs: rem(14),
+    sm: rem(16),
+    md: rem(18),
+    lg: rem(20),
+    xl: rem(22),
   },
   lineHeights: {
     xs: '1.4', sm: '1.45', md: '1.5', lg: '1.55', xl: '1.6',

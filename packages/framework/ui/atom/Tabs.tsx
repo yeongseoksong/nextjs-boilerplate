@@ -1,12 +1,29 @@
-import { Tabs, TabsProps } from "@mantine/core";
+import { Box, Tabs, TabsListProps, TabsProps, TabsPanelProps } from "@mantine/core";
+import { SdContainer } from "./Container";
 
-function createTabs(defaults: TabsProps) {
+function SdPanel({ children, ...props }: TabsPanelProps) {
+  return (
+    <Tabs.Panel {...props}>
+      <SdContainer py="xl">{children}</SdContainer>
+    </Tabs.Panel>
+  );
+}
+
+function SdScrollableList({ children, ...props }: TabsListProps) {
+  return (
+    <Box style={{ overflowX: 'auto', width: '100%' }}>
+      <Tabs.List {...props}>{children}</Tabs.List>
+    </Box>
+  );
+}
+
+function createTabs(defaults: TabsProps, scrollable = false) {
   function SdTabsRoot(props: TabsProps) {
     return <Tabs {...defaults} {...props} />;
   }
-  SdTabsRoot.List  = Tabs.List;
+  SdTabsRoot.List  = (scrollable ? SdScrollableList : Tabs.List) as typeof Tabs.List;
   SdTabsRoot.Tab   = Tabs.Tab;
-  SdTabsRoot.Panel = Tabs.Panel;
+  SdTabsRoot.Panel = SdPanel;
   return SdTabsRoot;
 }
 
@@ -16,8 +33,18 @@ export const SdTabs = {
     color: 'primary',
     radius: 'xl',
     styles: {
-      list: { background: 'var(--mantine-color-slate-1)', padding: 'var(--mantine-spacing-xs)', gap: 'var(--mantine-spacing-sm)', borderRadius: '9999px', width: 'fit-content', margin: '0 auto' },
-      tab:  { fontWeight: 'var(--mantine-h5-font-weight)' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
+      list: {
+        background: 'var(--mantine-color-slate-1)',
+        padding: 'var(--mantine-spacing-xs)',
+        gap: 'var(--mantine-spacing-xs)',
+        borderRadius: 'var(--mantine-radius-xl)',
+        width: 'fit-content',
+        maxWidth: '100%',
+        margin: '0 auto',
+        flexWrap: 'wrap' as React.CSSProperties['flexWrap'],
+        justifyContent: 'center',
+      },
+      tab: { fontWeight: '500' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
     },
   }),
 
@@ -26,7 +53,7 @@ export const SdTabs = {
     color: 'primary',
     styles: {
       list: { width: 'fit-content', margin: '0 auto', gap: 'var(--mantine-spacing-sm)' },
-      tab:  { fontWeight: 'var(--mantine-h5-font-weight)' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
+      tab:  { fontWeight: '500' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
     },
   }),
 
@@ -36,7 +63,7 @@ export const SdTabs = {
     radius: 'md',
     styles: {
       list: { width: 'fit-content', margin: '0 auto', gap: 'var(--mantine-spacing-sm)' },
-      tab:  { fontWeight: 'var(--mantine-h5-font-weight)' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
+      tab:  { fontWeight: '500' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
     },
   }),
 };

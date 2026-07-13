@@ -13,6 +13,7 @@ export default defineConfig([
       '@mantine/core',
       '@mantine/hooks',
       '@mantine/carousel',
+      '@tabler/icons-react',
       'next',
     ],
     banner: { js: '"use client";' },

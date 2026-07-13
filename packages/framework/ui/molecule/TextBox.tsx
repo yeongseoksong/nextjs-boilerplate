@@ -62,7 +62,7 @@ function createTextBox(
 
 export const SdTextBox = {
   Hero:    createTextBox("Display", "lg", "Body", "slate.0"),
-  Section: createTextBox("Section", "xs"),
-  Card:    createTextBox("Card",    "xs", "Sub"),
+  Section: createTextBox("Section", "xs","Body"),
+  Card:    createTextBox("Card",    "xs", "Body"),
   Sub:     createTextBox("Sub",     "xs", "Sub"),
 };

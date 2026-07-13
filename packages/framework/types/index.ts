@@ -52,4 +52,9 @@ export interface TimelineEvent extends CommonInfo {
 }
 
 
+export interface StepItem {
+  title: string;
+  description?: string;
+}
+
 export * from "./example"

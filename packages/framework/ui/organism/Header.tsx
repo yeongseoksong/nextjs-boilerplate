@@ -1,5 +1,6 @@
 "use client";
-import { Anchor, Container, Drawer, Group, Burger, Stack } from "@mantine/core";
+import { Anchor, Drawer, Group, Burger, Stack } from "@mantine/core";
+import { SdContainer } from "../atom/Container";
 import { Logo } from "../atom/Logo";
 import { SdButton } from "../atom/Button";
 import { ReactNode } from "react";
@@ -23,7 +24,7 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
 
   return (
     <>
-      <Container h="100%">
+      <SdContainer h="100%">
         <Group justify="space-between" h="100%">
           <Logo />
           <Group gap="xl" visibleFrom="sm">
@@ -42,7 +43,7 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
           )}
           {children}
         </Group>
-      </Container>
+      </SdContainer>
 
       <Drawer opened={opened} onClose={close} hiddenFrom="sm" size="xs">
         <Stack>

@@ -1,6 +1,7 @@
 'use client'
 
-import { Container, Grid } from '@mantine/core'
+import { Grid } from '@mantine/core'
+import { SdContainer } from '../../atom/Container'
 import { CompanyInfo, NavItem} from '../../../types'
 import { FooterBrand } from './FooterBrand'
 import { FooterContact } from './FooterContact'
@@ -20,7 +21,7 @@ export function SdFooter({ company, utilityLinks, policyLinks }: SdFooterProps) 
   const visiblePolicy = filterAndSort(policyLinks)
 
   return (
-    <Container py="md">
+    <SdContainer py="md">
       <Grid  align="flex-start">
         <Grid.Col span={{ base: 6, sm: 3 }}>
           <FooterBrand company={company} policyLinks={visiblePolicy} />
@@ -32,6 +33,6 @@ export function SdFooter({ company, utilityLinks, policyLinks }: SdFooterProps) 
           <FooterNav items={visibleUtility ?? []} />
         </Grid.Col>
       </Grid>
-    </Container>
+    </SdContainer>
   )
 }

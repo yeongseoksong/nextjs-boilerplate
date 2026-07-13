@@ -14,5 +14,9 @@ export * from './Table';
 
 export * from './Modal';
 
+export * from './NumberIcon';
+
+export * from './Container';
+
 
 

@@ -1,6 +1,7 @@
-import { Box, BoxProps, Container, SimpleGridProps, Stack } from '@mantine/core'
+import { Box, BoxProps, SimpleGridProps, Stack } from '@mantine/core'
 import { ReactNode } from 'react'
 import { FeatureItem } from '../../types'
+import { SdContainer } from '../atom/Container'
 import { SdFeatures } from '../molecule'
 import { SdTextBox } from '../molecule'
 
@@ -22,7 +23,7 @@ export function SdFeatureSection({
   ...boxProps
 }: SdFeatureSectionProps) {
   return (
-      <Container py={py} {...boxProps}>
+      <SdContainer py={py} {...boxProps}>
         <Stack gap="xl">
           <SdTextBox.Section
             label={label}
@@ -34,6 +35,6 @@ export function SdFeatureSection({
           />
           <SdFeatures items={items} cols={cols} />
         </Stack>
-      </Container>
+      </SdContainer>
   )
 }

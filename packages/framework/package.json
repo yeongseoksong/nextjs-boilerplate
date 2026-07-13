@@ -37,5 +37,8 @@
   "devDependencies": {
     "@types/react": ">=19",
     "tsup": "latest"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.44.0"
   }
 }

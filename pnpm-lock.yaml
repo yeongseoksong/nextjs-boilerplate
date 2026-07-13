@@ -13,7 +13,7 @@ importers:
         version: 3.8.3
       turbo:
         specifier: latest
-        version: 2.9.16
+        version: 2.10.4
 
   apps/web:
     dependencies:
@@ -75,6 +75,9 @@ importers:
       '@mantine/hooks':
         specifier: ^9.2.2
         version: 9.2.2(react@19.2.4)
+      '@tabler/icons-react':
+        specifier: ^3.44.0
+        version: 3.44.0(react@19.2.4)
       next:
         specifier: 16.2.2
         version: 16.2.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -739,33 +742,41 @@ packages:
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
-  '@turbo/darwin-64@2.9.16':
-    resolution: {integrity: sha512-jLjApWTSNd7JZ5JaLYfelW1ytnGQOvB7ivl+2RD1xQvJTbi8I9gBjzcga7tDZVPyaxpl10YTfJt3BrYXR18KDw==}
+  '@tabler/icons-react@3.44.0':
+    resolution: {integrity: sha512-8+rvzBbVm/1Z3sG3x7GUNAaxIKxwgz8xaMhRs23nrCnMTKRFAhEC+82zAIFeAA0seXdrAGX5HFCkaLpGK2rVHg==}
+    peerDependencies:
+      react: '>= 16'
+
+  '@tabler/icons@3.44.0':
+    resolution: {integrity: sha512-Wn0AOZG9sg0L+bjfMqq4eNhC6pQjIrk94LvvWYNYkY8KH8wC3YILRzQlrnVJc4FUeMxH/AK97QsYCX35H3LndA==}
+
+  '@turbo/darwin-64@2.10.4':
+    resolution: {integrity: sha512-m1MUEI4MJ69r5CwfMYxmHi0H0rrgiYCBOp0tgBZ9x/YVvOb5uu/lRIDyDwdtH054R2yWeQaIigUGu6aCX9f8cA==}
     cpu: [x64]
     os: [darwin]
 
-  '@turbo/darwin-arm64@2.9.16':
-    resolution: {integrity: sha512-YPgrn+5HIGzrx0O2a631SV4MBQUe4W/DafMFUuBVgaU32PW9/OTT0ehviF0QSxTXuRJlHvW2eUTemddF5/spmw==}
+  '@turbo/darwin-arm64@2.10.4':
+    resolution: {integrity: sha512-VQ1Yxs5zkPT+2z7t1P4mvn6JmcKLkOCAsPuK9XbOvuVj0DlTlETfIXNisX0771v/vTWHOQqiwoGi+TtAUq8efw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@turbo/linux-64@2.9.16':
-    resolution: {integrity: sha512-vAEf1H6l26lTpl9FJ/peQo1NUB8RC0sbEJJz5mPcUhHA2bPDup2x3CZPgo/bH8S4cUcBLm4FN3UHd5iUO2RAew==}
+  '@turbo/linux-64@2.10.4':
+    resolution: {integrity: sha512-IzV1QovmwX7mfGnVinmE++2IB8tbeo38weltiuH5zNqwCTBjLs/DytyRKx+bmnhHdXIq9SheR8p0Nip/LBUPHg==}
     cpu: [x64]
     os: [linux]
 
-  '@turbo/linux-arm64@2.9.16':
-    resolution: {integrity: sha512-xDBLR2PZg4BrQOchfG6svgpv5FCNJ2TOtT2psLdEJcdKo1BH+pnPs9Xj6pvUjgfkHbuvBOfeE4R6tvxMoQKDHQ==}
+  '@turbo/linux-arm64@2.10.4':
+    resolution: {integrity: sha512-rfujSQkP5aYiRn0PgTM7F00WkJCP/bKDVZbOx3WmrZwa/vHA0bplhCl328kpX7VI9HH2vI90ISGwuSVgJgoqTw==}
     cpu: [arm64]
     os: [linux]
 
-  '@turbo/windows-64@2.9.16':
-    resolution: {integrity: sha512-NBAJnaUiGdgkSzQwUIdOvkCkcpTSu58G/sBGa0mvBtzfvFOOgrQwepKOOQ8cp6sWM6OcKDNFj2p1dsZA1OWjPg==}
+  '@turbo/windows-64@2.10.4':
+    resolution: {integrity: sha512-NnspP7Wd5fa3Wwnqv9bKfhegqZzuHBgbPxdZU/idTLQcazx/vgKu95JlCx2YHY0hdvKCnPcARrDwM+KEUmaO7A==}
     cpu: [x64]
     os: [win32]
 
-  '@turbo/windows-arm64@2.9.16':
-    resolution: {integrity: sha512-Y7SJppD0Z8wjO3Ec0ZGd9KQ4Yv0BMnA8CIowj5Vp+OEVsosXDG2weK6/t1RRLfJmc2Ozrnd6y4DOgQys+mn3WQ==}
+  '@turbo/windows-arm64@2.10.4':
+    resolution: {integrity: sha512-Iv02YgOpaEShc2OkG7mgCJ2pEw1RUKiKbs0h8W5wAf4jZ5vpmraTEjuGTgHRuOORQnC1GN3KHo5WB+hu1abRMA==}
     cpu: [arm64]
     os: [win32]
 
@@ -1201,8 +1212,8 @@ packages:
       typescript:
         optional: true
 
-  turbo@2.9.16:
-    resolution: {integrity: sha512-NqgRQy6j6dPYcdSdv0q1g9QsZg7SWg87RERM8otw/1AtKU2yTFVClOM7cbwKzOonZr/Ek1blTBucw64L9H0Bwg==}
+  turbo@2.10.4:
+    resolution: {integrity: sha512-GQpduILaKjoaGljw097ScsSyKTtZSY7cZ3bJktzfTkPMyCf3ShKLuXK2IaOEN2Plziml+ArR7WJ1m+V4VbnaKQ==}
     hasBin: true
 
   type-fest@5.6.0:
@@ -1652,22 +1663,29 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@turbo/darwin-64@2.9.16':
+  '@tabler/icons-react@3.44.0(react@19.2.4)':
+    dependencies:
+      '@tabler/icons': 3.44.0
+      react: 19.2.4
+
+  '@tabler/icons@3.44.0': {}
+
+  '@turbo/darwin-64@2.10.4':
     optional: true
 
-  '@turbo/darwin-arm64@2.9.16':
+  '@turbo/darwin-arm64@2.10.4':
     optional: true
 
-  '@turbo/linux-64@2.9.16':
+  '@turbo/linux-64@2.10.4':
     optional: true
 
-  '@turbo/linux-arm64@2.9.16':
+  '@turbo/linux-arm64@2.10.4':
     optional: true
 
-  '@turbo/windows-64@2.9.16':
+  '@turbo/windows-64@2.10.4':
     optional: true
 
-  '@turbo/windows-arm64@2.9.16':
+  '@turbo/windows-arm64@2.10.4':
     optional: true
 
   '@types/estree@1.0.8': {}
@@ -2115,14 +2133,14 @@ snapshots:
       - tsx
       - yaml
 
-  turbo@2.9.16:
+  turbo@2.10.4:
     optionalDependencies:
-      '@turbo/darwin-64': 2.9.16
-      '@turbo/darwin-arm64': 2.9.16
-      '@turbo/linux-64': 2.9.16
-      '@turbo/linux-arm64': 2.9.16
-      '@turbo/windows-64': 2.9.16
-      '@turbo/windows-arm64': 2.9.16
+      '@turbo/darwin-64': 2.10.4
+      '@turbo/darwin-arm64': 2.10.4
+      '@turbo/linux-64': 2.10.4
+      '@turbo/linux-arm64': 2.10.4
+      '@turbo/windows-64': 2.10.4
+      '@turbo/windows-arm64': 2.10.4
 
   type-fest@5.6.0:
     dependencies:

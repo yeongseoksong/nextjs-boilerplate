@@ -1,4 +1,5 @@
-import { Box, Center, Container, Stack } from '@mantine/core';
+import { Box, Center, Stack } from '@mantine/core';
+import { SdContainer } from '../atom/Container';
 import { ReactNode } from 'react';
 import { NavItem } from '../../types';
 import { SdTextBox } from '../molecule/TextBox';
@@ -57,13 +58,11 @@ export function PageLayout({ children, image, title, description }: PageLayoutPr
   return (
     <>
       <PageHero image={image} title={title} description={description} />
-      <Container py='xl'>
+      <SdContainer py='xl'>
         <Center>
          {children}
         </Center>
-
-
-      </Container>
+      </SdContainer>
     </>
   );
 }

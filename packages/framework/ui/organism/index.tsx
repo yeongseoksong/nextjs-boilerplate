@@ -8,4 +8,6 @@ export * from './FeatureSection';
 
 export * from './TimelineSection';
 
+export * from './StepsSection';
+
 
