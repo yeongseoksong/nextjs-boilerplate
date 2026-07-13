@@ -129,8 +129,7 @@ export const theme = createTheme({
       lg: { width: 160, height: 48 },
       xl: { width: 200, height: 60 },
     },
-    brandBlue: '#0b5ed7',
-    brandOrange: '#f7931e',
+   
     surfaceSubtle: '#f8fafc',
     surfaceDark: '#0f172a',
     surfaceDarker: '#020617',

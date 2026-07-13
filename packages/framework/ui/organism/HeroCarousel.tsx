@@ -13,7 +13,7 @@ interface HeroCarouselProps {
 export function HeroCarousel({ slides }: HeroCarouselProps) {
   const filterdSlides =filterAndSort(slides);
   return (
-    <Carousel withIndicators  height="70svh" >
+    <Carousel withIndicators  height="60svh" >
       {filterdSlides.map((slide, i) => (
         <Carousel.Slide key={i}>
           <Box
@@ -27,7 +27,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
               justifyContent: "center",
             }}
           >
-            <Stack align="center" style={{ textAlign: "center", maxWidth: 780 }} px="xl">
+            <Stack align="center" style={{ textAlign: "center", maxWidth: 780}} px="xl">
               <SdTextBox.Hero
                 title={slide.title}
                 description={slide.description}
