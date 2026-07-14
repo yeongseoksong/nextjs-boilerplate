@@ -10,4 +10,4 @@ export * from './TimelineSection';
 
 export * from './StepsSection';
 
-
+export * from './ErrorView';

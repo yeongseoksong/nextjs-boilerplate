@@ -18,5 +18,6 @@ export * from './NumberIcon';
 
 export * from './Container';
 
+export * from './Badge';
 
-
+export * from './Input';

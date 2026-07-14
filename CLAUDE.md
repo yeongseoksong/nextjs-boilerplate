@@ -51,13 +51,34 @@ New exports require changes in three places: `tsup.config.ts` entry, `package.js
 
 Follows Atomic Design with `Sd` prefix on all design system components:
 
-- `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`
-- `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`
-- `ui/organism/` — Full-page sections: `SdHeader`, `SdFooter`, `SdHeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`
+- `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`
+- `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
+- `ui/organism/` — Full-page sections: `SdHeader`, `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
 - `util/` — `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` but **is not re-exported from `util/index.ts`**
-- `types/` — Shared interfaces (`NavItem`, `HeroSlide`, `FeatureItem`, `StepItem`, `TimelineEvent`, `CompanyInfo`) + `example.tsx` (sample data for dev/demo)
+- `types/` — Shared interfaces + `example.tsx` (sample data for dev/demo)
+
+### Shared Types (`types/index.ts`)
+
+| Interface | extends | 용도 |
+|---|---|---|
+| `CommonInfo` | — | 공통 메타(id, order, isShow, timestamps) |
+| `NavItem` | CommonInfo | 네비게이션 메뉴 |
+| `HeroSlide` | CommonInfo | 히어로 캐러셀 슬라이드 |
+| `FeatureItem` | CommonInfo | 기능 카드 |
+| `TimelineEvent` | CommonInfo | 연혁 타임라인 |
+| `SolutionItem` | CommonInfo | 솔루션 카드 (category, icon, href) |
+| `StepItem` | — | 단계별 안내 |
+| `TestimonialItem` | — | 고객 후기 |
+| `PricingFeature` | — | 요금제 항목(text, included) |
+| `PricingItem` | — | 요금제 플랜 |
+| `FaqItem` | — | FAQ |
+| `ClientItem` | — | 고객사 로고(name, url, logo) |
+| `CompanyAddress` | — | 회사 주소(label, address, order, embbedUrl?) |
+| `CompanyInfo` | — | 회사 정보 전체 |
+
+**타입 배치 원칙:** 여러 컴포넌트가 공유하는 데이터 타입 → `types/index.ts`. 해당 컴포넌트만 쓰는 props 타입 → 컴포넌트 파일 내 인라인(미export).
 
 ## Component Factory Pattern
 
@@ -80,9 +101,39 @@ export const SdText = {
 };
 ```
 
-The same pattern applies to `SdTitle` (Display/Section/Card/Sub), `SdButton` (Primary/Outline/Ghost/White), `SdTextBox` (Hero/Section/Card/Sub), `SdTabs` (Pills/Underline/Outline), `SdTable` (default + Spec), `SdSteps` (Bubble/Card/Strip), and `SdQuote` (Plain/Card).
+The same pattern applies to:
+
+| Component | Variants |
+|---|---|
+| `SdTitle` | Display / Section / Card / Sub |
+| `SdButton` | Primary / Outline / Ghost / White / **Delete** / **Cancel** |
+| `SdTextBox` | Hero / Section / Card / Sub |
+| `SdTabs` | Pills / Underline / Outline |
+| `SdTable` | default + Spec |
+| `SdSteps` | Bubble / Card / Strip |
+| `SdQuote` | Plain / Card |
+| `SdBadge` | Default / Primary / Success / Warning |
+| `SdTestimonial` | Card / Strip / Grid |
+| `SdPricingCard` | default + Grid |
+| `SdFaq` | default + WithHeader |
+| `SdCta` | Subtle / Inline |
+| `SdSolution` | Filtered / List |
+| `SdSolutionCard` | Item / Grid |
+| `SdClients` | Grid / Marquee |
+| `SdMap` | Single / Tabs |
+| `SdErrorView` | Page / NotFound |
 
 All UI components are Client Components — tsup adds `"use client"` banner to the UI bundle only.
+
+## Next.js Special Files
+
+| 파일 | 위치 | 역할 |
+|---|---|---|
+| `global-error.tsx` | `app/` 루트 고정 | 루트 layout 오류 — `MantineProvider` 직접 복원 |
+| `not-found.tsx` | `app/` 루트 고정 | 전역 404 |
+| `error.tsx` | `app/(page)/` | `(page)` 그룹 내 페이지 오류 |
+
+`SdErrorView.Page` / `SdErrorView.NotFound` organism을 thin wrapper로 사용. UI 로직은 organism에 집중, app/ 파일은 Next.js 어댑터 역할만 담당.
 
 ## SdText & SdTitle Variants
 
