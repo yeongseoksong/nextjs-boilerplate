@@ -17,7 +17,6 @@ import {
 } from "@framework/ui";
 import {
   faqItems,
-  navItems,
   pricingItems,
   solutionItems,
   testimonialItems,
@@ -26,11 +25,8 @@ import { Box, Divider, Group, Stack } from "@mantine/core";
 
 export default function PricingPage() {
   return (
-    <PageLayout
-      navItems={navItems}
-      image="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=1600&q=80"
-      title="요금제"
-      description="팀 규모에 맞는 플랜을 선택하고, 업무 효율을 높이세요."
+    <PageLayout.Plain
+
     >
       <Stack gap={80} w="100%">
 
@@ -166,6 +162,6 @@ export default function PricingPage() {
         </Stack>
 
       </Stack>
-    </PageLayout>
+    </PageLayout.Plain>
   );
 }

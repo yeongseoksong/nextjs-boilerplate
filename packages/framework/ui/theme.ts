@@ -180,7 +180,7 @@ export const theme = createTheme({
       defaultProps: { radius: 'sm' },
     },
     Divider:{
-      defaultProps: {c : 'slate.5'}
+      defaultProps: {c : 'slate.5', pb:"xl"}
     },
     Anchor: {
       defaultProps: { c: 'slate.5' , fz:"sm", underline: "never"},

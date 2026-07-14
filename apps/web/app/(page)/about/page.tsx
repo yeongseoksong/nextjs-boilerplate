@@ -1,7 +1,7 @@
 "use client";
 
 import { PageLayout, SdButton, SdModal, SdTable, SdQuote, SdTabs, SdTimelineSection, SdTitle, SdStepsSection, SdSteps } from "@framework/ui";
-import { ceoMessage, navItems, timelineEvents } from "../../../data";
+import { ceoMessage, timelineEvents } from "../../../data";
 import { useDisclosure } from "@mantine/hooks";
 import { Stack } from "@mantine/core";
 
@@ -16,8 +16,7 @@ export default function AboutPage() {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <PageLayout
-      navItems={navItems}
+    <PageLayout.Image
       image="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=80"
       title="회사 소개"
       description="asd 미션과 비전을 소개합니다."
@@ -130,6 +129,6 @@ export default function AboutPage() {
               />
           </SdTabs.Pills.Panel>
         </SdTabs.Pills>
-    </PageLayout>
+    </PageLayout.Image>
   );
 }

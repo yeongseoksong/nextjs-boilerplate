@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { Carousel } from "@mantine/carousel";
 import { Box, Stack } from "@mantine/core";
 import { SdTextBox } from "../molecule";
@@ -8,9 +9,12 @@ import { filterAndSort } from "../../util/sort.util";
 
 interface HeroCarouselProps {
   slides: HeroSlide[];
+  children?: React.ReactNode;
 }
 
-export function HeroCarousel({ slides }: HeroCarouselProps) {
+export function HeroCarousel({ slides, children }: HeroCarouselProps) {
+  if (children) return <>{children}</>;
+
   const filterdSlides =filterAndSort(slides);
   return (
     <Carousel withIndicators  height="60svh" >

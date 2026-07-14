@@ -1,14 +1,12 @@
 "use client";
 
 import { PageLayout, SdSolution, SdTextBox } from "@framework/ui";
-import { navItems, solutionItems } from "../../../data";
+import { solutionItems } from "../../../data";
 import { Stack } from "@mantine/core";
 
 export default function SolutionsPage() {
   return (
-    <PageLayout
-      navItems={navItems}
-      image="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80"
+    <PageLayout.Minimal
       title="솔루션"
       description="산업별 현장에서 검증된 맞춤형 솔루션을 만나보세요."
     >
@@ -45,6 +43,6 @@ export default function SolutionsPage() {
         </Stack>
 
       </Stack>
-    </PageLayout>
+    </PageLayout.Minimal>
   );
 }

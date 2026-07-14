@@ -1,6 +1,6 @@
 'use client'
 
-import { Anchor, Stack } from '@mantine/core'
+import { Anchor, Group } from '@mantine/core'
 import { CompanyInfo } from '../../../types'
 import { SdText } from '../../atom'
 
@@ -10,19 +10,19 @@ interface FooterContactProps {
 
 export function FooterContact({ company }: FooterContactProps) {
   return (
-    <Stack gap={4}>
+    <Group gap="lg" wrap="wrap">
+      <SdText.Sub c="slate.5">{company.name}</SdText.Sub>
+      <SdText.Sub c="slate.5">사업자등록번호 {company.registrationNumber}</SdText.Sub>
       {company.addresses.map((addr) => (
-        <SdText.Sub key={addr.label}>
-          [{addr.label}] {addr.address}
-        </SdText.Sub>
+        <SdText.Sub key={addr.label} c="slate.5">{addr.address}</SdText.Sub>
       ))}
-      <Anchor href={`tel:${company.tel}`} fz="sm">
+      <Anchor href={`tel:${company.tel}`} fz="xs" c="slate.5" underline="never">
         Tel {company.tel}
       </Anchor>
-      {company.fax && <SdText.Sub>Fax {company.fax}</SdText.Sub>}
-      <Anchor href={`mailto:${company.email}`} fz="sm">
+      {company.fax && <SdText.Sub c="slate.5">Fax {company.fax}</SdText.Sub>}
+      <Anchor href={`mailto:${company.email}`} fz="xs" c="slate.5" underline="never">
         {company.email}
       </Anchor>
-    </Stack>
+    </Group>
   )
 }

@@ -45,9 +45,9 @@ function Page({ error, onReset, onHome }: SdErrorPageProps) {
             <SdText.Body maw={480}>
               {error.message || "예기치 않은 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."}
             </SdText.Body>
-            {error.digest && (
+            {/* {error.digest && ( */}
               <SdText.Sub>오류 코드: {error.digest}</SdText.Sub>
-            )}
+            {/* )} */}
           </Stack>
           <Group gap="sm" justify="center">
             <SdButton.Primary onClick={onReset}>다시 시도</SdButton.Primary>

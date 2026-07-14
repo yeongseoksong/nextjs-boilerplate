@@ -40,7 +40,7 @@ function createTextBox(
      * 1. SdTextBox 색상
      * 2. SdTextBox 객체 에 정의된 색상 
      *  */ 
-    const colorRes = color_? color_: color;
+    const colorRes = color ?? color_;
 
     const variant = variantOverride ?? titleVariant;
     const TitleComponent = SdTitle[variant];
