@@ -9,7 +9,7 @@
     "lint": "oxlint ."
   },
   "dependencies": {
-    "framework": "workspace:*",
+    "@yeongseoksong/framework": "workspace:*",
     "@mantine/carousel": "^9.2.2",
     "@mantine/core": "^9.2.2",
     "@mantine/hooks": "^9.2.2",
