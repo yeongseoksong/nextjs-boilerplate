@@ -1,4 +1,3 @@
-import { SdFooter } from '../ui/organism/Footer';
 import type { ClientItem, CompanyInfo, FaqItem, FeatureItem, HeroSlide, NavItem, PricingItem, SolutionItem, TestimonialItem, TimelineEvent } from './index';
 
 // NavItem
@@ -26,22 +25,27 @@ export const heroSlides: HeroSlide[] = [
     title: "업무를 더 스마트하게, %c",
     description: "ASM과 PIMS로 자산 관리부터 프로젝트 운영까지 — 하나의 플랫폼으로 모든 업무 흐름을 연결하세요.",
   },
-  {
-    id: 2,
-    order: 3,
-    isShow: true,
-    image: "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1600&q=80",
-    title: <>자산을 한눈에,{" "}<span >스마트 자산 관리</span></>,
-    description: "장비·설비·IT 자산의 수명 주기를 자동으로 추적하고 유지보수 일정을 관리하세요.",
-  },
-  {
-    id: 2,
-    order: 4,
-    isShow: true,
-    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&q=80",
-    title: <>프로젝트 납기를{" "}<span>지키는 유일한 방법</span></>,
-    description: "WBS·일정·리소스·비용을 한 화면에서 관리하고 AI가 리스크를 사전에 감지합니다.",
-  },
+  {                                                                                                                                                      
+      id: 2,
+      order: 1,
+      isShow: true,
+      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=80",
+      title: "업무를 더 스마트하게, %c",
+      description: "ASM과 PIMS로 자산 관리부터 프로젝트 운영까지 — 하나의 플랫폼으로 연결하세요.",
+      ctas: [
+      { label: '무료 체험 시작', href: '/pricing',icon: false },                       // variant 생략 → primary
+      { label: '도입 문의하기', href: '/contact',variant:'secondary',icon:true},
+    ]
+    },
+    {
+      id: 2,
+      order: 2,
+      isShow: true,
+      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=80",
+      title: "자산을 한눈에, 스마트 자산 관리",
+      description: "장비·설비·IT 자산의 수명 주기를 자동으로 추적하고 유지보수 일정을 관리하세요.",
+      // ctaLabel 없으면 버튼 미노출
+    },
 ];
 
 // FeatureItem

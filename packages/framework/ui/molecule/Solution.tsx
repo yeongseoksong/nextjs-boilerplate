@@ -46,7 +46,6 @@ function Filtered({ items, allLabel = "전체", cols, onSelect }: SdSolutionFilt
     </Stack>
   );
 }
-
 interface SdSolutionListProps {
   items: SolutionItem[];
   onSelect?: (item: SolutionItem) => void;

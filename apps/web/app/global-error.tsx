@@ -13,10 +13,10 @@ export default function GlobalErrorPage({ error, reset }: Props) {
   return (
     <html lang="ko" {...mantineHtmlProps}>
       <head>
-        <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} defaultColorScheme="light">
+
           <SdErrorView.Page
             error={error}
             onReset={reset}

@@ -15,10 +15,18 @@ export interface NavItem  extends CommonInfo{
   parentId?: number;
 }
 
+export interface HeroCta {
+  label: string;
+  href: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'white';
+  icon: boolean;
+}
+
 export interface HeroSlide extends CommonInfo{
   image: string;
   title: ReactNode;
   description: string;
+  ctas?: HeroCta[];
 }
 
 export interface FeatureItem extends CommonInfo {

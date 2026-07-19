@@ -66,3 +66,8 @@ export const SdTextBox = {
   Card:    createTextBox("Card",    "xs", "Body"),
   Sub:     createTextBox("Sub",     "xs", "Sub"),
 };
+
+export const SdTextBoxHero    = SdTextBox.Hero;
+export const SdTextBoxSection = SdTextBox.Section;
+export const SdTextBoxCard    = SdTextBox.Card;
+export const SdTextBoxSub     = SdTextBox.Sub;

@@ -1,5 +1,4 @@
-'use client'; 
-
+'use client'
 import { AppShell } from '@mantine/core';
 import { SdHeader, SdFooter } from '../organism';
 import { CompanyInfo, NavItem } from '../../types';
@@ -12,7 +11,7 @@ export function MainLayout({ children, navItems, companyInfo}: { children: React
         <SdHeader navItems={navItems} />
       </AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
-      <SdFooter company={companyInfo} utilityLinks={navItems} />
+      <SdFooter company={companyInfo} />
     </AppShell>
   )
 }

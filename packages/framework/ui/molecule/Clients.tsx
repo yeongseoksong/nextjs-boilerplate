@@ -97,3 +97,6 @@ export const SdClients = {
   /** 무한 수평 스크롤 띠 — 호버 시 일시정지 */
   Marquee,
 };
+
+export const SdClientsGrid = Grid;
+export const SdClientsMarquee = Marquee;

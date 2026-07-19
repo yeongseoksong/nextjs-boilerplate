@@ -1,5 +1,4 @@
-"use client";
-
+'use client'
 import {
   PageLayout,
   SdBadge,
@@ -48,7 +47,7 @@ export default function PricingPage() {
           </Group>
         </Stack>
 
-        {/* ── 솔루션 ── */}
+        {/* ── 솔루션 ──
         <Stack gap="xl">
           <SdTextBox.Section
             label="Solutions"
@@ -61,7 +60,7 @@ export default function PricingPage() {
             items={solutionItems}
             onSelect={(item) => alert(`${item.title} 선택됨`)}
           />
-        </Stack>
+        </Stack> */}
 
         {/* ── 요금제 ── */}
         <Stack gap="xl">
@@ -72,11 +71,11 @@ export default function PricingPage() {
             align="center"
             ta="center"
           />
-          <SdPricingCard.Grid
+          {/* <SdPricingCard.Grid
             items={pricingItems}
             cols={{ base: 1, sm: 3 }}
             onSelect={(item) => alert(`${item.name} 선택됨`)}
-          />
+          /> */}
         </Stack>
 
         {/* ── 고객 후기 ── */}

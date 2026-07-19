@@ -14,7 +14,8 @@
       "Bash(head:*)",
       "Bash(find /Users/yeongseok/Documents/GitHub/nextjs-boilerplate/node_modules/.pnpm/@mantine+core@9.2.2_*/node_modules/@mantine/core/lib -name \"index.d.mts\" 2>/dev/null | head -1 | xargs head -5 2>/dev/null)",
       "Bash(ls:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }

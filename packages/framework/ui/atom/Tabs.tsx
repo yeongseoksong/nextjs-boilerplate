@@ -67,3 +67,9 @@ export const SdTabs = {
     },
   }),
 };
+
+// SdTabs.Pills / .Underline / .Outline 은 .List / .Tab / .Panel 을 직접 속성으로 가짐
+// → 개별 export에서도 compound sub-component 그대로 사용 가능
+export const SdTabsPills     = SdTabs.Pills;
+export const SdTabsUnderline = SdTabs.Underline;
+export const SdTabsOutline   = SdTabs.Outline;

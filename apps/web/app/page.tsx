@@ -1,8 +1,18 @@
-"use client";
-
-import { HeroCarousel, SdClients, SdContainer, SdFeatureSection, SdMap, SdTextBox } from "@framework/ui";
+import { Suspense } from "react";
+import {
+  HeroCarousel,
+  SdContainer,
+  SdFeatureSection,
+  SdTextBoxSection,
+  SdClientsGrid,
+  SdClientsMarquee,
+  SdMapTabs,
+  SdMapSingle,
+  SdSkeletonCard,
+} from "@framework/ui";
 import { clientItems, companyInfo, featureItems, heroSlides } from "../data";
-import { Divider, Stack } from "@mantine/core";
+import { Divider, SimpleGrid, Stack } from "@mantine/core";
+import DelayedServiceSection from "./_demo/DelayedServiceSection";
 
 export default function HomePage() {
   return (
@@ -20,26 +30,24 @@ export default function HomePage() {
       {/* ── 고객사 ── */}
       <SdContainer py="xl">
         <Stack gap="xl">
-          <SdTextBox.Section
+          <SdTextBoxSection
             label="Clients"
             title="함께하는 고객사"
             description="다양한 산업의 기업과 공공기관이 신뢰하고 있습니다."
             align="center"
             ta="center"
           />
-
           <Divider label="Grid" labelPosition="left" />
-          <SdClients.Grid items={clientItems} />
-
+          <SdClientsGrid items={clientItems} />
           <Divider label="Marquee" labelPosition="left" />
-          <SdClients.Marquee items={clientItems} />
+          <SdClientsMarquee items={clientItems} />
         </Stack>
       </SdContainer>
 
       {/* ── 오시는 길 ── */}
       <SdContainer py="xl">
         <Stack gap="xl">
-          <SdTextBox.Section
+          <SdTextBoxSection
             label="Location"
             title="오시는 길"
             description="본사 및 지사 위치를 안내합니다."
@@ -47,10 +55,33 @@ export default function HomePage() {
             ta="center"
           />
           <Divider label="Tabs (여러 주소)" labelPosition="left" />
-          <SdMap.Tabs addresses={companyInfo.addresses} height={360} />
-
+          <SdMapTabs addresses={companyInfo.addresses} height={360} />
           <Divider label="Single (단일 주소)" labelPosition="left" />
-          <SdMap.Single address={companyInfo.addresses[0]} height={300} />
+          <SdMapSingle address={companyInfo.addresses[0]} height={300} />
+        </Stack>
+      </SdContainer>
+
+      {/* ── Skeleton Demo ── */}
+      <SdContainer py="xl">
+        <Stack gap="xl">
+          <SdTextBoxSection
+            label="Skeleton Demo"
+            title="비동기 로딩 예시"
+            description="서버 응답 전 Suspense fallback으로 SdSkeletonCard가 표시됩니다. (2초 지연)"
+            align="center"
+            ta="center"
+          />
+          <Suspense
+            fallback={
+              <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <SdSkeletonCard key={i} lines={2} />
+                ))}
+              </SimpleGrid>
+            }
+          >
+            <DelayedServiceSection />
+          </Suspense>
         </Stack>
       </SdContainer>
     </>

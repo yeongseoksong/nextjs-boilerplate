@@ -17,6 +17,8 @@ function createButton(defaults: ButtonProps) {
 export const SdButton = {
   /** 주요 액션 — filled primary */
   Primary: createButton({ color: "primary" }),
+  /** 보조 액션 — white bg + slate text */
+  Secondary: createButton({ variant: "white", color: "slate" }),
   /** 보조 액션 — outline */
   Outline: createButton({ variant: "outline", color: "primary" }),
   /** 텍스트 수준 — subtle */
@@ -28,3 +30,11 @@ export const SdButton = {
   /** 취소 — outline slate + X 아이콘 */
   Cancel:  createButton({ variant: "outline", color: "slate", leftSection: <IconX size={16} /> }),
 };
+
+export const SdButtonPrimary   = SdButton.Primary;
+export const SdButtonSecondary = SdButton.Secondary;
+export const SdButtonOutline   = SdButton.Outline;
+export const SdButtonGhost     = SdButton.Ghost;
+export const SdButtonWhite     = SdButton.White;
+export const SdButtonDelete    = SdButton.Delete;
+export const SdButtonCancel    = SdButton.Cancel;

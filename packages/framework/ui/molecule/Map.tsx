@@ -85,3 +85,7 @@ export const SdMap = {
   /** 여러 주소 탭 전환 지도 — embbedUrl 있는 항목만 표시 */
   Tabs,
 };
+
+export const SdMapSingle = Single;
+export const SdMapTabs = Tabs;
+

@@ -1,5 +1,4 @@
-"use client";
-
+'use client'
 import { PageLayout, SdSolution, SdTextBox } from "@framework/ui";
 import { solutionItems } from "../../../data";
 import { Stack } from "@mantine/core";
