@@ -3,7 +3,7 @@ name: Publish @yeongseoksong/framework
 on:
   push:
     tags:
-      - 'framework-v*'
+      - '@yeongseoksong/framework@*'
   workflow_dispatch:
 
 jobs:
