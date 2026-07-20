@@ -1,89 +1,132 @@
-import { Suspense } from "react";
+import Link from "next/link";
+import { Card, Group, SimpleGrid, Stack } from "@mantine/core";
 import {
-  HeroCarousel,
+  SdBadgePrimary,
   SdContainer,
-  SdFeatureSection,
+  SdTextBody,
+  SdTextHint,
+  SdTextNumeric,
+  SdTextBoxHero,
   SdTextBoxSection,
-  SdClientsGrid,
-  SdClientsMarquee,
-  SdMapTabs,
-  SdMapSingle,
-  SdSkeletonCard,
+  SdTitleCard,
 } from "@framework/ui";
-import { clientItems, companyInfo, featureItems, heroSlides } from "../data";
-import { Divider, SimpleGrid, Stack } from "@mantine/core";
-import DelayedServiceSection from "./_demo/DelayedServiceSection";
+import { CodeBlock } from "./_catalog/Showcase";
+
+/**
+ * 이 페이지는 Server Component다. 따라서 프레임워크 컴포넌트를 네임스페이스
+ * dot(`SdText.Body`)이 아니라 flat export(`SdTextBody`)로 가져온다.
+ * 배포된 번들에서는 dot 접근이 client reference proxy에 막혀 실패한다.
+ */
+
+const sections = [
+  {
+    href: "/components/atom",
+    name: "Atom",
+    count: 13,
+    description: "더 이상 쪼갤 수 없는 최소 단위. SdTitle, SdText, SdButton, SdInput 등.",
+  },
+  {
+    href: "/components/molecule",
+    name: "Molecule",
+    count: 12,
+    description: "atom을 조합한 의미 단위. SdTextBox, SdSteps, SdPricingCard 등.",
+  },
+  {
+    href: "/components/organism",
+    name: "Organism",
+    count: 7,
+    description: "페이지의 한 구획. HeroCarousel, SdHeader, SdFooter 등.",
+  },
+];
 
 export default function HomePage() {
   return (
-    <>
-      <HeroCarousel slides={heroSlides} />
+    <SdContainer py="xl">
+      <Stack gap={64}>
+        <SdTextBoxHero
+          label="Component Catalog"
+          title="@yeongseoksong/framework"
+          description="Mantine 9 기반 디자인 시스템입니다. 모든 컴포넌트와 variant를 실제 렌더 결과로 확인하고, import 코드를 그대로 복사해 쓸 수 있습니다."
+          maxDescWidth={640}
+        />
 
-      <SdFeatureSection
-        label="핵심 기능"
-        title="왜 선택해야 할까요?"
-        description="복잡한 엔터프라이즈 요구사항을 충족하면서도 누구나 쉽게 사용할 수 있는 올인원 플랫폼입니다."
-        items={featureItems}
-        py="xl"
-      />
+        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
+          {sections.map((s) => (
+            <Link key={s.href} href={s.href} style={{ textDecoration: "none" }}>
+              <Card withBorder padding="lg" radius="md" h="100%">
+                <Stack gap="sm">
+                  <Group justify="space-between" align="center">
+                    <SdTitleCard>{s.name}</SdTitleCard>
+                    <SdBadgePrimary>{s.count}</SdBadgePrimary>
+                  </Group>
+                  <SdTextBody>{s.description}</SdTextBody>
+                </Stack>
+              </Card>
+            </Link>
+          ))}
+        </SimpleGrid>
 
-      {/* ── 고객사 ── */}
-      <SdContainer py="xl">
-        <Stack gap="xl">
+        <Stack gap="lg">
           <SdTextBoxSection
-            label="Clients"
-            title="함께하는 고객사"
-            description="다양한 산업의 기업과 공공기관이 신뢰하고 있습니다."
-            align="center"
-            ta="center"
+            label="Install"
+            title="설치"
+            description="peerDependencies로 react, react-dom, next, @mantine/* 이 필요합니다."
           />
-          <Divider label="Grid" labelPosition="left" />
-          <SdClientsGrid items={clientItems} />
-          <Divider label="Marquee" labelPosition="left" />
-          <SdClientsMarquee items={clientItems} />
+          <CodeBlock code={"pnpm add @yeongseoksong/framework @mantine/core @mantine/hooks @mantine/carousel"} />
         </Stack>
-      </SdContainer>
 
-      {/* ── 오시는 길 ── */}
-      <SdContainer py="xl">
-        <Stack gap="xl">
+        <Stack gap="lg">
           <SdTextBoxSection
-            label="Location"
-            title="오시는 길"
-            description="본사 및 지사 위치를 안내합니다."
-            align="center"
-            ta="center"
+            label="Setup"
+            title="환경변수"
+            description="소비자별 상수는 NEXT_PUBLIC_* 로 주입합니다. 빌드 시점에 번들로 인라인되므로 비밀값은 넣지 마세요."
           />
-          <Divider label="Tabs (여러 주소)" labelPosition="left" />
-          <SdMapTabs addresses={companyInfo.addresses} height={360} />
-          <Divider label="Single (단일 주소)" labelPosition="left" />
-          <SdMapSingle address={companyInfo.addresses[0]} height={300} />
+          <CodeBlock
+            code={[
+              "# 필수 — SdText/SdTitle 문자열의 %c 토큰이 이 값으로 치환됩니다",
+              "NEXT_PUBLIC_COMPANY_NAME=주식회사 회사명",
+              "",
+              "# 선택 — 헤더 로고 (기본값: /logo.svg, \"로고\")",
+              "NEXT_PUBLIC_LOGO_SRC=/logo.svg",
+              "NEXT_PUBLIC_LOGO_ALT=회사 로고",
+            ].join("\n")}
+          />
         </Stack>
-      </SdContainer>
 
-      {/* ── Skeleton Demo ── */}
-      <SdContainer py="xl">
-        <Stack gap="xl">
+        <Stack gap="lg">
           <SdTextBoxSection
-            label="Skeleton Demo"
-            title="비동기 로딩 예시"
-            description="서버 응답 전 Suspense fallback으로 SdSkeletonCard가 표시됩니다. (2초 지연)"
-            align="center"
-            ta="center"
+            label="Important"
+            title="Server Component에서는 flat export"
+            description="ui 번들 전체에 'use client'가 붙으므로, 서버 컴포넌트가 네임스페이스를 dot 접근하면 client reference proxy에서 undefined가 반환되어 렌더가 실패합니다."
           />
-          <Suspense
-            fallback={
-              <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <SdSkeletonCard key={i} lines={2} />
-                ))}
-              </SimpleGrid>
-            }
-          >
-            <DelayedServiceSection />
-          </Suspense>
+          <CodeBlock
+            code={[
+              "// ❌ Server Component에서 실패",
+              "//    Element type is invalid: expected a string ... got: undefined",
+              "import { SdText } from \"@yeongseoksong/framework/ui\";",
+              "<SdText.Body>본문</SdText.Body>",
+              "",
+              "// ✅ flat export 사용",
+              "import { SdTextBody } from \"@yeongseoksong/framework/ui\";",
+              "<SdTextBody>본문</SdTextBody>",
+            ].join("\n")}
+          />
+          <SdTextHint>
+            Client Component 안에서는 네임스페이스 형태를 그대로 써도 됩니다. 이 카탈로그의 각 컴포넌트 페이지가 그 예입니다.
+          </SdTextHint>
         </Stack>
-      </SdContainer>
-    </>
+
+        <Group gap="xl">
+          <Stack gap={2}>
+            <SdTextNumeric>32</SdTextNumeric>
+            <SdTextHint>컴포넌트</SdTextHint>
+          </Stack>
+          <Stack gap={2}>
+            <SdTextNumeric>60+</SdTextNumeric>
+            <SdTextHint>variant</SdTextHint>
+          </Stack>
+        </Group>
+      </Stack>
+    </SdContainer>
   );
 }

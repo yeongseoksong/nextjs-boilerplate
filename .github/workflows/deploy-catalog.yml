@@ -1,0 +1,64 @@
+name: Deploy component catalog
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Pages 배포에 필요한 권한.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 진행 중인 배포는 취소하지 않고 큐에 하나만 유지한다.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10.11.0'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        # turbo가 framework/build → web/build 순으로 실행한다.
+        run: pnpm build
+        env:
+          # apps/web/env.mjs가 누락 시 빌드를 중단시키므로 반드시 넣어야 한다.
+          NEXT_PUBLIC_COMPANY_NAME: '@yeongseoksong/framework'
+          NEXT_PUBLIC_LOGO_ALT: 'framework 로고'
+          # 프로젝트 페이지는 /<repo>/ 아래에 서빙된다.
+          NEXT_PUBLIC_BASE_PATH: '/${{ github.event.repository.name }}'
+          # images.unoptimized 모드에서 Next는 <img src>에 basePath를 붙여주지
+          # 않으므로 로고 경로에 직접 넣는다.
+          NEXT_PUBLIC_LOGO_SRC: '/${{ github.event.repository.name }}/logo.svg'
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

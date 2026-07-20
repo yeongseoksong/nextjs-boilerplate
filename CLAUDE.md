@@ -24,7 +24,7 @@ pnpm --filter framework dev     # tsup --watch
 
 ```
 nextjs-boilerplate/
-├── apps/web/               # Next.js 16 app
+├── apps/web/               # 컴포넌트 카탈로그 (Next.js 16, GitHub Pages 정적 배포)
 ├── packages/framework/     # Shared UI library (private, not published)
 ├── turbo.json              # Build task orchestration
 ├── pnpm-workspace.yaml     # Workspace roots: apps/*, packages/framework
@@ -78,6 +78,32 @@ Access must be the full `process.env.NEXT_PUBLIC_X` expression — destructuring
 Array/object config (`navItems`, `companyInfo`) cannot go in env vars and stays as props on `MainLayout`.
 
 Required-var validation lives in `apps/web/env.mjs`, imported by `next.config.mjs` — Next loads `.env*` before the config, so a missing var stops dev/build immediately.
+
+## apps/web — Component Catalog
+
+`apps/web` is a component catalog deployed to GitHub Pages, not a product site.
+
+```
+app/page.tsx                    개요 · 설치 · 환경변수 · flat export 규칙
+app/components/{atom,molecule,organism}/
+    page.tsx                    Server Component — metadata만 export
+    *Catalog.tsx                "use client" — 실제 데모
+app/_catalog/Showcase.tsx       Showcase / Variant / CodeBlock 프리미티브
+app/_catalog/nav.ts             사이트 네비게이션 (data/index.tsx의 navItems와 별개)
+```
+
+`page.tsx`를 Server Component로 두고 데모를 client 파일로 분리한 이유는, client 페이지에서는 `export const metadata`가 동작하지 않기 때문이다. 이 구조 덕에 페이지별 metadata를 유지하면서 데모에서 훅과 네임스페이스 dot 접근을 쓸 수 있다.
+
+### GitHub Pages 제약
+
+`next.config.mjs`가 `output: "export"` + `trailingSlash: true` + `images.unoptimized`로 동작한다. 프로젝트 페이지는 `/<repo>/` 아래에 서빙되므로 `NEXT_PUBLIC_BASE_PATH`가 필요하고, 워크플로(`.github/workflows/deploy-catalog.yml`)가 주입한다.
+
+Next가 basePath를 **자동으로 붙여주지 않는** 두 곳은 직접 처리해야 한다:
+
+1. **`images.unoptimized`의 `<img src>`** — `NEXT_PUBLIC_LOGO_SRC`에 prefix를 포함시킨다.
+2. **`SdHeader`의 링크** — Mantine `Anchor`(순수 `<a>`)로 렌더되므로 `app/_catalog/nav.ts`에서 href에 prefix를 붙인다. `next/link`로 바꾸면 불필요해진다.
+
+`public/.nojekyll`이 있어야 `_next/`가 Jekyll에 의해 무시되지 않는다.
 
 ### Shared Types (`types/index.ts`)
 
@@ -172,7 +198,7 @@ Every variant therefore has a flat `Sd<Namespace><Variant>` export alongside the
 |---|---|---|
 | `global-error.tsx` | `app/` 루트 고정 | 루트 layout 오류 — `MantineProvider` 직접 복원 |
 | `not-found.tsx` | `app/` 루트 고정 | 전역 404 |
-| `error.tsx` | `app/(page)/` | `(page)` 그룹 내 페이지 오류 |
+| `error.tsx` | `app/` | 페이지 렌더 오류 |
 
 `SdErrorView.Page` / `SdErrorView.NotFound` organism을 thin wrapper로 사용. UI 로직은 organism에 집중, app/ 파일은 Next.js 어댑터 역할만 담당.
 
