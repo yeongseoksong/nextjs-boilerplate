@@ -109,5 +109,3 @@ export interface SolutionItem extends CommonInfo {
   ctaLabel?: string;
   icon?: ReactNode;
 }
-
-export * from "./example"

@@ -56,8 +56,28 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 - `ui/organism/` — Full-page sections: `SdHeader`, `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
-- `util/` — `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` but **is not re-exported from `util/index.ts`**
-- `types/` — Shared interfaces + `example.tsx` (sample data for dev/demo)
+- `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` but **is not re-exported from `util/index.ts`**
+- `types/` — Shared interfaces only. Demo data lives in `apps/web/data/index.tsx` (the consumer owns its own content).
+
+## Consumer Config Injection
+
+Consumer-specific constants are injected via `NEXT_PUBLIC_*` env vars, read in `util/env.util.ts`:
+
+| Variable | Required | Default | Used by |
+|---|---|---|---|
+| `NEXT_PUBLIC_COMPANY_NAME` | yes | — | `t()` → `SdText` / `SdTitle` `%c` substitution |
+| `NEXT_PUBLIC_LOGO_SRC` | no | `/logo.svg` | `SdLogo` |
+| `NEXT_PUBLIC_LOGO_ALT` | no | `로고` | `SdLogo` |
+
+Env vars are used rather than a React Context because `t()` is called inside `SdText`/`SdTitle`, which are server components in the monorepo path (only 15 of 36 UI files carry `"use client"` in source, while tsup's banner makes all of them client in `dist/`). A Context would require marking the whole `ui/` tree `"use client"`, since the factory pattern makes server modules dot into `SdText.Body` / `SdTitle[variant]` in 16 files — and dotting into a client module from a server component throws.
+
+Env vars also sidestep the dual-bundle problem that made the old `setCompanyName()` setter a silent no-op: tsup inlines `text.util.ts` into `dist/ui` with its own module state, so a setter called via `/util` never reached the components. Bundlers replace `process.env.NEXT_PUBLIC_*` with the same literal in both bundles.
+
+Access must be the full `process.env.NEXT_PUBLIC_X` expression — destructuring defeats static replacement. `env.util.ts` declares a module-scoped `process` type rather than depending on `@types/node`, which would pull Node globals into a browser-targeted library.
+
+Array/object config (`navItems`, `companyInfo`) cannot go in env vars and stays as props on `MainLayout`.
+
+Required-var validation lives in `apps/web/env.mjs`, imported by `next.config.mjs` — Next loads `.env*` before the config, so a missing var stops dev/build immediately.
 
 ### Shared Types (`types/index.ts`)
 

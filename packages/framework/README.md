@@ -38,22 +38,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-### 2. 회사명 설정
+### 2. 환경변수 설정
 
-`%c` 토큰을 회사명으로 치환합니다. 앱 진입점에서 한 번만 호출합니다.
+소비자별 상수는 환경변수로 주입합니다. 앱 루트에 `.env.local`을 만드세요.
 
-```ts
-import { setCompanyName } from '@yeongseoksong/framework/util'
+```bash
+# [필수] SdText/SdTitle 문자열의 %c 토큰이 이 값으로 치환됩니다.
+NEXT_PUBLIC_COMPANY_NAME=내 회사
 
-setCompanyName('내 회사')
+# [선택] 헤더 로고. 기본값: /logo.svg, "로고"
+NEXT_PUBLIC_LOGO_SRC=/logo.svg
+NEXT_PUBLIC_LOGO_ALT=내 회사 로고
 ```
+
+값은 빌드 시점에 번들로 인라인되므로 **런타임에 바꿀 수 없고**, 비밀값을 넣어서도 안 됩니다.
+
+`NEXT_PUBLIC_COMPANY_NAME`이 없으면 `%c`가 빈 문자열로 치환됩니다. 누락을 배포 전에 잡으려면 `next.config.mjs`에서 검증하세요:
+
+```js
+// env.mjs
+if (!process.env.NEXT_PUBLIC_COMPANY_NAME) {
+  throw new Error('NEXT_PUBLIC_COMPANY_NAME이 설정되지 않았습니다.')
+}
+
+// next.config.mjs
+import './env.mjs'
+```
+
+`navItems` / `companyInfo`처럼 배열·객체인 값은 환경변수로 담을 수 없으므로 `MainLayout`에 prop으로 넘깁니다 (아래 MainLayout 항목 참고).
 
 ## 임포트 경로
 
 | 경로 | 내용 |
 |---|---|
 | `@yeongseoksong/framework/ui` | UI 컴포넌트 전체 + `theme` (`"use client"`) |
-| `@yeongseoksong/framework/util` | `t()`, `setCompanyName()` |
+| `@yeongseoksong/framework/util` | `t()`, `COMPANY_NAME`, `LOGO_SRC`, `LOGO_ALT` |
 | `@yeongseoksong/framework/types` | 공유 인터페이스 |
 
 ---
@@ -102,7 +121,7 @@ import { SdText, SdTitle } from '@yeongseoksong/framework/ui'
 <SdText.Error>필수 항목입니다.</SdText.Error>
 <SdText.Hint>최대 100자까지 입력 가능합니다.</SdText.Hint>
 
-{/* %c → setCompanyName()으로 설정한 회사명으로 치환됨 */}
+{/* %c → NEXT_PUBLIC_COMPANY_NAME 값으로 치환됨 */}
 <SdText.Body>%c 서비스에 오신 것을 환영합니다.</SdText.Body>
 ```
 
@@ -338,14 +357,18 @@ export default function Page() {
 
 ### t() — 회사명 치환
 
-```ts
-import { t, setCompanyName } from '@yeongseoksong/framework/util'
+`NEXT_PUBLIC_COMPANY_NAME=내 회사` 일 때:
 
-setCompanyName('내 회사')
+```ts
+import { t } from '@yeongseoksong/framework/util'
 
 t('%c 서비스')          // → '내 회사 서비스'
 t('%c에 오신 것을 환영합니다') // → '내 회사에 오신 것을 환영합니다'
 ```
+
+`SdText`/`SdTitle`은 문자열 children에 `t()`를 자동으로 적용하므로 직접 호출할 일은 드뭅니다.
+
+> `setCompanyName()`은 **deprecated이며 2.0.0에서 제거됩니다.** tsup이 `ui`와 `util`을 별개 번들로 빌드하면서 `text.util`이 `dist/ui`에 인라인 복사되기 때문에, 이 함수로 값을 바꿔도 `t()`를 실제로 호출하는 `SdText`/`SdTitle`은 다른 사본을 읽습니다. 즉 처음부터 동작하지 않았습니다. 환경변수는 번들러가 양쪽 번들에 동일한 리터럴을 박아넣으므로 이 문제가 없습니다.
 
 ---
 

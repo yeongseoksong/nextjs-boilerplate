@@ -15,7 +15,9 @@
       "Bash(find /Users/yeongseok/Documents/GitHub/nextjs-boilerplate/node_modules/.pnpm/@mantine+core@9.2.2_*/node_modules/@mantine/core/lib -name \"index.d.mts\" 2>/dev/null | head -1 | xargs head -5 2>/dev/null)",
       "Bash(ls:*)",
       "Bash(cat:*)",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "PowerShell(git -C \"c:\\\\Users\\\\infoAA\\\\Documents\\\\GitHub\\\\nextjs-boilerplate\" diff --stat -- packages/framework/ui)",
+      "PowerShell(cd \"c:\\\\Users\\\\infoAA\\\\Documents\\\\GitHub\\\\nextjs-boilerplate\"; Select-String -Path packages\\\\framework\\\\README.md -Pattern 'setCompanyName|%c|example' -Context 6,10 | ForEach-Object { \"=== line $\\($_.LineNumber\\) ===\"; $_.Context.PreContext; \">> \" + $_.Line; $_.Context.PostContext })"
     ]
   }
 }
