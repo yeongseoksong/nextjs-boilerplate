@@ -1,5 +1,6 @@
-# Mantine Next Template
-
-Get started with the template by clicking `Use this template` button on the top of the page.
-
-[Documentation](https://mantine.dev/guides/next/)
+pnpm changeset            # 변경 기록
+pnpm changeset version    # package.json + CHANGELOG 수정 (커밋 안 함)
+git add -A
+git commit -m "release: framework"   # ← 반드시 먼저 커밋
+pnpm changeset tag        # ← 그 커밋에 태그
+git push --follow-tags
