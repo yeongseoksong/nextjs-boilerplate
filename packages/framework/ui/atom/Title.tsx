@@ -26,3 +26,12 @@ export const SdTitle = {
   /** 소제목  */
   Sub:     createTitle({ order: 5}),
 };
+
+// Server Component에서 직접 import 가능한 개별 export.
+// dist/ui 번들 전체에 "use client" 배너가 붙으므로, 서버 컴포넌트가
+// SdText.Body 처럼 네임스페이스를 dot 접근하면 client reference proxy에서
+// undefined가 반환되어 렌더가 실패한다. 아래 flat export를 사용할 것.
+export const SdTitleDisplay = SdTitle.Display;
+export const SdTitleSection = SdTitle.Section;
+export const SdTitleCard = SdTitle.Card;
+export const SdTitleSub = SdTitle.Sub;

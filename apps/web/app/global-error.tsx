@@ -1,7 +1,7 @@
 "use client";
 
 import "@mantine/core/styles.css";
-import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from "@mantine/core";
+import {  MantineProvider, mantineHtmlProps } from "@mantine/core";
 import { SdErrorView, theme } from "@framework/ui";
 
 interface Props {

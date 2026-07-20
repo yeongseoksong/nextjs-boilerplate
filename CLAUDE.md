@@ -145,6 +145,27 @@ The same pattern applies to:
 
 All UI components are Client Components — tsup adds `"use client"` banner to the UI bundle only.
 
+### Namespace dot access is forbidden in Server Components
+
+Because the banner makes all of `dist/ui` a client module, a Server Component importing it receives **client reference proxies**, not real objects. Dotting into a namespace returns `undefined`:
+
+```tsx
+// ❌ Server Component — renders <undefined>, fails with
+//    "Element type is invalid: expected a string ... got: undefined"
+import { SdText } from "@yeongseoksong/framework/ui";
+<SdText.Body>…</SdText.Body>
+
+// ✅ flat export
+import { SdTextBody } from "@yeongseoksong/framework/ui";
+<SdTextBody>…</SdTextBody>
+```
+
+This only bites through the published package — `apps/web` maps `@framework/*` to source, where no banner exists, so namespace access works locally and breaks after publish. **Verify UI changes against `dist`, not just source.**
+
+Every variant therefore has a flat `Sd<Namespace><Variant>` export alongside the namespace (`SdTextBody`, `SdTitleSection`, `SdErrorViewPage`, `SdTableSpec`, …). When adding a variant, add its flat export in the same file. The namespace form stays valid inside Client Components.
+
+`SdModal` is exempt — it requires `opened`/`onClose` state, so it can only be used from a Client Component anyway.
+
 ## Next.js Special Files
 
 | 파일 | 위치 | 역할 |

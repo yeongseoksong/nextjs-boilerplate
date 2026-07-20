@@ -77,6 +77,50 @@ import './env.mjs'
 
 ---
 
+## ⚠️ Server Component에서는 flat export를 쓰세요
+
+`ui` 번들 전체에 `"use client"`가 붙어 있습니다. 서버 컴포넌트가 이를 임포트하면 실제 객체가 아니라 **client reference proxy**를 받으므로, 네임스페이스를 dot 접근하면 `undefined`가 나옵니다.
+
+```tsx
+// ❌ 서버 컴포넌트에서 실패
+//    Element type is invalid: expected a string ... got: undefined
+import { SdText } from '@yeongseoksong/framework/ui'
+<SdText.Body>본문</SdText.Body>
+
+// ✅ flat export 사용
+import { SdTextBody } from '@yeongseoksong/framework/ui'
+<SdTextBody>본문</SdTextBody>
+```
+
+모든 variant에 `Sd<네임스페이스><Variant>` 형태의 flat export가 준비되어 있습니다:
+
+| 네임스페이스 | flat export |
+|---|---|
+| `SdText` | `SdTextStrong` `SdTextBody` `SdTextSub` `SdTextEyebrow` `SdTextError` `SdTextHint` `SdTextNumeric` |
+| `SdTitle` | `SdTitleDisplay` `SdTitleSection` `SdTitleCard` `SdTitleSub` |
+| `SdButton` | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonDelete` `SdButtonCancel` |
+| `SdBadge` | `SdBadgeDefault` `SdBadgePrimary` `SdBadgeSuccess` `SdBadgeWarning` |
+| `SdInput` | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputSelect` |
+| `SdQuote` | `SdQuotePlain` `SdQuoteCard` |
+| `SdTable` | `SdTableSpec` |
+| `SdTabs` | `SdTabsPills` `SdTabsUnderline` `SdTabsOutline` |
+| `SdSkeleton` | `SdSkeletonCard` `SdSkeletonText` `SdSkeletonTitle` `SdSkeletonImage` `SdSkeletonAvatar` |
+| `SdTextBox` | `SdTextBoxHero` `SdTextBoxSection` `SdTextBoxCard` `SdTextBoxSub` |
+| `SdSteps` | `SdStepsBubble` `SdStepsCard` `SdStepsStrip` |
+| `SdCta` | `SdCtaBanner` `SdCtaSubtle` `SdCtaInline` |
+| `SdFaq` | `SdFaqDefault` `SdFaqFilled` `SdFaqWithHeader` |
+| `SdPricingCard` | `SdPricingCardDefault` `SdPricingCardFeatured` `SdPricingCardGrid` |
+| `SdTestimonial` | `SdTestimonialCard` `SdTestimonialStrip` `SdTestimonialGrid` |
+| `SdSolution` | `SdSolutionFiltered` `SdSolutionList` |
+| `SdSolutionCard` | `SdSolutionCardItem` `SdSolutionCardGrid` |
+| `SdClients` | `SdClientsGrid` `SdClientsMarquee` |
+| `SdMap` | `SdMapSingle` `SdMapTabs` |
+| `SdErrorView` | `SdErrorViewPage` `SdErrorViewNotFound` |
+
+**클라이언트 컴포넌트에서는 네임스페이스 형태(`SdText.Body`)를 그대로 써도 됩니다.** `SdModal`은 `opened`/`onClose` 상태가 필요해 애초에 클라이언트 전용이므로 flat export가 없습니다.
+
+---
+
 ## 사용 예시
 
 ### SdButton

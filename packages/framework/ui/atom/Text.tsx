@@ -25,3 +25,15 @@ export const SdText = {
   Hint:    createText({ fw: 400, c: "slate.4", fz: "xs", lh: 1.5 }),
   Numeric: createText({ fw: 700, c: "slate.8", fz: "md", style: { fontVariantNumeric: "tabular-nums", letterSpacing: "-0.02em" } }),
 };
+
+// Server Component에서 직접 import 가능한 개별 export.
+// dist/ui 번들 전체에 "use client" 배너가 붙으므로, 서버 컴포넌트가
+// SdText.Body 처럼 네임스페이스를 dot 접근하면 client reference proxy에서
+// undefined가 반환되어 렌더가 실패한다. 아래 flat export를 사용할 것.
+export const SdTextStrong = SdText.Strong;
+export const SdTextBody = SdText.Body;
+export const SdTextSub = SdText.Sub;
+export const SdTextEyebrow = SdText.Eyebrow;
+export const SdTextError = SdText.Error;
+export const SdTextHint = SdText.Hint;
+export const SdTextNumeric = SdText.Numeric;
