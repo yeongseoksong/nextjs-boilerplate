@@ -83,6 +83,7 @@ export const catalogNav: NavItem[] = [
   // 개요 페이지의 섹션 앵커
   { id: 101, order: 1, isShow: true, label: '설치', href: `${base}/#install`, parentId: 1 },
   { id: 102, order: 2, isShow: true, label: '환경변수', href: `${base}/#env`, parentId: 1 },
+  { id: 103, order: 3, isShow: true, label: '색상 팔레트', href: `${base}/#colors`, parentId: 1 },
 
   ...anchors(2, '/components/atom/', atoms),
   ...anchors(3, '/components/molecule/', molecules),

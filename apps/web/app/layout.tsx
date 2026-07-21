@@ -6,6 +6,7 @@ import { MantineProvider, ColorSchemeScript, mantineHtmlProps } from '@mantine/c
 import { theme, MainLayout } from '@framework/ui'
 import { companyInfo } from '../data'
 import { catalogNav } from './_catalog/nav'
+import { appTheme } from './theme'
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="light">
+        <MantineProvider theme={appTheme} defaultColorScheme="light">
           <MainLayout navItems={catalogNav} companyInfo={companyInfo}>
             {children}
           </MainLayout>

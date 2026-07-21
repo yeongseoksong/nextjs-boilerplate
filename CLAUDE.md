@@ -77,6 +77,8 @@ Access must be the full `process.env.NEXT_PUBLIC_X` expression — destructuring
 
 Array/object config (`navItems`, `companyInfo`) cannot go in env vars and stays as props on `MainLayout`.
 
+색상은 env var이 아니라 **테마 오버라이드**로 주입한다. `theme`은 `createTheme()`의 `MantineThemeOverride`이므로 소비자가 `mergeThemeOverrides(theme, { colors: { primary: [...] } })`로 합친다. 이 merge는 반드시 소비자의 `"use client"` 모듈에서 해야 한다 — 서버 컴포넌트는 `theme`을 prop으로 **넘길** 수는 있어도 client reference proxy라 **읽을** 수 없다. 컴포넌트가 의존하는 키는 `primary`/`secondary`/`slate`/`red`/`green`이며, 키를 제거하면 Mantine 기본 팔레트로 폴백한다.
+
 Required-var validation lives in `apps/web/env.mjs`, imported by `next.config.mjs` — Next loads `.env*` before the config, so a missing var stops dev/build immediately.
 
 ## apps/web — Component Catalog

@@ -65,6 +65,53 @@ import './env.mjs'
 
 `navItems` / `companyInfo`처럼 배열·객체인 값은 환경변수로 담을 수 없으므로 `MainLayout`에 prop으로 넘깁니다 (아래 MainLayout 항목 참고).
 
+### 3. 색상 커스터마이즈
+
+브랜드 색은 환경변수가 아니라 **테마 오버라이드**로 주입합니다. `theme`은 `createTheme()`이 만든 `MantineThemeOverride`라 Mantine 표준 `mergeThemeOverrides()`로 그대로 합칠 수 있습니다.
+
+**반드시 `"use client"` 파일 안에서 합쳐야 합니다.** `ui` 번들 전체에 `"use client"`가 붙어 있어 서버 컴포넌트가 `theme`을 임포트하면 실제 객체가 아니라 client reference proxy를 받습니다. `<MantineProvider theme={theme}>`처럼 **넘기기만** 하는 건 되지만, `mergeThemeOverrides(theme, ...)`처럼 값을 **읽으면** 터집니다.
+
+```tsx
+// app/theme.ts  ← "use client" 필수
+'use client'
+import { mergeThemeOverrides } from '@mantine/core'
+import { theme } from '@yeongseoksong/framework/ui'
+
+export const appTheme = mergeThemeOverrides(theme, {
+  colors: {
+    // 10단계 전부 채워야 합니다. 부분 배열은 Mantine이 허용하지 않습니다.
+    primary: [
+      '#e7f0fb', '#c8dcf4', '#a3c3ec', '#7aa8e3', '#4f8ddb',
+      '#2374d4', '#0b5ed7', '#094db1', '#073d8c', '#052d68',
+    ],
+  },
+  // 브랜드 앵커 shade를 바꾸려면 함께 지정
+  primaryShade: { light: 6, dark: 5 },
+})
+```
+
+```tsx
+// app/layout.tsx — Server Component 그대로 둡니다
+import { MantineProvider } from '@mantine/core'
+import { appTheme } from './theme'
+
+<MantineProvider theme={appTheme} defaultColorScheme="light">
+```
+
+오버라이드하지 않은 키(타이포·spacing·shadows·컴포넌트 기본값)는 프레임워크 값이 그대로 유지됩니다.
+
+**컴포넌트가 의존하는 색상 키** — 아래 키를 바꾸면 해당 컴포넌트 전체가 따라 바뀝니다. 키를 **없애면** Mantine 기본 팔레트로 폴백하므로 톤이 어긋납니다.
+
+| 키          | 쓰이는 곳                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| `primary`   | `primaryColor`. 버튼·링크 hover·`SdText.Eyebrow`·`SdBadge.Primary` 등  |
+| `secondary` | 보조 강조                                                              |
+| `slate`     | 중립 전반 — 모든 `SdText`/`SdTitle` 본문색, 보더, 표 헤더. `dark` 별칭 |
+| `red`       | `SdText.Error`, `SdButton.Delete`                                      |
+| `green`     | `SdButton.Excel`                                                       |
+
+10단계 램프를 손으로 만들기 번거로우면 [`@mantine/colors-generator`](https://mantine.dev/colors-generator/)의 `generateColors('#0b5ed7')`로 hex 하나에서 뽑을 수 있습니다(별도 설치 필요).
+
 ## 임포트 경로
 
 | 경로                             | 내용                                          |

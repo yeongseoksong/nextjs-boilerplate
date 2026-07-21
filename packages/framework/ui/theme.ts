@@ -42,34 +42,37 @@ const slate: MantineColorsTuple = [
   '#0f172a', // 9  slate-900
 ]
 
-const cyan: MantineColorsTuple = [
-  '#ecfeff',
-  '#cffafe',
-  '#a5f3fc',
-  '#67e8f9',
-  '#22d3ee',
-  '#06b6d4',
-  '#0891b2',
-  '#0e7490',
-  '#155e75',
-  '#164e63',
+// Semantic — Tailwind red. SdText.Error(red.6) · SdButton.Delete(color="red")
+const red: MantineColorsTuple = [
+  '#fef2f2', // 0  red-50
+  '#fee2e2', // 1  red-100
+  '#fecaca', // 2  red-200
+  '#fca5a5', // 3  red-300
+  '#f87171', // 4  red-400
+  '#ef4444', // 5  red-500
+  '#dc2626', // 6  red-600
+  '#b91c1c', // 7  red-700
+  '#991b1b', // 8  red-800
+  '#7f1d1d', // 9  red-900
 ]
-const indigo: MantineColorsTuple = [
-  '#eef2ff',
-  '#e0e7ff',
-  '#c7d2fe',
-  '#a5b4fc',
-  '#818cf8',
-  '#6366f1',
-  '#4f46e5',
-  '#4338ca',
-  '#3730a3',
-  '#312e81',
+
+// Semantic — Tailwind green. SdButton.Excel(color="green")
+const green: MantineColorsTuple = [
+  '#f0fdf4', // 0  green-50
+  '#dcfce7', // 1  green-100
+  '#bbf7d0', // 2  green-200
+  '#86efac', // 3  green-300
+  '#4ade80', // 4  green-400
+  '#22c55e', // 5  green-500
+  '#16a34a', // 6  green-600
+  '#15803d', // 7  green-700
+  '#166534', // 8  green-800
+  '#14532d', // 9  green-900
 ]
 
 export const theme = createTheme({
   /* ---- Color ---- */
-  colors: { primary, secondary, slate, cyan, indigo, dark: slate },
+  colors: { primary, secondary, slate, red, green, dark: slate },
   primaryColor: 'primary',
   primaryShade: { light: 6, dark: 5 },
 

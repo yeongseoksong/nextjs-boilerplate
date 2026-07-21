@@ -10,6 +10,7 @@ import {
   SdTitleCard,
 } from '@framework/ui'
 import { CodeBlock } from './_catalog/Showcase'
+import { ColorPalette } from './_catalog/ColorPalette'
 
 /**
  * 이 페이지는 Server Component다. 따라서 프레임워크 컴포넌트를 네임스페이스
@@ -65,7 +66,8 @@ export default function HomePage() {
           ))}
         </SimpleGrid>
 
-        <Stack gap="lg" id="install">
+        {/* style — 고정 헤더(60px) 아래로 제목이 숨지 않도록. Showcase.tsx와 동일 */}
+        <Stack gap="lg" id="install" style={{ scrollMarginTop: 80 }}>
           <SdTextBoxSection
             label="Install"
             title="설치"
@@ -78,7 +80,7 @@ export default function HomePage() {
           />
         </Stack>
 
-        <Stack gap="lg" id="env">
+        <Stack gap="lg" id="env" style={{ scrollMarginTop: 80 }}>
           <SdTextBoxSection
             label="Setup"
             title="환경변수"
@@ -94,6 +96,15 @@ export default function HomePage() {
               'NEXT_PUBLIC_LOGO_ALT=회사 로고',
             ].join('\n')}
           />
+        </Stack>
+
+        <Stack gap="lg" id="colors" style={{ scrollMarginTop: 80 }}>
+          <SdTextBoxSection
+            label="Theme"
+            title="색상 팔레트"
+            description="theme.colors를 그대로 렌더합니다. 스와치를 클릭하면 hex가 복사되고, 툴팁에 Mantine 토큰(primary.6)이 표시됩니다. 테두리로 표시된 것이 primaryShade입니다."
+          />
+          <ColorPalette />
         </Stack>
 
         <Stack gap="lg">

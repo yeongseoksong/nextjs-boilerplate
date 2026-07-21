@@ -6,9 +6,9 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "changeset": "changeset",
+    "cs": "changeset",
     "version": "changeset version",
-    "release": "changeset version && changeset tag"
+    "push":"changeset tag && git push --follow-tags"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.1",
