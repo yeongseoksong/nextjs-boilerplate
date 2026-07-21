@@ -11,9 +11,7 @@ export function MainLayout({ children, navItems, companyInfo}: { children: React
         <SdHeader navItems={navItems} />
       </AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
-      <AppShell.Footer>
-        <SdFooter company={companyInfo} />
-      </AppShell.Footer>
+        <SdFooter company={companyInfo} navItems={navItems} />
     </AppShell>
   )
 }

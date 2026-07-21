@@ -1,8 +1,9 @@
 "use client";
-import { Anchor, Drawer, Group, Burger, Stack } from "@mantine/core";
+import { Drawer, Group, Burger, Stack } from "@mantine/core";
 import { SdContainer } from "../atom/Container";
 import { Logo } from "../atom/Logo";
 import { SdButton } from "../atom/Button";
+import { SdLink } from "../atom/Link";
 import { ReactNode } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { NavItem } from "../../types";
@@ -29,9 +30,9 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
           <Logo />
           <Group gap="xl" visibleFrom="sm">
             {visibleTopItems.map((item) => (
-              <Anchor key={item.id} href={item.href} c="slate.7" fw={500} underline="never" fz={15}>
+              <SdLink.Body key={item.id} href={item.href}>
                 {item.label}
-              </Anchor>
+              </SdLink.Body>
             ))}
           </Group>
           <Burger hiddenFrom="sm" opened={opened} onClick={toggle} />
@@ -48,9 +49,9 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
       <Drawer opened={opened} onClose={close} hiddenFrom="sm" size="xs">
         <Stack>
           {visibleTopItems.map((item) => (
-            <Anchor key={item.id} href={item.href} c="slate.7" fw={500} underline="never" fz={16} onClick={close}>
+            <SdLink.Body key={item.id} href={item.href} fz={16} onClick={close}>
               {item.label}
-            </Anchor>
+            </SdLink.Body>
           ))}
           {loginFlag && (
             <Stack gap="xs" mt="md">

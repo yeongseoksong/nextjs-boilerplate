@@ -1,11 +1,20 @@
 'use client'
 
 import React from 'react'
-import { Anchor, Box, Divider, Grid, Group, Stack } from '@mantine/core'
+import { ActionIcon, Box, Divider, Flex, Grid, Group, SimpleGrid, Stack } from '@mantine/core'
+import {
+  IconBrandFacebook,
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandX,
+  IconBrandYoutube,
+  IconWorld,
+} from '@tabler/icons-react'
 import { SdContainer } from '../atom/Container'
-import { SdText } from '../atom'
+import { SdLink, SdText } from '../atom'
 import { Logo } from '../atom/Logo'
-import { CompanyInfo, NavItem } from '../../types'
+import { CompanyInfo, NavItem, SocialItem, SocialPlatform } from '../../types'
 import { filterAndSort } from '../../util/sort.util'
 
 interface SdFooterProps {
@@ -25,24 +34,11 @@ function FooterNavColumns({ items }: { items: NavItem[] }) {
       {topLevel.map((group) => (
         <Grid.Col key={group.id} span={{ base: 6, sm: 4, md: 'auto' }}>
           <Stack gap="sm">
-            <SdText.Strong fz="sm">{group.label}</SdText.Strong>
+            <SdText.Sub>{group.label}</SdText.Sub>
             {getChildren(group.id).map((link) => (
-              <Anchor
-                key={link.id}
-                href={link.href}
-                fz="sm"
-                c="slate.6"
-                underline="never"
-                style={{ transition: 'color 0.15s' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--mantine-color-primary-6)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = ''
-                }}
-              >
+              <SdLink.Hint key={link.id} href={link.href}>
                 {link.label}
-              </Anchor>
+              </SdLink.Hint>
             ))}
           </Stack>
         </Grid.Col>
@@ -51,35 +47,75 @@ function FooterNavColumns({ items }: { items: NavItem[] }) {
   )
 }
 
+const SOCIAL_ICONS: Record<SocialPlatform, typeof IconWorld> = {
+  x: IconBrandX,
+  youtube: IconBrandYoutube,
+  instagram: IconBrandInstagram,
+  facebook: IconBrandFacebook,
+  linkedin: IconBrandLinkedin,
+  github: IconBrandGithub,
+  blog: IconWorld,
+}
+
+function FooterSocials({ items }: { items: SocialItem[] }) {
+  return (
+    <Group gap={0} wrap="nowrap">
+      {items.map((item) => {
+        const Icon = SOCIAL_ICONS[item.platform] ?? IconWorld
+        return (
+          <ActionIcon
+            key={item.url}
+            component="a"
+            href={item.url}
+            target="_blank"
+            rel="noreferrer"
+            size="lg"
+            color="gray"
+            variant="subtle"
+            aria-label={item.label ?? item.platform}
+          >
+            <Icon size={18} stroke={1.5} />
+          </ActionIcon>
+        )
+      })}
+    </Group>
+  )
+}
+
+/** 라벨 + 값 한 줄. 값은 문자열이거나 링크 노드. */
+function InfoCell({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <Group gap={6} wrap="nowrap" align="baseline">
+      <SdText.Sub c="slate.4" style={{ whiteSpace: 'nowrap' }}>
+        {label}
+      </SdText.Sub>
+      {typeof children === 'string' ? <SdText.Sub>{children}</SdText.Sub> : children}
+    </Group>
+  )
+}
+
 function FooterCompanyInfo({ company }: { company: CompanyInfo }) {
   const sortedAddresses = [...company.addresses].sort((a, b) => a.order - b.order)
 
+  // 좁을 땐 1열, 태블릿에선 2열, md부터는 브랜드 컬럼이 좁아지므로 다시 1열.
+  // verticalSpacing으로 행 간격만 따로 좁힌다.
   return (
-    <Group gap="xs" wrap="wrap">
-      <SdText.Sub>{company.name}</SdText.Sub>
-      <SdText.Sub c="slate.4">|</SdText.Sub>
-      <SdText.Sub>사업자등록번호 {company.registrationNumber}</SdText.Sub>
+    <SimpleGrid cols={{ base: 2, sm: 2, md: 1 }} spacing="md" verticalSpacing={0}>
+      <InfoCell label="상호">{company.name}</InfoCell>
+      <InfoCell label="사업자등록번호">{company.registrationNumber}</InfoCell>
       {sortedAddresses.map((addr) => (
-        <Group key={addr.label} gap="xs" wrap="nowrap">
-          <SdText.Sub c="slate.4">|</SdText.Sub>
-          <SdText.Sub>{addr.address}</SdText.Sub>
-        </Group>
+        <InfoCell key={addr.label} label={addr.label}>
+          {addr.address}
+        </InfoCell>
       ))}
-      <SdText.Sub c="slate.4">|</SdText.Sub>
-      <Anchor href={`tel:${company.tel}`} fz="xs" c="slate.5" underline="never">
-        Tel {company.tel}
-      </Anchor>
-      {company.fax && (
-        <>
-          <SdText.Sub c="slate.4">|</SdText.Sub>
-          <SdText.Sub>Fax {company.fax}</SdText.Sub>
-        </>
-      )}
-      <SdText.Sub c="slate.4">|</SdText.Sub>
-      <Anchor href={`mailto:${company.email}`} fz="xs" c="slate.5" underline="never">
-        {company.email}
-      </Anchor>
-    </Group>
+      <InfoCell label="Tel">
+        <SdLink.Sub href={`tel:${company.tel}`}>{company.tel}</SdLink.Sub>
+      </InfoCell>
+      {company.fax && <InfoCell label="Fax">{company.fax}</InfoCell>}
+      <InfoCell label="Email">
+        <SdLink.Sub href={`mailto:${company.email}`}>{company.email}</SdLink.Sub>
+      </InfoCell>
+    </SimpleGrid>
   )
 }
 
@@ -88,59 +124,54 @@ export function SdFooter({ company, navItems, policyLinks, description }: SdFoot
   const visiblePolicy = filterAndSort(policyLinks)
 
   return (
-    <Box component="footer"  py="xl">
-      <SdContainer>
-        <Grid style={{ '--grid-gutter': '48px' } as React.CSSProperties}>
-          {/* Brand column */}
-          <Grid.Col span={{ base: 12, md: 4 }}>
-            <Stack gap="md">
-              <Logo size="sm" />
-              {description && (
-                <SdText.Body c="slate.4" fz="sm">
-                  {description}
-                </SdText.Body>
-              )}
-            </Stack>
-          </Grid.Col>
+    <Box component="footer">
+        <SdContainer>
+          <Stack>
+        <Logo size="sm" />
+          {description && <SdText.Sub>{description}</SdText.Sub>}
+        {/* 넓을 땐 가로 2단(정보 1 : 네비 2), 모바일에선 세로로 쌓인다 */}
+        <Flex direction={{ base: 'column', md: 'row' }} gap={48} align="flex-start">
+          <Box flex={{ base: '0 0 auto', md: '1 1 0' }} w={{ base: '100%', md: 'auto' }}>
+         
+              <FooterCompanyInfo company={company} />
+          </Box>
 
-          {/* Navigation columns */}
           {visibleNav.length > 0 && (
-            <Grid.Col span={{ base: 12, md: 8 }}>
+            <Box flex={{ base: '0 0 auto', md: '2 1 0' }} w={{ base: '100%', md: 'auto' }}>
               <Grid style={{ '--grid-gutter': '24px' } as React.CSSProperties}>
                 <FooterNavColumns items={visibleNav} />
               </Grid>
-            </Grid.Col>
+            </Box>
           )}
-        </Grid>
+        </Flex>
 
         <Divider/>
 
-        {/* Company info */}
-        <FooterCompanyInfo company={company} />
-
         {/* Bottom bar */}
-        <Group justify="space-between" wrap="wrap" gap="xs" mt="md">
-          <SdText.Sub c="slate.5">
+        <Group justify="space-between" wrap="wrap" gap="xs">
+          <SdText.Sub>
             © {company.copyrightYear} {company.name}. All rights reserved.
           </SdText.Sub>
-          {visiblePolicy.length > 0 && (
-            <Group gap="lg">
-              {visiblePolicy.map((item) => (
-                <Anchor
-                  key={item.id}
-                  href={item.href}
-                  fz="xs"
-                  fw={item.highlight ? 700 : 400}
-                  c={item.highlight ? 'white' : 'slate.5'}
-                  underline="never"
-                >
-                  {item.label}
-                </Anchor>
-              ))}
-            </Group>
-          )}
+          <Group gap="lg" wrap="wrap">
+            {visiblePolicy.length > 0 && (
+              <Group gap="lg">
+                {visiblePolicy.map((item) => {
+                  const Link = item.highlight ? SdLink.Strong : SdLink.Sub
+                  return (
+                    <Link key={item.id} href={item.href}>
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </Group>
+            )}
+            {company.socials && company.socials.length > 0 && (
+              <FooterSocials items={company.socials} />
+            )}
+          </Group>
         </Group>
+        </Stack>
       </SdContainer>
-    </Box>
+      </Box>
   )
 }

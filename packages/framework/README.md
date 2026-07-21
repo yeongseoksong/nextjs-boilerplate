@@ -101,6 +101,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdButton` | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonSubmit` `SdButtonDelete` `SdButtonCancel` `SdButtonExcel` `SdButtonDownload` |
 | `SdBadge` | `SdBadgeDefault` `SdBadgePrimary` `SdBadgeSuccess` `SdBadgeWarning` |
 | `SdInput` | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputSelect` |
+| `SdLink` | `SdLinkStrong` `SdLinkBody` `SdLinkSub` `SdLinkHint` |
 | `SdQuote` | `SdQuotePlain` `SdQuoteCard` |
 | `SdTable` | `SdTableSpec` |
 | `SdTabs` | `SdTabsPills` `SdTabsUnderline` `SdTabsOutline` |
@@ -395,11 +396,30 @@ const company: CompanyInfo = {
   tel: '02-0000-0000',
   email: 'hello@example.com',
   copyrightYear: 2024,
+  // 소셜 아이콘 — 없으면 하단 바에 렌더되지 않음
+  socials: [
+    { platform: 'x', url: 'https://x.com/example' },
+    { platform: 'youtube', url: 'https://youtube.com/@example' },
+  ],
 }
 
+// 하단 바 정책 링크 (NavItem, highlight: true면 강조)
+const policyLinks: NavItem[] = [
+  { id: 1, order: 1, isShow: true, label: '이용약관', href: '/terms' },
+  { id: 2, order: 2, isShow: true, label: '개인정보처리방침', href: '/privacy', highlight: true },
+]
+
 <SdHeader navItems={navItems} loginFlag />
-<SdFooter company={company} utilityLinks={navItems} />
+<SdFooter
+  company={company}
+  navItems={navItems}
+  policyLinks={policyLinks}
+  description="한 줄 브랜드 설명"
+/>
 ```
+
+`navItems`는 `parentId`로 묶여 푸터 링크 컬럼이 되고, 구분선 아래 하단 바에 카피라이트 · `policyLinks` · `company.socials` 아이콘이 놓입니다.
+`socials.platform`은 `x | youtube | instagram | facebook | linkedin | github | blog`를 지원합니다.
 
 ### MainLayout
 

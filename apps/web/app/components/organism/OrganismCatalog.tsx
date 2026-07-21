@@ -17,8 +17,10 @@ import {
 import {
   companyInfo,
   featureItems,
+  footerNavItems,
   heroSlides,
   navItems,
+  policyLinks,
   timelineEvents,
 } from "../../../data";
 import { Showcase, Variant } from "../../_catalog/Showcase";
@@ -111,11 +113,16 @@ export default function OrganismCatalog() {
 
         <Showcase
           name="SdFooter"
-          description="하단 회사 정보. CompanyInfo를 받아 주소·연락처·사업자등록번호를 렌더합니다."
+          description="하단 회사 정보. 브랜드 컬럼 + 네비 그룹 위에 주소·연락처·사업자등록번호를 렌더하고, 구분선 아래 하단 바에 카피라이트·정책 링크·소셜 아이콘(company.socials)을 배치합니다."
           exports={["SdFooter"]}
         >
           <FullBleed>
-            <SdFooter company={companyInfo} navItems={navItems} />
+            <SdFooter
+              company={companyInfo}
+              navItems={footerNavItems}
+              policyLinks={policyLinks}
+              description="자산 관리부터 프로젝트 운영까지, 하나의 플랫폼으로 모든 업무 흐름을 연결합니다."
+            />
           </FullBleed>
         </Showcase>
 

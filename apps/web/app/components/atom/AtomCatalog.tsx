@@ -8,6 +8,7 @@ import {
   SdButton,
   SdContainer,
   SdInput,
+  SdLink,
   SdModal,
   SdNumberIcon,
   SdQuote,
@@ -110,6 +111,19 @@ export default function AtomCatalog() {
             <SdBadge.Primary>브랜드</SdBadge.Primary>
             <SdBadge.Success>완료</SdBadge.Success>
             <SdBadge.Warning>주의</SdBadge.Warning>
+          </Group>
+        </Showcase>
+
+        <Showcase
+          name="SdLink"
+          description="앵커 표준. hover 시 primary.6으로 전환되며, 쓰이는 위치가 아니라 강조도(Strong→Hint)로 variant를 고릅니다."
+          exports={["SdLinkStrong", "SdLinkBody", "SdLinkSub", "SdLinkHint"]}
+        >
+          <Group gap="xl">
+            <SdLink.Strong href="#">강조 링크</SdLink.Strong>
+            <SdLink.Body href="#">기본 링크</SdLink.Body>
+            <SdLink.Sub href="#">보조 링크</SdLink.Sub>
+            <SdLink.Hint href="#">최소 강조 링크</SdLink.Hint>
           </Group>
         </Showcase>
 

@@ -1,7 +1,8 @@
-import { Box, Divider, Space } from '@mantine/core';
+import { Box, Divider, Space, Stack } from '@mantine/core';
 import { SdContainer } from '../atom/Container';
 import { ReactNode } from 'react';
 import { SdTextBox } from '../molecule/TextBox';
+import { ST } from 'next/dist/shared/lib/utils';
 
 interface PageHeroBaseProps {
   label?: ReactNode;
@@ -15,7 +16,13 @@ interface WithImageProps extends PageHeroBaseProps {
 }
 
 function Content({ children }: { children: ReactNode }) {
-  return <SdContainer py="xl">{children}</SdContainer>;
+  return (
+    <SdContainer py="xl">
+        <Stack  gap='xl' >
+            {children}
+          </Stack>
+    </SdContainer>)
+
 }
 
 function LayoutGap(){
@@ -28,11 +35,10 @@ function Minimal({ label, title, description, children }: PageHeroBaseProps) {
   return (
     <>
       <Plain>
-      <SdTextBox.Section
+        <SdTextBox.Section
             label={label}
             title={title}
             description={description ?? ''}
-            mb="xl"
           />
         <Divider/>
         {children}

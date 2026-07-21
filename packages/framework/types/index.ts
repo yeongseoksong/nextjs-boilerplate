@@ -43,6 +43,21 @@ export interface CompanyAddress  {
   embbedUrl?: string
 }
 
+export type SocialPlatform =
+  | 'x'
+  | 'youtube'
+  | 'instagram'
+  | 'facebook'
+  | 'linkedin'
+  | 'github'
+  | 'blog';
+
+export interface SocialItem {
+  platform: SocialPlatform;
+  url: string;
+  label?: string;
+}
+
 export interface CompanyInfo {
   name: string;
   registrationNumber: string;
@@ -51,6 +66,7 @@ export interface CompanyInfo {
   fax?: string;
   email: string;
   copyrightYear: number;
+  socials?: SocialItem[];
 }
 
 export interface TimelineEvent extends CommonInfo {

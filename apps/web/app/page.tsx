@@ -9,6 +9,7 @@ import {
   SdTextBoxHero,
   SdTextBoxSection,
   SdTitleCard,
+  SdTextBoxCard,
 } from "@framework/ui";
 import { CodeBlock } from "./_catalog/Showcase";
 
@@ -43,7 +44,7 @@ export default function HomePage() {
   return (
     <SdContainer py="xl">
       <Stack gap={64}>
-        <SdTextBoxHero
+        <SdTextBoxSection
           label="Component Catalog"
           title="@yeongseoksong/framework"
           description="Mantine 9 기반 디자인 시스템입니다. 모든 컴포넌트와 variant를 실제 렌더 결과로 확인하고, import 코드를 그대로 복사해 쓸 수 있습니다."

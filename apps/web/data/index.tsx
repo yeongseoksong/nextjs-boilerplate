@@ -358,6 +358,43 @@ export const companyInfo: CompanyInfo = {
   fax: '000-000-0000',
   email: 'contact@company.kr',
   copyrightYear: new Date().getFullYear(),
+  socials: [
+    { platform: 'x', url: 'https://x.com/' },
+    { platform: 'youtube', url: 'https://youtube.com/' },
+    { platform: 'instagram', url: 'https://instagram.com/' },
+    { platform: 'blog', url: 'https://blog.company.kr/', label: '공식 블로그' },
+  ],
 };
+
+// 푸터 링크 컬럼 (parentId로 묶인 그룹 = 컬럼 1개)
+export const footerNavItems: NavItem[] = [
+  { id: 100, order: 1, isShow: true, label: '회사', href: '/about' },
+    { id: 101, order: 1, isShow: true, label: '회사소개', href: '/about/company', parentId: 100 },
+    { id: 102, order: 2, isShow: true, label: '팀소개', href: '/about/team', parentId: 100 },
+    { id: 103, order: 3, isShow: true, label: '연혁', href: '/about/history', parentId: 100 },
+    { id: 104, order: 4, isShow: true, label: '채용', href: '/careers', parentId: 100 },
+  { id: 200, order: 2, isShow: true, label: '제품', href: '/services' },
+    { id: 201, order: 1, isShow: true, label: 'ASM 자산관리', href: '/services/asm', parentId: 200 },
+    { id: 202, order: 2, isShow: true, label: 'PIMS 프로젝트관리', href: '/services/pims', parentId: 200 },
+    { id: 203, order: 3, isShow: true, label: '요금제', href: '/pricing', parentId: 200 },
+    { id: 204, order: 4, isShow: true, label: '연동 가이드', href: '/services/integrations', parentId: 200 },
+  { id: 300, order: 3, isShow: true, label: '솔루션', href: '/solutions' },
+    { id: 301, order: 1, isShow: true, label: '제조', href: '/solutions/manufacturing', parentId: 300 },
+    { id: 302, order: 2, isShow: true, label: '물류', href: '/solutions/logistics', parentId: 300 },
+    { id: 303, order: 3, isShow: true, label: '금융', href: '/solutions/finance', parentId: 300 },
+    { id: 304, order: 4, isShow: true, label: '공공', href: '/solutions/public', parentId: 300 },
+  { id: 400, order: 4, isShow: true, label: '지원', href: '/support' },
+    { id: 401, order: 1, isShow: true, label: '고객센터', href: '/support/help', parentId: 400 },
+    { id: 402, order: 2, isShow: true, label: '도입 문의', href: '/contact', parentId: 400 },
+    { id: 403, order: 3, isShow: true, label: '자주 묻는 질문', href: '/support/faq', parentId: 400 },
+    { id: 404, order: 4, isShow: true, label: '기술 문서', href: '/docs', parentId: 400 },
+];
+
+// 푸터 하단 정책 링크
+export const policyLinks: NavItem[] = [
+  { id: 1, order: 1, isShow: true, label: '이용약관', href: '/terms' },
+  { id: 2, order: 2, isShow: true, label: '개인정보처리방침', href: '/privacy', highlight: true },
+  { id: 3, order: 3, isShow: true, label: '이메일무단수집거부', href: '/no-email' },
+];
 
 

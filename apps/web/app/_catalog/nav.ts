@@ -19,4 +19,6 @@ export const catalogNav: NavItem[] = [
   { id: 2, order: 2, isShow: true, label: "Atom", href: `${base}/components/atom/` },
   { id: 3, order: 3, isShow: true, label: "Molecule", href: `${base}/components/molecule/` },
   { id: 4, order: 4, isShow: true, label: "Organism", href: `${base}/components/organism/` },
+  { id: 5, order: 1, isShow: true, label: "설치", href: `${base}/`,parentId: 1 },
+
 ];

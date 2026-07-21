@@ -23,3 +23,5 @@ export * from './Badge';
 export * from './Input';
 
 export * from './Skeleton';
+
+export * from './Link';
