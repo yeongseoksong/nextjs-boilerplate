@@ -101,11 +101,12 @@ export default function OrganismCatalog() {
 
         <Showcase
           name="SdHeader"
-          description="상단 네비게이션. navItems의 parentId로 2단 메뉴를 구성하고, 모바일에서는 버거 메뉴로 전환됩니다."
+          description="상단 네비게이션. 헤더에 마우스를 올리면 navItems의 parentId로 묶인 하위 링크가 각 상위 항목 아래 컬럼으로 확장되고, 모바일에서는 버거 드로어의 아코디언으로 전환됩니다."
           exports={["SdHeader"]}
         >
           <FullBleed>
-            <Box h={60}>
+            {/* pos="relative" — 확장된 헤더가 아래 Showcase를 밀어내지 않고 덮도록 */}
+            <Box h={60} pos="relative">
               <SdHeader navItems={navItems} />
             </Box>
           </FullBleed>

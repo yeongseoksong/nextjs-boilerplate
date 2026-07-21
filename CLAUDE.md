@@ -53,10 +53,10 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 
 - `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`, `SdLink`
 - `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
-- `ui/organism/` — Full-page sections: `SdHeader`, `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
+- `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, 모바일은 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
-- `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` but **is not re-exported from `util/index.ts`**
+- `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용)
 - `types/` — Shared interfaces only. Demo data lives in `apps/web/data/index.tsx` (the consumer owns its own content).
 
 ## Consumer Config Injection

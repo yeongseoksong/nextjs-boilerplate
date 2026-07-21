@@ -61,7 +61,9 @@ export function Showcase({
   const code = `import {\n${exportNames.map((e) => `  ${e},`).join("\n")}\n} from "@yeongseoksong/framework/ui";`;
 
   return (
-    <Stack gap="md" id={name}>
+    // id는 nav의 앵커 대상이다(`nav.ts`의 anchors()가 이 name을 그대로 참조).
+    // scrollMarginTop — AppShell의 고정 헤더(60px) 아래로 제목이 숨지 않도록.
+    <Stack gap="md" id={name} style={{ scrollMarginTop: 80 }}>
       <Stack gap={4}>
         <Group gap="sm" align="baseline">
           <SdTitleCard>{name}</SdTitleCard>

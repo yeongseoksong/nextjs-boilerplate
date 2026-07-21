@@ -385,6 +385,9 @@ import type { NavItem, CompanyInfo } from '@yeongseoksong/framework/types'
 
 const navItems: NavItem[] = [
   { id: 1, order: 1, isShow: true, label: '소개', href: '/about' },
+  //   parentId로 하위 항목을 매단다 (헤더 2단 메뉴 · 푸터 링크 컬럼 공용)
+  { id: 11, order: 1, isShow: true, label: '회사소개', href: '/about/company', parentId: 1 },
+  { id: 12, order: 2, isShow: true, label: '연혁', href: '/about/history', parentId: 1 },
   { id: 2, order: 2, isShow: true, label: '기능', href: '/features' },
   { id: 3, order: 3, isShow: true, label: '요금제', href: '/pricing' },
 ]
@@ -418,7 +421,11 @@ const policyLinks: NavItem[] = [
 />
 ```
 
-`navItems`는 `parentId`로 묶여 푸터 링크 컬럼이 되고, 구분선 아래 하단 바에 카피라이트 · `policyLinks` · `company.socials` 아이콘이 놓입니다.
+`SdHeader`는 데스크톱에서 헤더에 마우스를 올리면(또는 Tab으로 포커스가 들어오면) 헤더가 아래로 확장되며
+`parentId`로 묶인 하위 링크가 각 상위 항목 **바로 아래 컬럼**으로 동시에 노출됩니다. 하위 항목이 하나도 없으면 확장이 일어나지 않습니다.
+상위 항목의 `href`를 비우면 링크 대신 그룹 제목으로 렌더됩니다. 모바일(`< sm`)에서는 버거 드로어의 중첩 아코디언으로 전환됩니다.
+
+`navItems`는 같은 `parentId` 구조로 푸터 링크 컬럼도 만들고, 구분선 아래 하단 바에 카피라이트 · `policyLinks` · `company.socials` 아이콘이 놓입니다.
 `socials.platform`은 `x | youtube | instagram | facebook | linkedin | github | blog`를 지원합니다.
 
 ### MainLayout

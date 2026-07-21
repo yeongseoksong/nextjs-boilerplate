@@ -8,7 +8,7 @@ export function MainLayout({ children, navItems, companyInfo}: { children: React
   return (
     <AppShell header={{ height: 60 }}>
       <AppShell.Header>
-        <SdHeader navItems={navItems} />
+        <SdHeader navItems={navItems} loginFlag={true}/>
       </AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
         <SdFooter company={companyInfo} navItems={navItems} />

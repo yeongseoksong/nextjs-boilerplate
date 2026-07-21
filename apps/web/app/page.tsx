@@ -6,10 +6,8 @@ import {
   SdTextBody,
   SdTextHint,
   SdTextNumeric,
-  SdTextBoxHero,
   SdTextBoxSection,
   SdTitleCard,
-  SdTextBoxCard,
 } from "@framework/ui";
 import { CodeBlock } from "./_catalog/Showcase";
 
@@ -67,7 +65,7 @@ export default function HomePage() {
           ))}
         </SimpleGrid>
 
-        <Stack gap="lg">
+        <Stack gap="lg" id="install">
           <SdTextBoxSection
             label="Install"
             title="설치"
@@ -76,7 +74,7 @@ export default function HomePage() {
           <CodeBlock code={"pnpm add @yeongseoksong/framework @mantine/core @mantine/hooks @mantine/carousel"} />
         </Stack>
 
-        <Stack gap="lg">
+        <Stack gap="lg" id="env">
           <SdTextBoxSection
             label="Setup"
             title="환경변수"
