@@ -48,6 +48,10 @@ jobs:
           NEXT_PUBLIC_LOGO_SRC: '/${{ github.event.repository.name }}/logo.svg'
 
       - uses: actions/configure-pages@v5
+        # 저장소에 Pages가 아직 켜져 있지 않으면 이 워크플로가 직접 활성화한다.
+        # (Settings → Pages를 수동으로 만지지 않아도 된다.)
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
