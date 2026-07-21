@@ -1,44 +1,43 @@
-"use client";
-import { Box, Burger, Drawer, Group, NavLink, Stack } from "@mantine/core";
-import { SdContainer } from "../atom/Container";
-import { Logo } from "../atom/Logo";
-import { SdButton } from "../atom/Button";
-import { SdLink } from "../atom/Link";
-import { SdText } from "../atom/Text";
-import { ReactNode } from "react";
-import { useDisclosure, useFocusWithin, useHover, useMergedRef } from "@mantine/hooks";
-import { NavItem } from "../../types";
-import { filterAndSort } from "../../util/sort.util";
+'use client'
+import { Box, Burger, Drawer, Group, NavLink, Stack } from '@mantine/core'
+import { SdContainer } from '../atom/Container'
+import { Logo } from '../atom/Logo'
+import { SdButton } from '../atom/Button'
+import { SdLink } from '../atom/Link'
+import { SdText } from '../atom/Text'
+import { ReactNode } from 'react'
+import { useDisclosure, useFocusWithin, useHover, useMergedRef } from '@mantine/hooks'
+import { NavItem } from '../../types'
+import { filterAndSort } from '../../util/sort.util'
 
-export type { NavItem };
+export type { NavItem }
 
 /** 상단 바 높이. MainLayout의 AppShell `header={{ height }}`와 맞춘다. */
-const BAR_HEIGHT = 60;
+const BAR_HEIGHT = 60
 
 interface HeaderProps {
-  navItems: NavItem[];
-  loginFlag?: boolean;
-  children?: ReactNode;
+  navItems: NavItem[]
+  loginFlag?: boolean
+  children?: ReactNode
 }
 
 export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
-  const [opened, { toggle, close }] = useDisclosure();
+  const [opened, { toggle, close }] = useDisclosure()
 
-  const visibleItems = filterAndSort(navItems);
-  const topItems = visibleItems.filter((item) => !item.parentId);
-  const childrenOf = (parentId: number) =>
-    visibleItems.filter((item) => item.parentId === parentId);
+  const visibleItems = filterAndSort(navItems)
+  const topItems = visibleItems.filter((item) => !item.parentId)
+  const childrenOf = (parentId: number) => visibleItems.filter((item) => item.parentId === parentId)
 
-  const hasAnyChildren = visibleItems.some((item) => item.parentId);
-  
+  const hasAnyChildren = visibleItems.some((item) => item.parentId)
+
   /**
    * hover(마우스) + focus-within(키보드 Tab) 둘 다로 확장을 연다.
    * 상위 링크와 하위 링크가 같은 Box 안에 있어 그 사이를 오갈 때 닫히지 않는다.
    */
-  const { hovered, ref: hoverRef } = useHover<HTMLDivElement>();
-  const { focused, ref: focusRef } = useFocusWithin<HTMLDivElement>();
-  const rootRef = useMergedRef(hoverRef, focusRef);
-  const expanded = hasAnyChildren && (hovered || focused);
+  const { hovered, ref: hoverRef } = useHover<HTMLDivElement>()
+  const { focused, ref: focusRef } = useFocusWithin<HTMLDivElement>()
+  const rootRef = useMergedRef(hoverRef, focusRef)
+  const expanded = hasAnyChildren && (hovered || focused)
 
   return (
     <>
@@ -51,9 +50,9 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
         pos="relative"
         bg="var(--mantine-color-body)"
         style={{
-          boxShadow: expanded ? "var(--mantine-shadow-md)" : undefined,
-          borderBottom: expanded ? "1px solid var(--mantine-color-slate-2)" : undefined,
-          transition: "box-shadow 0.15s",
+          boxShadow: expanded ? 'var(--mantine-shadow-md)' : undefined,
+          borderBottom: expanded ? '1px solid var(--mantine-color-slate-2)' : undefined,
+          transition: 'box-shadow 0.15s',
         }}
       >
         <SdContainer>
@@ -65,7 +64,7 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
             {/* 상위 링크와 그 자식을 한 컬럼에 담아, 정렬을 flexbox가 보장하게 한다. */}
             <Group gap="xl" align="flex-start" wrap="nowrap" visibleFrom="sm">
               {topItems.map((item) => {
-                const kids = childrenOf(item.id);
+                const kids = childrenOf(item.id)
                 return (
                   <Stack key={item.id} gap={0} align="center">
                     <Group h={BAR_HEIGHT} align="center">
@@ -86,11 +85,11 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
                       <Box
                         aria-hidden={!expanded}
                         style={{
-                          height: expanded ? "auto" : 0,
-                          overflow: "hidden",
+                          height: expanded ? 'auto' : 0,
+                          overflow: 'hidden',
                           opacity: expanded ? 1 : 0,
-                          visibility: expanded ? "visible" : "hidden",
-                          transition: "opacity 0.15s ease",
+                          visibility: expanded ? 'visible' : 'hidden',
+                          transition: 'opacity 0.15s ease',
                         }}
                       >
                         <Stack gap="xs" pt={4} pb="lg" align="center">
@@ -103,7 +102,7 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
                       </Box>
                     )}
                   </Stack>
-                );
+                )
               })}
             </Group>
 
@@ -123,17 +122,16 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
       <Drawer opened={opened} onClose={close} hiddenFrom="sm" size="xs">
         <Stack gap={0}>
           {topItems.map((item) => {
-            const kids = childrenOf(item.id);
+            const kids = childrenOf(item.id)
             if (kids.length === 0) {
               return (
-              <Box key={item.id} px="sm" py={8}>
-                <SdLink.Body href={item.href} onClick={close}>
-                  {item.label}
-                </SdLink.Body>
-              </Box>
-            );
+                <Box key={item.id} px="sm" py={8}>
+                  <SdLink.Body href={item.href} onClick={close}>
+                    {item.label}
+                  </SdLink.Body>
+                </Box>
+              )
             }
-
 
             return (
               <NavLink
@@ -147,7 +145,7 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
                   <NavLink key={kid.id} label={kid.label} href={kid.href} onClick={close} />
                 ))}
               </NavLink>
-            );
+            )
           })}
           {loginFlag && (
             <Stack gap="xs" mt="md">
@@ -157,5 +155,5 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
         </Stack>
       </Drawer>
     </>
-  );
+  )
 }

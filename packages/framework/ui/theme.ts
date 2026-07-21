@@ -1,7 +1,6 @@
-"use client";
+'use client'
 
-import { createTheme, MantineColorsTuple, rem } from '@mantine/core';
-
+import { createTheme, MantineColorsTuple, rem } from '@mantine/core'
 
 const primary: MantineColorsTuple = [
   '#e7f0fb',
@@ -14,7 +13,7 @@ const primary: MantineColorsTuple = [
   '#094db1',
   '#073d8c',
   '#052d68',
-];
+]
 
 const secondary: MantineColorsTuple = [
   '#fef6e7',
@@ -27,7 +26,7 @@ const secondary: MantineColorsTuple = [
   '#b5640e',
   '#8a4c0b',
   '#5e3307',
-];
+]
 
 // Neutral — Tailwind slate. The whole UI rides on this; use as gray.
 const slate: MantineColorsTuple = [
@@ -41,16 +40,32 @@ const slate: MantineColorsTuple = [
   '#334155', // 7  slate-700
   '#1e293b', // 8  slate-800
   '#0f172a', // 9  slate-900
-];
+]
 
 const cyan: MantineColorsTuple = [
-  '#ecfeff', '#cffafe', '#a5f3fc', '#67e8f9', '#22d3ee',
-  '#06b6d4', '#0891b2', '#0e7490', '#155e75', '#164e63',
-];
+  '#ecfeff',
+  '#cffafe',
+  '#a5f3fc',
+  '#67e8f9',
+  '#22d3ee',
+  '#06b6d4',
+  '#0891b2',
+  '#0e7490',
+  '#155e75',
+  '#164e63',
+]
 const indigo: MantineColorsTuple = [
-  '#eef2ff', '#e0e7ff', '#c7d2fe', '#a5b4fc', '#818cf8',
-  '#6366f1', '#4f46e5', '#4338ca', '#3730a3', '#312e81',
-];
+  '#eef2ff',
+  '#e0e7ff',
+  '#c7d2fe',
+  '#a5b4fc',
+  '#818cf8',
+  '#6366f1',
+  '#4f46e5',
+  '#4338ca',
+  '#3730a3',
+  '#312e81',
+]
 
 export const theme = createTheme({
   /* ---- Color ---- */
@@ -59,14 +74,11 @@ export const theme = createTheme({
   primaryShade: { light: 6, dark: 5 },
 
   /* ---- Type ---- */
-  fontFamily:
-    "'Noto Sans KR', ui-sans-serif, system-ui, -apple-system, sans-serif",
-  fontFamilyMonospace:
-    "'Noto Sans KR', ui-monospace, monospace",
+  fontFamily: "'Noto Sans KR', ui-sans-serif, system-ui, -apple-system, sans-serif",
+  fontFamilyMonospace: "'Noto Sans KR', ui-monospace, monospace",
 
   headings: {
-    fontFamily:
-      "'Noto Sans KR', ui-sans-serif, system-ui, sans-serif",
+    fontFamily: "'Noto Sans KR', ui-sans-serif, system-ui, sans-serif",
     fontWeight: '700',
     sizes: {
       h1: { fontSize: rem(48), lineHeight: '1.1', fontWeight: '900' },
@@ -85,14 +97,18 @@ export const theme = createTheme({
     xl: rem(22),
   },
   lineHeights: {
-    xs: '1.4', sm: '1.45', md: '1.5', lg: '1.55', xl: '1.6',
+    xs: '1.4',
+    sm: '1.45',
+    md: '1.5',
+    lg: '1.55',
+    xl: '1.6',
   },
 
   defaultRadius: 'md',
   radius: {
     xs: rem(6),
     sm: rem(8),
-    md: rem(10),  
+    md: rem(10),
     lg: rem(14),
     xl: rem(18),
   },
@@ -108,12 +124,12 @@ export const theme = createTheme({
   shadows: {
     xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
     sm: '0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06)',
-    md: '0 8px 32px rgb(0 0 0 / 0.08)',                 // glass nav
-    lg: '0 30px 60px -15px rgb(0 0 0 / 0.05)',          // card hover lift
-    xl: '0 40px 80px -20px rgb(0 0 0 / 0.3)',           // modal
+    md: '0 8px 32px rgb(0 0 0 / 0.08)', // glass nav
+    lg: '0 30px 60px -15px rgb(0 0 0 / 0.05)', // card hover lift
+    xl: '0 40px 80px -20px rgb(0 0 0 / 0.3)', // modal
   },
 
-    breakpoints: {
+  breakpoints: {
     xs: '36em',
     sm: '48em',
     md: '62em',
@@ -123,13 +139,13 @@ export const theme = createTheme({
 
   other: {
     logoSizes: {
-      xs: { width: 72,  height: 22 },
-      sm: { width: 96,  height: 29 },
+      xs: { width: 72, height: 22 },
+      sm: { width: 96, height: 29 },
       md: { width: 120, height: 36 },
       lg: { width: 160, height: 48 },
       xl: { width: 200, height: 60 },
     },
-   
+
     surfaceSubtle: '#f8fafc',
     surfaceDark: '#0f172a',
     surfaceDarker: '#020617',
@@ -144,15 +160,15 @@ export const theme = createTheme({
   defaultGradient: { from: 'primary.6', to: 'cyan.4', deg: 90 },
 
   components: {
-    Container:{
-      defaultProps:{size:'xl',h:'100%'}
+    Container: {
+      defaultProps: { size: 'xl', h: '100%' },
     },
     Logo: {
       defaultProps: { size: 'md' },
     },
     Button: {
       defaultProps: {
-        radius: 'xl',   
+        radius: 'xl',
         fw: 700,
       },
     },
@@ -179,11 +195,11 @@ export const theme = createTheme({
     TextInput: {
       defaultProps: { radius: 'sm' },
     },
-    Divider:{
-      defaultProps: {c : 'slate.5'}
+    Divider: {
+      defaultProps: { c: 'slate.5' },
     },
     Anchor: {
-      defaultProps: { c: 'slate.5' , fz:"sm", underline: "never"},
+      defaultProps: { c: 'slate.5', fz: 'sm', underline: 'never' },
     },
     // SdHeader 모바일 드로어의 2단 아코디언 타이포를 SdLink와 맞춘다.
     NavLink: {
@@ -191,13 +207,13 @@ export const theme = createTheme({
     },
     Table: {
       defaultProps: {
-        captionSide: "bottom",
+        captionSide: 'bottom',
       },
       styles: {
-        th: { color: "var(--mantine-color-slate-5)", fontWeight: "700" },
+        th: { color: 'var(--mantine-color-slate-5)', fontWeight: '700' },
       },
     },
   },
-});
+})
 
-export default theme;
+export default theme

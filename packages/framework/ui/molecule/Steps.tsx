@@ -1,14 +1,14 @@
-import { Box, Card, Group, Stack, ThemeIcon } from "@mantine/core";
-import { IconArrowDown, IconArrowRight } from "@tabler/icons-react";
-import { StepItem } from "../../types";
-import { SdNumberIcon } from "../atom/NumberIcon";
-import { SdText } from "../atom/Text";
+import { Box, Card, Group, Stack, ThemeIcon } from '@mantine/core'
+import { IconArrowDown, IconArrowRight } from '@tabler/icons-react'
+import { StepItem } from '../../types'
+import { SdNumberIcon } from '../atom/NumberIcon'
+import { SdText } from '../atom/Text'
 
-import { SdTextBox } from "./TextBox";
-import { Fragment } from "react/jsx-runtime";
+import { SdTextBox } from './TextBox'
+import { Fragment } from 'react/jsx-runtime'
 
 interface SdStepsProps {
-  items: StepItem[];
+  items: StepItem[]
 }
 /* ─────────────────────────────────────────
    Design 1 · Bubble
@@ -17,15 +17,30 @@ interface SdStepsProps {
 function BubbleStep({ item, index, isLast }: { item: StepItem; index: number; isLast: boolean }) {
   return (
     <Group align="flex-start" gap="lg" wrap="nowrap">
-      <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+      <Box
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}
+      >
         <SdNumberIcon value={String(index + 1).padStart(2, '0')} />
         {!isLast && (
-          <Box style={{ width: 2, flex: 1, minHeight: 32, marginTop: 8, background: 'var(--mantine-color-primary-2)' }} />
+          <Box
+            style={{
+              width: 2,
+              flex: 1,
+              minHeight: 32,
+              marginTop: 8,
+              background: 'var(--mantine-color-primary-2)',
+            }}
+          />
         )}
       </Box>
-      <SdTextBox.Card title={item.title} description={item.description} pb={!isLast ? "xl" : 0} pt={4} />
+      <SdTextBox.Card
+        title={item.title}
+        description={item.description}
+        pb={!isLast ? 'xl' : 0}
+        pt={4}
+      />
     </Group>
-  );
+  )
 }
 
 function Bubble({ items }: SdStepsProps) {
@@ -35,7 +50,7 @@ function Bubble({ items }: SdStepsProps) {
         <BubbleStep key={i} item={item} index={i} isLast={i === items.length - 1} />
       ))}
     </Box>
-  );
+  )
 }
 
 /* ─────────────────────────────────────────
@@ -59,18 +74,19 @@ function CardStep({ item, index }: { item: StepItem; index: number }) {
         <SdTextBox.Card title={item.title} description={item.description} />
       </Box>
     </Card>
-  );
+  )
 }
 
 function CardArrow({ direction }: { direction: 'right' | 'down' }) {
   return (
     <ThemeIcon size={36} radius="xl" variant="light" color="primary">
-      {direction === 'right'
-        ? <IconArrowRight size={20} stroke={2.5} />
-        : <IconArrowDown size={20} stroke={2.5} />
-      }
+      {direction === 'right' ? (
+        <IconArrowRight size={20} stroke={2.5} />
+      ) : (
+        <IconArrowDown size={20} stroke={2.5} />
+      )}
     </ThemeIcon>
-  );
+  )
 }
 
 function CardVariant({ items }: SdStepsProps) {
@@ -106,7 +122,7 @@ function CardVariant({ items }: SdStepsProps) {
         ))}
       </Group>
     </>
-  );
+  )
 }
 
 /* ─────────────────────────────────────────
@@ -121,7 +137,7 @@ function StripStep({ item, index }: { item: StepItem; index: number }) {
         <SdTextBox.Card title={item.title} description={item.description} />
       </Stack>
     </Box>
-  );
+  )
 }
 
 function Strip({ items }: SdStepsProps) {
@@ -131,18 +147,18 @@ function Strip({ items }: SdStepsProps) {
         <StripStep key={i} item={item} index={i} />
       ))}
     </Stack>
-  );
+  )
 }
 
 /* ─────────────────────────────────────────
    Export
 ───────────────────────────────────────── */
-export const SdSteps = { Bubble, Card: CardVariant, Strip };
+export const SdSteps = { Bubble, Card: CardVariant, Strip }
 
 // Server Component에서 직접 import 가능한 개별 export.
 // dist/ui 번들 전체에 "use client" 배너가 붙으므로, 서버 컴포넌트가
 // SdText.Body 처럼 네임스페이스를 dot 접근하면 client reference proxy에서
 // undefined가 반환되어 렌더가 실패한다. 아래 flat export를 사용할 것.
-export const SdStepsBubble = SdSteps.Bubble;
-export const SdStepsCard = SdSteps.Card;
-export const SdStepsStrip = SdSteps.Strip;
+export const SdStepsBubble = SdSteps.Bubble
+export const SdStepsCard = SdSteps.Card
+export const SdStepsStrip = SdSteps.Strip

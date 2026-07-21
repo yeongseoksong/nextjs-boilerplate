@@ -1,0 +1,3 @@
+---
+'@yeongseoksong/framework': minor
+---

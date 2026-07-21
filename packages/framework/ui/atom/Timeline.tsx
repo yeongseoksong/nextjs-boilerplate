@@ -1,11 +1,11 @@
-"use client";
-import { Group, Stack, Timeline as MantineTimeline } from "@mantine/core";
-import { TimelineEvent } from "../../types";
-import { SdText } from "./Text";
-import { SdTitle } from "./Title";
+'use client'
+import { Group, Stack, Timeline as MantineTimeline } from '@mantine/core'
+import { TimelineEvent } from '../../types'
+import { SdText } from './Text'
+import { SdTitle } from './Title'
 
 interface SdTimelineProps {
-  items: TimelineEvent[];
+  items: TimelineEvent[]
 }
 
 export function SdTimeline({ items }: SdTimelineProps) {
@@ -13,19 +13,18 @@ export function SdTimeline({ items }: SdTimelineProps) {
     .filter((item) => item.isShow)
     .sort((a, b) => b.year - a.year || b.month - a.month)
     .reduce<Record<number, TimelineEvent[]>>((acc, item) => {
-      (acc[item.year] ??= []).push(item);
-      return acc;
-    }, {});
+      ;(acc[item.year] ??= []).push(item)
+      return acc
+    }, {})
 
-  const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
+  const years = Object.keys(grouped)
+    .map(Number)
+    .sort((a, b) => b - a)
 
   return (
     <MantineTimeline active={items.length} bulletSize={24} lineWidth={2}>
       {years.map((year) => (
-        <MantineTimeline.Item
-          key={year}
-          title={<SdTitle.Sub>{year}년</SdTitle.Sub>}
-        >
+        <MantineTimeline.Item key={year} title={<SdTitle.Sub>{year}년</SdTitle.Sub>}>
           <Stack gap={6} mt="xs">
             {grouped[year].map((event) => (
               <Group key={event.id} gap="md" align="flex-start" wrap="nowrap">
@@ -37,5 +36,5 @@ export function SdTimeline({ items }: SdTimelineProps) {
         </MantineTimeline.Item>
       ))}
     </MantineTimeline>
-  );
+  )
 }

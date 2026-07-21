@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { Card, Group, SimpleGrid, Stack } from "@mantine/core";
+import Link from 'next/link'
+import { Card, Group, SimpleGrid, Stack } from '@mantine/core'
 import {
   SdBadgePrimary,
   SdContainer,
@@ -8,8 +8,8 @@ import {
   SdTextNumeric,
   SdTextBoxSection,
   SdTitleCard,
-} from "@framework/ui";
-import { CodeBlock } from "./_catalog/Showcase";
+} from '@framework/ui'
+import { CodeBlock } from './_catalog/Showcase'
 
 /**
  * 이 페이지는 Server Component다. 따라서 프레임워크 컴포넌트를 네임스페이스
@@ -19,24 +19,24 @@ import { CodeBlock } from "./_catalog/Showcase";
 
 const sections = [
   {
-    href: "/components/atom",
-    name: "Atom",
+    href: '/components/atom',
+    name: 'Atom',
     count: 13,
-    description: "더 이상 쪼갤 수 없는 최소 단위. SdTitle, SdText, SdButton, SdInput 등.",
+    description: '더 이상 쪼갤 수 없는 최소 단위. SdTitle, SdText, SdButton, SdInput 등.',
   },
   {
-    href: "/components/molecule",
-    name: "Molecule",
+    href: '/components/molecule',
+    name: 'Molecule',
     count: 12,
-    description: "atom을 조합한 의미 단위. SdTextBox, SdSteps, SdPricingCard 등.",
+    description: 'atom을 조합한 의미 단위. SdTextBox, SdSteps, SdPricingCard 등.',
   },
   {
-    href: "/components/organism",
-    name: "Organism",
+    href: '/components/organism',
+    name: 'Organism',
     count: 7,
-    description: "페이지의 한 구획. HeroCarousel, SdHeader, SdFooter 등.",
+    description: '페이지의 한 구획. HeroCarousel, SdHeader, SdFooter 등.',
   },
-];
+]
 
 export default function HomePage() {
   return (
@@ -51,7 +51,7 @@ export default function HomePage() {
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
           {sections.map((s) => (
-            <Link key={s.href} href={s.href} style={{ textDecoration: "none" }}>
+            <Link key={s.href} href={s.href} style={{ textDecoration: 'none' }}>
               <Card withBorder padding="lg" radius="md" h="100%">
                 <Stack gap="sm">
                   <Group justify="space-between" align="center">
@@ -71,7 +71,11 @@ export default function HomePage() {
             title="설치"
             description="peerDependencies로 react, react-dom, next, @mantine/* 이 필요합니다."
           />
-          <CodeBlock code={"pnpm add @yeongseoksong/framework @mantine/core @mantine/hooks @mantine/carousel"} />
+          <CodeBlock
+            code={
+              'pnpm add @yeongseoksong/framework @mantine/core @mantine/hooks @mantine/carousel'
+            }
+          />
         </Stack>
 
         <Stack gap="lg" id="env">
@@ -82,13 +86,13 @@ export default function HomePage() {
           />
           <CodeBlock
             code={[
-              "# 필수 — SdText/SdTitle 문자열의 %c 토큰이 이 값으로 치환됩니다",
-              "NEXT_PUBLIC_COMPANY_NAME=주식회사 회사명",
-              "",
-              "# 선택 — 헤더 로고 (기본값: /logo.svg, \"로고\")",
-              "NEXT_PUBLIC_LOGO_SRC=/logo.svg",
-              "NEXT_PUBLIC_LOGO_ALT=회사 로고",
-            ].join("\n")}
+              '# 필수 — SdText/SdTitle 문자열의 %c 토큰이 이 값으로 치환됩니다',
+              'NEXT_PUBLIC_COMPANY_NAME=주식회사 회사명',
+              '',
+              '# 선택 — 헤더 로고 (기본값: /logo.svg, "로고")',
+              'NEXT_PUBLIC_LOGO_SRC=/logo.svg',
+              'NEXT_PUBLIC_LOGO_ALT=회사 로고',
+            ].join('\n')}
           />
         </Stack>
 
@@ -100,18 +104,19 @@ export default function HomePage() {
           />
           <CodeBlock
             code={[
-              "// ❌ Server Component에서 실패",
-              "//    Element type is invalid: expected a string ... got: undefined",
-              "import { SdText } from \"@yeongseoksong/framework/ui\";",
-              "<SdText.Body>본문</SdText.Body>",
-              "",
-              "// ✅ flat export 사용",
-              "import { SdTextBody } from \"@yeongseoksong/framework/ui\";",
-              "<SdTextBody>본문</SdTextBody>",
-            ].join("\n")}
+              '// ❌ Server Component에서 실패',
+              '//    Element type is invalid: expected a string ... got: undefined',
+              'import { SdText } from "@yeongseoksong/framework/ui";',
+              '<SdText.Body>본문</SdText.Body>',
+              '',
+              '// ✅ flat export 사용',
+              'import { SdTextBody } from "@yeongseoksong/framework/ui";',
+              '<SdTextBody>본문</SdTextBody>',
+            ].join('\n')}
           />
           <SdTextHint>
-            Client Component 안에서는 네임스페이스 형태를 그대로 써도 됩니다. 이 카탈로그의 각 컴포넌트 페이지가 그 예입니다.
+            Client Component 안에서는 네임스페이스 형태를 그대로 써도 됩니다. 이 카탈로그의 각
+            컴포넌트 페이지가 그 예입니다.
           </SdTextHint>
         </Stack>
 
@@ -127,5 +132,5 @@ export default function HomePage() {
         </Group>
       </Stack>
     </SdContainer>
-  );
+  )
 }

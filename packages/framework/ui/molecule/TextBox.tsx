@@ -1,29 +1,27 @@
-import { MantineColor, Stack, StackProps, StyleProp, Text } from "@mantine/core";
-import { ReactNode } from "react";
-import { SdTitle } from "../atom/Title";
-import { SdText } from "../atom/Text";
+import { MantineColor, Stack, StackProps, StyleProp, Text } from '@mantine/core'
+import { ReactNode } from 'react'
+import { SdTitle } from '../atom/Title'
+import { SdText } from '../atom/Text'
 
-type TitleVariant = "Display" | "Section" | "Card" | "Sub";
-type DescVariant = "Body" | "Sub" | "Strong" | "Eyebrow" | "Numeric";
-type ColorVariant = StyleProp<MantineColor> | undefined;
+type TitleVariant = 'Display' | 'Section' | 'Card' | 'Sub'
+type DescVariant = 'Body' | 'Sub' | 'Strong' | 'Eyebrow' | 'Numeric'
+type ColorVariant = StyleProp<MantineColor> | undefined
 
-interface TextBoxProps extends Omit<StackProps, "title"|"color"> {
-  label?: ReactNode;
-  title: ReactNode;
-  description: ReactNode;
-  titleVariant?: TitleVariant;
-  maxDescWidth?: number;
-  color?: ColorVariant;
+interface TextBoxProps extends Omit<StackProps, 'title' | 'color'> {
+  label?: ReactNode
+  title: ReactNode
+  description: ReactNode
+  titleVariant?: TitleVariant
+  maxDescWidth?: number
+  color?: ColorVariant
 }
 
 function createTextBox(
   titleVariant: TitleVariant,
-  defaultGap: StackProps["gap"] = "xs",
-  descVariant: DescVariant = "Body",
+  defaultGap: StackProps['gap'] = 'xs',
+  descVariant: DescVariant = 'Body',
   color_: ColorVariant = undefined,
 ) {
-
-
   return function SdTextBox({
     label,
     title,
@@ -34,17 +32,16 @@ function createTextBox(
     color,
     ...stackProps
   }: TextBoxProps) {
-
     /**
-     * 우선순위 
+     * 우선순위
      * 1. SdTextBox 색상
-     * 2. SdTextBox 객체 에 정의된 색상 
-     *  */ 
-    const colorRes = color ?? color_;
+     * 2. SdTextBox 객체 에 정의된 색상
+     *  */
+    const colorRes = color ?? color_
 
-    const variant = variantOverride ?? titleVariant;
-    const TitleComponent = SdTitle[variant];
-    const DescComponent = SdText[descVariant];
+    const variant = variantOverride ?? titleVariant
+    const TitleComponent = SdTitle[variant]
+    const DescComponent = SdText[descVariant]
     return (
       <Stack gap={defaultGap} {...stackProps}>
         {label && <SdText.Eyebrow>{label}</SdText.Eyebrow>}
@@ -56,18 +53,18 @@ function createTextBox(
         )}
         {children}
       </Stack>
-    );
-  };
+    )
+  }
 }
 
 export const SdTextBox = {
-  Hero:    createTextBox("Display", "lg", "Body", "slate.0"),
-  Section: createTextBox("Section", "xs","Body"),
-  Card:    createTextBox("Card",    "xs", "Body"),
-  Sub:     createTextBox("Sub",     "xs", "Sub"),
-};
+  Hero: createTextBox('Display', 'lg', 'Body', 'slate.0'),
+  Section: createTextBox('Section', 'xs', 'Body'),
+  Card: createTextBox('Card', 'xs', 'Body'),
+  Sub: createTextBox('Sub', 'xs', 'Sub'),
+}
 
-export const SdTextBoxHero    = SdTextBox.Hero;
-export const SdTextBoxSection = SdTextBox.Section;
-export const SdTextBoxCard    = SdTextBox.Card;
-export const SdTextBoxSub     = SdTextBox.Sub;
+export const SdTextBoxHero = SdTextBox.Hero
+export const SdTextBoxSection = SdTextBox.Section
+export const SdTextBoxCard = SdTextBox.Card
+export const SdTextBoxSub = SdTextBox.Sub

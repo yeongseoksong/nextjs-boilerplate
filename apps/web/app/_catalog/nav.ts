@@ -1,4 +1,4 @@
-import type { NavItem } from "@framework/types";
+import type { NavItem } from '@framework/types'
 
 /**
  * 카탈로그 사이트의 네비게이션.
@@ -12,7 +12,7 @@ import type { NavItem } from "@framework/types";
  * Next가 basePath를 붙여주지 않는다. GitHub Pages 프로젝트 페이지에서
  * 링크가 깨지지 않도록 여기서 직접 prefix를 붙인다.
  */
-const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
 /**
  * 컴포넌트 이름 목록 → 해당 카탈로그 페이지의 앵커 NavItem[].
@@ -29,62 +29,62 @@ function anchors(parentId: number, path: string, names: string[]): NavItem[] {
     label: name,
     href: `${base}${path}#${name}`,
     parentId,
-  }));
+  }))
 }
 
 const atoms = [
-  "SdTitle",
-  "SdText",
-  "SdButton",
-  "SdBadge",
-  "SdLink",
-  "SdInput",
-  "SdNumberIcon",
-  "SdTabs",
-  "SdTable",
-  "SdQuote",
-  "SdSkeleton",
-  "SdModal",
-  "SdContainer",
-];
+  'SdTitle',
+  'SdText',
+  'SdButton',
+  'SdBadge',
+  'SdLink',
+  'SdInput',
+  'SdNumberIcon',
+  'SdTabs',
+  'SdTable',
+  'SdQuote',
+  'SdSkeleton',
+  'SdModal',
+  'SdContainer',
+]
 
 const molecules = [
-  "SdTextBox",
-  "SdFeatures",
-  "SdSteps",
-  "SdTimeline",
-  "SdTestimonial",
-  "SdPricingCard",
-  "SdFaq",
-  "SdCta",
-  "SdSolution",
-  "SdSolutionCard",
-  "SdClients",
-  "SdMap",
-];
+  'SdTextBox',
+  'SdFeatures',
+  'SdSteps',
+  'SdTimeline',
+  'SdTestimonial',
+  'SdPricingCard',
+  'SdFaq',
+  'SdCta',
+  'SdSolution',
+  'SdSolutionCard',
+  'SdClients',
+  'SdMap',
+]
 
 const organisms = [
-  "HeroCarousel",
-  "SdFeatureSection",
-  "SdTimelineSection",
-  "SdStepsSection",
-  "SdHeader",
-  "SdFooter",
-  "PageLayout",
-  "SdErrorView",
-];
+  'HeroCarousel',
+  'SdFeatureSection',
+  'SdTimelineSection',
+  'SdStepsSection',
+  'SdHeader',
+  'SdFooter',
+  'PageLayout',
+  'SdErrorView',
+]
 
 export const catalogNav: NavItem[] = [
-  { id: 1, order: 1, isShow: true, label: "개요", href: `${base}/` },
-  { id: 2, order: 2, isShow: true, label: "Atom", href: `${base}/components/atom/` },
-  { id: 3, order: 3, isShow: true, label: "Molecule", href: `${base}/components/molecule/` },
-  { id: 4, order: 4, isShow: true, label: "Organism", href: `${base}/components/organism/` },
+  { id: 1, order: 1, isShow: true, label: '개요', href: `${base}/` },
+  { id: 2, order: 2, isShow: true, label: 'Atom', href: `${base}/components/atom/` },
+  { id: 3, order: 3, isShow: true, label: 'Molecule', href: `${base}/components/molecule/` },
+  { id: 4, order: 4, isShow: true, label: 'Organism', href: `${base}/components/organism/` },
 
   // 개요 페이지의 섹션 앵커
-  { id: 101, order: 1, isShow: true, label: "설치", href: `${base}/#install`, parentId: 1 },
-  { id: 102, order: 2, isShow: true, label: "환경변수", href: `${base}/#env`, parentId: 1 },
+  { id: 101, order: 1, isShow: true, label: '설치', href: `${base}/#install`, parentId: 1 },
+  { id: 102, order: 2, isShow: true, label: '환경변수', href: `${base}/#env`, parentId: 1 },
 
-  ...anchors(2, "/components/atom/", atoms),
-  ...anchors(3, "/components/molecule/", molecules),
-  ...anchors(4, "/components/organism/", organisms),
-];
+  ...anchors(2, '/components/atom/', atoms),
+  ...anchors(3, '/components/molecule/', molecules),
+  ...anchors(4, '/components/organism/', organisms),
+]

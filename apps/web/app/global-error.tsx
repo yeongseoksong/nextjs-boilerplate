@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import "@mantine/core/styles.css";
-import {  MantineProvider, mantineHtmlProps } from "@mantine/core";
-import { SdErrorView, theme } from "@framework/ui";
+import '@mantine/core/styles.css'
+import { MantineProvider, mantineHtmlProps } from '@mantine/core'
+import { SdErrorView, theme } from '@framework/ui'
 
 interface Props {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }
 
 export default function GlobalErrorPage({ error, reset }: Props) {
   return (
     <html lang="ko" {...mantineHtmlProps}>
-      <head>
-      </head>
+      <head></head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="light">
-
           <SdErrorView.Page
             error={error}
             onReset={reset}
-            onHome={() => { window.location.href = "/"; }}
+            onHome={() => {
+              window.location.href = '/'
+            }}
           />
         </MantineProvider>
       </body>
     </html>
-  );
+  )
 }

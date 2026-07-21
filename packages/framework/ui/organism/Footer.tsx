@@ -26,8 +26,7 @@ interface SdFooterProps {
 
 function FooterNavColumns({ items }: { items: NavItem[] }) {
   const topLevel = items.filter((item) => !item.parentId)
-  const getChildren = (parentId: number) =>
-    items.filter((item) => item.parentId === parentId)
+  const getChildren = (parentId: number) => items.filter((item) => item.parentId === parentId)
 
   return (
     <>
@@ -125,53 +124,52 @@ export function SdFooter({ company, navItems, policyLinks, description }: SdFoot
 
   return (
     <Box component="footer">
-        <SdContainer>
-          <Stack>
-        <Logo size="sm" />
+      <SdContainer>
+        <Stack>
+          <Logo size="sm" />
           {description && <SdText.Sub>{description}</SdText.Sub>}
-        {/* 넓을 땐 가로 2단(정보 1 : 네비 2), 모바일에선 세로로 쌓인다 */}
-        <Flex direction={{ base: 'column', md: 'row' }} gap={48} align="flex-start">
-          <Box flex={{ base: '0 0 auto', md: '1 1 0' }} w={{ base: '100%', md: 'auto' }}>
-         
+          {/* 넓을 땐 가로 2단(정보 1 : 네비 2), 모바일에선 세로로 쌓인다 */}
+          <Flex direction={{ base: 'column', md: 'row' }} gap={48} align="flex-start">
+            <Box flex={{ base: '0 0 auto', md: '1 1 0' }} w={{ base: '100%', md: 'auto' }}>
               <FooterCompanyInfo company={company} />
-          </Box>
-
-          {visibleNav.length > 0 && (
-            <Box flex={{ base: '0 0 auto', md: '2 1 0' }} w={{ base: '100%', md: 'auto' }}>
-              <Grid style={{ '--grid-gutter': '24px' } as React.CSSProperties}>
-                <FooterNavColumns items={visibleNav} />
-              </Grid>
             </Box>
-          )}
-        </Flex>
 
-        <Divider/>
+            {visibleNav.length > 0 && (
+              <Box flex={{ base: '0 0 auto', md: '2 1 0' }} w={{ base: '100%', md: 'auto' }}>
+                <Grid style={{ '--grid-gutter': '24px' } as React.CSSProperties}>
+                  <FooterNavColumns items={visibleNav} />
+                </Grid>
+              </Box>
+            )}
+          </Flex>
 
-        {/* Bottom bar */}
-        <Group justify="space-between" wrap="wrap" gap="xs">
-          <SdText.Sub>
-            © {company.copyrightYear} {company.name}. All rights reserved.
-          </SdText.Sub>
-          <Group gap="lg" wrap="wrap">
-            {visiblePolicy.length > 0 && (
-              <Group gap="lg">
-                {visiblePolicy.map((item) => {
-                  const Link = item.highlight ? SdLink.Strong : SdLink.Sub
-                  return (
-                    <Link key={item.id} href={item.href}>
-                      {item.label}
-                    </Link>
-                  )
-                })}
-              </Group>
-            )}
-            {company.socials && company.socials.length > 0 && (
-              <FooterSocials items={company.socials} />
-            )}
+          <Divider />
+
+          {/* Bottom bar */}
+          <Group justify="space-between" wrap="wrap" gap="xs">
+            <SdText.Sub>
+              © {company.copyrightYear} {company.name}. All rights reserved.
+            </SdText.Sub>
+            <Group gap="lg" wrap="wrap">
+              {visiblePolicy.length > 0 && (
+                <Group gap="lg">
+                  {visiblePolicy.map((item) => {
+                    const Link = item.highlight ? SdLink.Strong : SdLink.Sub
+                    return (
+                      <Link key={item.id} href={item.href}>
+                        {item.label}
+                      </Link>
+                    )
+                  })}
+                </Group>
+              )}
+              {company.socials && company.socials.length > 0 && (
+                <FooterSocials items={company.socials} />
+              )}
+            </Group>
           </Group>
-        </Group>
         </Stack>
       </SdContainer>
-      </Box>
+    </Box>
   )
 }

@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Box, Paper, Stack } from "@mantine/core";
+import { Box, Paper, Stack } from '@mantine/core'
 import {
   HeroCarousel,
   PageLayout,
@@ -13,7 +13,7 @@ import {
   SdText,
   SdTextBoxSection,
   SdTimelineSection,
-} from "@framework/ui";
+} from '@framework/ui'
 import {
   companyInfo,
   featureItems,
@@ -22,22 +22,22 @@ import {
   navItems,
   policyLinks,
   timelineEvents,
-} from "../../../data";
-import { Showcase, Variant } from "../../_catalog/Showcase";
+} from '../../../data'
+import { Showcase, Variant } from '../../_catalog/Showcase'
 
 const demoSteps = [
-  { title: "요구사항 분석", description: "업무 환경과 요구사항을 파악해 방향을 도출합니다." },
-  { title: "설계 및 제안", description: "시스템 구조를 설계하고 상세 제안서를 작성합니다." },
-  { title: "개발 및 구현", description: "단계별 테스트로 품질을 보장하며 구현합니다." },
-];
+  { title: '요구사항 분석', description: '업무 환경과 요구사항을 파악해 방향을 도출합니다.' },
+  { title: '설계 및 제안', description: '시스템 구조를 설계하고 상세 제안서를 작성합니다.' },
+  { title: '개발 및 구현', description: '단계별 테스트로 품질을 보장하며 구현합니다.' },
+]
 
 /** 페이지 폭 전체를 쓰는 organism을 잘라내지 않고 담기 위한 프레임. */
 function FullBleed({ children }: { children: React.ReactNode }) {
   return (
-    <Paper withBorder radius="md" style={{ overflow: "hidden" }}>
+    <Paper withBorder radius="md" style={{ overflow: 'hidden' }}>
       {children}
     </Paper>
-  );
+  )
 }
 
 export default function OrganismCatalog() {
@@ -53,7 +53,7 @@ export default function OrganismCatalog() {
         <Showcase
           name="HeroCarousel"
           description="히어로 캐러셀. HeroSlide 배열을 받아 자동 순환합니다."
-          exports={["HeroCarousel"]}
+          exports={['HeroCarousel']}
         >
           <FullBleed>
             <HeroCarousel slides={heroSlides} />
@@ -63,7 +63,7 @@ export default function OrganismCatalog() {
         <Showcase
           name="SdFeatureSection"
           description="섹션 헤더 + SdFeatures 그리드를 묶은 조합입니다."
-          exports={["SdFeatureSection"]}
+          exports={['SdFeatureSection']}
         >
           <SdFeatureSection
             label="핵심 기능"
@@ -76,7 +76,7 @@ export default function OrganismCatalog() {
         <Showcase
           name="SdTimelineSection"
           description="섹션 헤더 + SdTimeline 조합입니다."
-          exports={["SdTimelineSection"]}
+          exports={['SdTimelineSection']}
         >
           <SdTimelineSection
             label="연혁"
@@ -89,7 +89,7 @@ export default function OrganismCatalog() {
         <Showcase
           name="SdStepsSection"
           description="섹션 헤더 + SdSteps 조합입니다."
-          exports={["SdStepsSection"]}
+          exports={['SdStepsSection']}
         >
           <SdStepsSection
             label="도입 절차"
@@ -102,7 +102,7 @@ export default function OrganismCatalog() {
         <Showcase
           name="SdHeader"
           description="상단 네비게이션. 헤더에 마우스를 올리면 navItems의 parentId로 묶인 하위 링크가 각 상위 항목 아래 컬럼으로 확장되고, 모바일에서는 버거 드로어의 아코디언으로 전환됩니다."
-          exports={["SdHeader"]}
+          exports={['SdHeader']}
         >
           <FullBleed>
             {/* pos="relative" — 확장된 헤더가 아래 Showcase를 밀어내지 않고 덮도록 */}
@@ -115,7 +115,7 @@ export default function OrganismCatalog() {
         <Showcase
           name="SdFooter"
           description="하단 회사 정보. 브랜드 컬럼 + 네비 그룹 위에 주소·연락처·사업자등록번호를 렌더하고, 구분선 아래 하단 바에 카피라이트·정책 링크·소셜 아이콘(company.socials)을 배치합니다."
-          exports={["SdFooter"]}
+          exports={['SdFooter']}
         >
           <FullBleed>
             <SdFooter
@@ -130,12 +130,16 @@ export default function OrganismCatalog() {
         <Showcase
           name="PageLayout"
           description="페이지 히어로 + 본문을 감싸는 템플릿. 페이지 파일에서 최상위로 사용합니다. (template — flat export 없음, 네임스페이스 dot으로만 사용)"
-          exports={["PageLayout"]}
+          exports={['PageLayout']}
         >
           <Stack gap="xl">
             <Variant label="Brand · primary 그라디언트 배경">
               <FullBleed>
-                <PageLayout.Brand label="Company" title="회사 소개" description="브랜드 그라디언트 히어로입니다.">
+                <PageLayout.Brand
+                  label="Company"
+                  title="회사 소개"
+                  description="브랜드 그라디언트 히어로입니다."
+                >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Brand>
               </FullBleed>
@@ -154,7 +158,11 @@ export default function OrganismCatalog() {
             </Variant>
             <Variant label="Minimal · 섹션 타이틀 + 구분선">
               <FullBleed>
-                <PageLayout.Minimal label="Solutions" title="솔루션" description="히어로 없이 섹션 헤더로 시작합니다.">
+                <PageLayout.Minimal
+                  label="Solutions"
+                  title="솔루션"
+                  description="히어로 없이 섹션 헤더로 시작합니다."
+                >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Minimal>
               </FullBleed>
@@ -172,16 +180,18 @@ export default function OrganismCatalog() {
         <Showcase
           name="SdErrorView"
           description="에러·404 화면. app/error.tsx와 not-found.tsx에서 얇은 래퍼로 사용합니다."
-          exports={["SdErrorViewPage", "SdErrorViewNotFound"]}
+          exports={['SdErrorViewPage', 'SdErrorViewNotFound']}
         >
           <Stack gap="xl">
             <Variant label="NotFound">
-              <FullBleed><SdErrorView.NotFound /></FullBleed>
+              <FullBleed>
+                <SdErrorView.NotFound />
+              </FullBleed>
             </Variant>
             <Variant label="Page">
               <FullBleed>
                 <SdErrorView.Page
-                  error={new Error("데모용 오류입니다.")}
+                  error={new Error('데모용 오류입니다.')}
                   onReset={() => undefined}
                 />
               </FullBleed>
@@ -190,5 +200,5 @@ export default function OrganismCatalog() {
         </Showcase>
       </Stack>
     </SdContainer>
-  );
+  )
 }

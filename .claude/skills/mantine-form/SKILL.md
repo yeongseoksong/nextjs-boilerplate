@@ -16,7 +16,7 @@ description: >
 
 ```tsx
 const form = useForm({
-  mode: 'controlled',       // or 'uncontrolled' for large forms
+  mode: 'controlled', // or 'uncontrolled' for large forms
   initialValues: {
     email: '',
     age: 0,
@@ -25,7 +25,7 @@ const form = useForm({
     email: isEmail('Invalid email'),
     age: isInRange({ min: 18 }, 'Must be at least 18'),
   },
-});
+})
 ```
 
 ### 2. Wire inputs with getInputProps
@@ -36,6 +36,7 @@ const form = useForm({
 ```
 
 For checkboxes pass `{ type: 'checkbox' }`:
+
 ```tsx
 <Checkbox {...form.getInputProps('agreed', { type: 'checkbox' })} label="I agree" />
 ```
@@ -50,16 +51,18 @@ For checkboxes pass `{ type: 'checkbox' }`:
 ```
 
 `onSubmit` only calls the handler when validation passes. To handle failures:
+
 ```tsx
 form.onSubmit(
   (values) => save(values),
-  (errors) => console.log('Validation failed', errors)
+  (errors) => console.log('Validation failed', errors),
 )
 ```
 
 ## Validation
 
 ### Rules object (most common)
+
 ```tsx
 validate: {
   name: isNotEmpty('Required'),
@@ -70,6 +73,7 @@ validate: {
 ```
 
 ### Function (for cross-field logic)
+
 ```tsx
 validate: (values) => ({
   endDate: values.endDate < values.startDate ? 'End must be after start' : null,
@@ -77,6 +81,7 @@ validate: (values) => ({
 ```
 
 ### When to validate
+
 ```tsx
 validateInputOnChange: true,        // validate all fields on every change
 validateInputOnChange: ['email'],    // validate specific fields only
@@ -85,10 +90,10 @@ validateInputOnBlur: true,          // validate on blur instead
 
 ## Modes
 
-| Mode | State storage | Re-renders | Input props |
-|---|---|---|---|
-| `'controlled'` (default) | React state | On every change | `value` + `onChange` |
-| `'uncontrolled'` | Refs | None | `defaultValue` + `onChange` |
+| Mode                     | State storage | Re-renders      | Input props                 |
+| ------------------------ | ------------- | --------------- | --------------------------- |
+| `'controlled'` (default) | React state   | On every change | `value` + `onChange`        |
+| `'uncontrolled'`         | Refs          | None            | `defaultValue` + `onChange` |
 
 In uncontrolled mode, use `form.key('fieldPath')` as the React `key` prop when you need to force a re-render of an input.
 

@@ -14,13 +14,13 @@
  * `@types/node`를 의존성에 넣으면 브라우저 대상 라이브러리에 Node 전역 타입이
  * 딸려 들어와 `setTimeout` 반환 타입 등이 바뀐다.
  */
-declare const process: { env: Record<string, string | undefined> };
+declare const process: { env: Record<string, string | undefined> }
 
 /** `%c` 토큰이 치환될 회사명. 소비자 앱에서 필수. */
-export const COMPANY_NAME = process.env.NEXT_PUBLIC_COMPANY_NAME ?? "";
+export const COMPANY_NAME = process.env.NEXT_PUBLIC_COMPANY_NAME ?? ''
 
 /** 헤더 로고 이미지 경로. */
-export const LOGO_SRC = process.env.NEXT_PUBLIC_LOGO_SRC ?? "/logo.svg";
+export const LOGO_SRC = process.env.NEXT_PUBLIC_LOGO_SRC ?? '/logo.svg'
 
 /** 헤더 로고 대체 텍스트. */
-export const LOGO_ALT = process.env.NEXT_PUBLIC_LOGO_ALT ?? "로고";
+export const LOGO_ALT = process.env.NEXT_PUBLIC_LOGO_ALT ?? '로고'

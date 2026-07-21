@@ -1,27 +1,27 @@
-export * from "./Logo"
+export * from './Logo'
 
-export * from './Tabs';
+export * from './Tabs'
 
-export * from './Title';
+export * from './Title'
 
-export * from './Text';
+export * from './Text'
 
-export * from './Button';
+export * from './Button'
 
-export * from './Quote';
+export * from './Quote'
 
-export * from './Table';
+export * from './Table'
 
-export * from './Modal';
+export * from './Modal'
 
-export * from './NumberIcon';
+export * from './NumberIcon'
 
-export * from './Container';
+export * from './Container'
 
-export * from './Badge';
+export * from './Badge'
 
-export * from './Input';
+export * from './Input'
 
-export * from './Skeleton';
+export * from './Skeleton'
 
-export * from './Link';
+export * from './Link'

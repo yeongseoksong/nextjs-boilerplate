@@ -16,58 +16,76 @@ description: >
 
 ```tsx
 import {
-  Box, BoxProps, createVarsResolver, ElementProps,
-  factory, Factory, getRadius, MantineRadius,
-  StylesApiProps, useProps, useStyles,
-} from '@mantine/core';
-import classes from './MyComponent.module.css';
+  Box,
+  BoxProps,
+  createVarsResolver,
+  ElementProps,
+  factory,
+  Factory,
+  getRadius,
+  MantineRadius,
+  StylesApiProps,
+  useProps,
+  useStyles,
+} from '@mantine/core'
+import classes from './MyComponent.module.css'
 
-export type MyComponentStylesNames = 'root' | 'inner';
-export type MyComponentVariant = 'filled' | 'outline';
-export type MyComponentCssVariables = { root: '--my-radius' };
+export type MyComponentStylesNames = 'root' | 'inner'
+export type MyComponentVariant = 'filled' | 'outline'
+export type MyComponentCssVariables = { root: '--my-radius' }
 
 export interface MyComponentProps
   extends BoxProps, StylesApiProps<MyComponentFactory>, ElementProps<'div'> {
-  radius?: MantineRadius;
+  radius?: MantineRadius
 }
 
 export type MyComponentFactory = Factory<{
-  props: MyComponentProps;
-  ref: HTMLDivElement;
-  stylesNames: MyComponentStylesNames;
-  vars: MyComponentCssVariables;
-  variant: MyComponentVariant;
-}>;
+  props: MyComponentProps
+  ref: HTMLDivElement
+  stylesNames: MyComponentStylesNames
+  vars: MyComponentCssVariables
+  variant: MyComponentVariant
+}>
 
-const defaultProps = { radius: 'md' } satisfies Partial<MyComponentProps>;
+const defaultProps = { radius: 'md' } satisfies Partial<MyComponentProps>
 
 const varsResolver = createVarsResolver<MyComponentFactory>((_theme, { radius }) => ({
   root: { '--my-radius': getRadius(radius) },
-}));
+}))
 
 export const MyComponent = factory<MyComponentFactory>((_props) => {
-  const props = useProps('MyComponent', defaultProps, _props);
-  const { classNames, className, style, styles, unstyled, vars, attributes, radius, ...others } = props;
+  const props = useProps('MyComponent', defaultProps, _props)
+  const { classNames, className, style, styles, unstyled, vars, attributes, radius, ...others } =
+    props
 
   const getStyles = useStyles<MyComponentFactory>({
-    name: 'MyComponent', classes, props,
-    className, style, classNames, styles, unstyled, vars, attributes, varsResolver,
-  });
+    name: 'MyComponent',
+    classes,
+    props,
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    attributes,
+    varsResolver,
+  })
 
-  return <Box {...getStyles('root')} {...others} />;
-});
+  return <Box {...getStyles('root')} {...others} />
+})
 
-MyComponent.displayName = '@mantine/core/MyComponent';
-MyComponent.classes = classes;
+MyComponent.displayName = '@mantine/core/MyComponent'
+MyComponent.classes = classes
 ```
 
 ## Factory variant — which to use
 
-| Scenario | Factory function | Type |
-|---|---|---|
-| Standard component | `factory()` | `Factory<{}>` |
-| Supports `component` prop (polymorphic) | `polymorphicFactory()` | `PolymorphicFactory<{}>` — add `defaultComponent` and `defaultRef` |
-| Props change based on a generic (e.g. `multiple`) | `genericFactory()` | `Factory<{ signature: ... }>` |
+| Scenario                                          | Factory function       | Type                                                               |
+| ------------------------------------------------- | ---------------------- | ------------------------------------------------------------------ |
+| Standard component                                | `factory()`            | `Factory<{}>`                                                      |
+| Supports `component` prop (polymorphic)           | `polymorphicFactory()` | `PolymorphicFactory<{}>` — add `defaultComponent` and `defaultRef` |
+| Props change based on a generic (e.g. `multiple`) | `genericFactory()`     | `Factory<{ signature: ... }>`                                      |
 
 Use `polymorphicFactory` sparingly — it adds TypeScript overhead and slows IDE autocomplete.
 
@@ -103,7 +121,7 @@ const theme = createTheme({
       vars: (_theme, props) => ({ root: { '--my-radius': getRadius(props.radius) } }),
     }),
   },
-});
+})
 ```
 
 ## References

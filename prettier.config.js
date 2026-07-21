@@ -3,12 +3,12 @@ const config = {
   semi: false,
   singleQuote: true,
   jsxSingleQuote: false,
-  trailingComma: "all",
+  trailingComma: 'all',
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
   bracketSameLine: false,
-  arrowParens: "always",
-};
+  arrowParens: 'always',
+}
 
-export default config;
+export default config

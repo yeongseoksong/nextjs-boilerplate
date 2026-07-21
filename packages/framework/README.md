@@ -29,9 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <body>
-        <MantineProvider theme={theme}>
-          {children}
-        </MantineProvider>
+        <MantineProvider theme={theme}>{children}</MantineProvider>
       </body>
     </html>
   )
@@ -69,11 +67,11 @@ import './env.mjs'
 
 ## 임포트 경로
 
-| 경로 | 내용 |
-|---|---|
-| `@yeongseoksong/framework/ui` | UI 컴포넌트 전체 + `theme` (`"use client"`) |
-| `@yeongseoksong/framework/util` | `t()`, `COMPANY_NAME`, `LOGO_SRC`, `LOGO_ALT` |
-| `@yeongseoksong/framework/types` | 공유 인터페이스 |
+| 경로                             | 내용                                          |
+| -------------------------------- | --------------------------------------------- |
+| `@yeongseoksong/framework/ui`    | UI 컴포넌트 전체 + `theme` (`"use client"`)   |
+| `@yeongseoksong/framework/util`  | `t()`, `COMPANY_NAME`, `LOGO_SRC`, `LOGO_ALT` |
+| `@yeongseoksong/framework/types` | 공유 인터페이스                               |
 
 ---
 
@@ -85,38 +83,38 @@ import './env.mjs'
 // ❌ 서버 컴포넌트에서 실패
 //    Element type is invalid: expected a string ... got: undefined
 import { SdText } from '@yeongseoksong/framework/ui'
-<SdText.Body>본문</SdText.Body>
+;<SdText.Body>본문</SdText.Body>
 
 // ✅ flat export 사용
 import { SdTextBody } from '@yeongseoksong/framework/ui'
-<SdTextBody>본문</SdTextBody>
+;<SdTextBody>본문</SdTextBody>
 ```
 
 모든 variant에 `Sd<네임스페이스><Variant>` 형태의 flat export가 준비되어 있습니다:
 
-| 네임스페이스 | flat export |
-|---|---|
-| `SdText` | `SdTextStrong` `SdTextBody` `SdTextSub` `SdTextEyebrow` `SdTextError` `SdTextHint` `SdTextNumeric` |
-| `SdTitle` | `SdTitleDisplay` `SdTitleSection` `SdTitleCard` `SdTitleSub` |
-| `SdButton` | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonSubmit` `SdButtonDelete` `SdButtonCancel` `SdButtonExcel` `SdButtonDownload` |
-| `SdBadge` | `SdBadgeDefault` `SdBadgePrimary` `SdBadgeSuccess` `SdBadgeWarning` |
-| `SdInput` | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputSelect` |
-| `SdLink` | `SdLinkStrong` `SdLinkBody` `SdLinkSub` `SdLinkHint` |
-| `SdQuote` | `SdQuotePlain` `SdQuoteCard` |
-| `SdTable` | `SdTableSpec` |
-| `SdTabs` | `SdTabsPills` `SdTabsUnderline` `SdTabsOutline` |
-| `SdSkeleton` | `SdSkeletonCard` `SdSkeletonText` `SdSkeletonTitle` `SdSkeletonImage` `SdSkeletonAvatar` |
-| `SdTextBox` | `SdTextBoxHero` `SdTextBoxSection` `SdTextBoxCard` `SdTextBoxSub` |
-| `SdSteps` | `SdStepsBubble` `SdStepsCard` `SdStepsStrip` |
-| `SdCta` | `SdCtaBanner` `SdCtaSubtle` `SdCtaInline` |
-| `SdFaq` | `SdFaqDefault` `SdFaqFilled` `SdFaqWithHeader` |
-| `SdPricingCard` | `SdPricingCardDefault` `SdPricingCardFeatured` `SdPricingCardGrid` |
-| `SdTestimonial` | `SdTestimonialCard` `SdTestimonialStrip` `SdTestimonialGrid` |
-| `SdSolution` | `SdSolutionFiltered` `SdSolutionList` |
-| `SdSolutionCard` | `SdSolutionCardItem` `SdSolutionCardGrid` |
-| `SdClients` | `SdClientsGrid` `SdClientsMarquee` |
-| `SdMap` | `SdMapSingle` `SdMapTabs` |
-| `SdErrorView` | `SdErrorViewPage` `SdErrorViewNotFound` |
+| 네임스페이스     | flat export                                                                                                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SdText`         | `SdTextStrong` `SdTextBody` `SdTextSub` `SdTextEyebrow` `SdTextError` `SdTextHint` `SdTextNumeric`                                                                            |
+| `SdTitle`        | `SdTitleDisplay` `SdTitleSection` `SdTitleCard` `SdTitleSub`                                                                                                                  |
+| `SdButton`       | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonSubmit` `SdButtonDelete` `SdButtonCancel` `SdButtonExcel` `SdButtonDownload` |
+| `SdBadge`        | `SdBadgeDefault` `SdBadgePrimary` `SdBadgeSuccess` `SdBadgeWarning`                                                                                                           |
+| `SdInput`        | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputSelect`                                                                                              |
+| `SdLink`         | `SdLinkStrong` `SdLinkBody` `SdLinkSub` `SdLinkHint`                                                                                                                          |
+| `SdQuote`        | `SdQuotePlain` `SdQuoteCard`                                                                                                                                                  |
+| `SdTable`        | `SdTableSpec`                                                                                                                                                                 |
+| `SdTabs`         | `SdTabsPills` `SdTabsUnderline` `SdTabsOutline`                                                                                                                               |
+| `SdSkeleton`     | `SdSkeletonCard` `SdSkeletonText` `SdSkeletonTitle` `SdSkeletonImage` `SdSkeletonAvatar`                                                                                      |
+| `SdTextBox`      | `SdTextBoxHero` `SdTextBoxSection` `SdTextBoxCard` `SdTextBoxSub`                                                                                                             |
+| `SdSteps`        | `SdStepsBubble` `SdStepsCard` `SdStepsStrip`                                                                                                                                  |
+| `SdCta`          | `SdCtaBanner` `SdCtaSubtle` `SdCtaInline`                                                                                                                                     |
+| `SdFaq`          | `SdFaqDefault` `SdFaqFilled` `SdFaqWithHeader`                                                                                                                                |
+| `SdPricingCard`  | `SdPricingCardDefault` `SdPricingCardFeatured` `SdPricingCardGrid`                                                                                                            |
+| `SdTestimonial`  | `SdTestimonialCard` `SdTestimonialStrip` `SdTestimonialGrid`                                                                                                                  |
+| `SdSolution`     | `SdSolutionFiltered` `SdSolutionList`                                                                                                                                         |
+| `SdSolutionCard` | `SdSolutionCardItem` `SdSolutionCardGrid`                                                                                                                                     |
+| `SdClients`      | `SdClientsGrid` `SdClientsMarquee`                                                                                                                                            |
+| `SdMap`          | `SdMapSingle` `SdMapTabs`                                                                                                                                                     |
+| `SdErrorView`    | `SdErrorViewPage` `SdErrorViewNotFound`                                                                                                                                       |
 
 **클라이언트 컴포넌트에서는 네임스페이스 형태(`SdText.Body`)를 그대로 써도 됩니다.** `SdModal`은 `opened`/`onClose` 상태가 필요해 애초에 클라이언트 전용이므로 flat export가 없습니다.
 
@@ -158,13 +156,13 @@ import { SdButton } from '@yeongseoksong/framework/ui'
 <SdButton.Excel>엑셀 다운로드</SdButton.Excel>
 ```
 
-| 변형 | 색 | 아이콘 | 기본 라벨 |
-|---|---|---|---|
-| `Submit` | primary (filled) | 종이비행기 | 전송 |
-| `Delete` | red (filled) | 휴지통 | 삭제 |
-| `Cancel` | slate (outline) | X | 취소 |
-| `Excel` | green (outline) | 스프레드시트 | 엑셀 |
-| `Download` | primary (light) | 다운로드 | 다운로드 |
+| 변형       | 색               | 아이콘       | 기본 라벨 |
+| ---------- | ---------------- | ------------ | --------- |
+| `Submit`   | primary (filled) | 종이비행기   | 전송      |
+| `Delete`   | red (filled)     | 휴지통       | 삭제      |
+| `Cancel`   | slate (outline)  | X            | 취소      |
+| `Excel`    | green (outline)  | 스프레드시트 | 엑셀      |
+| `Download` | primary (light)  | 다운로드     | 다운로드  |
 
 ### SdText / SdTitle
 
@@ -451,7 +449,7 @@ export default function Page() {
 ```ts
 import { t } from '@yeongseoksong/framework/util'
 
-t('%c 서비스')          // → '내 회사 서비스'
+t('%c 서비스') // → '내 회사 서비스'
 t('%c에 오신 것을 환영합니다') // → '내 회사에 오신 것을 환영합니다'
 ```
 
@@ -465,19 +463,19 @@ t('%c에 오신 것을 환영합니다') // → '내 회사에 오신 것을 환
 
 ```ts
 import type {
-  NavItem,          // 네비게이션 메뉴
-  HeroSlide,        // 히어로 캐러셀 슬라이드
-  FeatureItem,      // 기능 카드
-  TimelineEvent,    // 연혁 타임라인
-  SolutionItem,     // 솔루션 카드
-  StepItem,         // 단계별 안내
-  TestimonialItem,  // 고객 후기
-  PricingItem,      // 요금제 플랜
-  PricingFeature,   // 요금제 항목
-  FaqItem,          // FAQ
-  ClientItem,       // 고객사 로고
-  CompanyInfo,      // 회사 정보 전체
-  CompanyAddress,   // 회사 주소
+  NavItem, // 네비게이션 메뉴
+  HeroSlide, // 히어로 캐러셀 슬라이드
+  FeatureItem, // 기능 카드
+  TimelineEvent, // 연혁 타임라인
+  SolutionItem, // 솔루션 카드
+  StepItem, // 단계별 안내
+  TestimonialItem, // 고객 후기
+  PricingItem, // 요금제 플랜
+  PricingFeature, // 요금제 항목
+  FaqItem, // FAQ
+  ClientItem, // 고객사 로고
+  CompanyInfo, // 회사 정보 전체
+  CompanyAddress, // 회사 주소
 } from '@yeongseoksong/framework/types'
 ```
 
@@ -485,11 +483,11 @@ import type {
 
 ## 피어 의존성
 
-| 패키지 | 버전 |
-|---|---|
-| `@mantine/core` | ^9.2.2 |
-| `@mantine/hooks` | ^9.2.2 |
+| 패키지              | 버전   |
+| ------------------- | ------ |
+| `@mantine/core`     | ^9.2.2 |
+| `@mantine/hooks`    | ^9.2.2 |
 | `@mantine/carousel` | ^9.2.2 |
-| `next` | 16.2.2 |
-| `react` | 19.2.4 |
-| `react-dom` | 19.2.4 |
+| `next`              | 16.2.2 |
+| `react`             | 19.2.4 |
+| `react-dom`         | 19.2.4 |

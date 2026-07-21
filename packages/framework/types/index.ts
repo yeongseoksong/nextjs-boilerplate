@@ -1,127 +1,120 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
-export interface CommonInfo{
-  id: number;
-  order: number;
-  isShow: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+export interface CommonInfo {
+  id: number
+  order: number
+  isShow: boolean
+  createdAt?: Date
+  updatedAt?: Date
 }
 
-export interface NavItem  extends CommonInfo{
-  label: string;
-  href?: string;
-  highlight?: boolean;
-  parentId?: number;
+export interface NavItem extends CommonInfo {
+  label: string
+  href?: string
+  highlight?: boolean
+  parentId?: number
 }
 
 export interface HeroCta {
-  label: string;
-  href: string;
-  variant?: 'primary' | 'secondary' | 'outline' | 'white';
-  icon: boolean;
+  label: string
+  href: string
+  variant?: 'primary' | 'secondary' | 'outline' | 'white'
+  icon: boolean
 }
 
-export interface HeroSlide extends CommonInfo{
-  image: string;
-  title: ReactNode;
-  description: string;
-  ctas?: HeroCta[];
+export interface HeroSlide extends CommonInfo {
+  image: string
+  title: ReactNode
+  description: string
+  ctas?: HeroCta[]
 }
 
 export interface FeatureItem extends CommonInfo {
-  icon?: ReactNode;
-  label?: string;
-  title: ReactNode;
-  description?: ReactNode;
+  icon?: ReactNode
+  label?: string
+  title: ReactNode
+  description?: ReactNode
 }
 
-export interface CompanyAddress  {
-  label: string;  
-  address: string;
-  order: number;
+export interface CompanyAddress {
+  label: string
+  address: string
+  order: number
   embbedUrl?: string
 }
 
 export type SocialPlatform =
-  | 'x'
-  | 'youtube'
-  | 'instagram'
-  | 'facebook'
-  | 'linkedin'
-  | 'github'
-  | 'blog';
+  'x' | 'youtube' | 'instagram' | 'facebook' | 'linkedin' | 'github' | 'blog'
 
 export interface SocialItem {
-  platform: SocialPlatform;
-  url: string;
-  label?: string;
+  platform: SocialPlatform
+  url: string
+  label?: string
 }
 
 export interface CompanyInfo {
-  name: string;
-  registrationNumber: string;
-  addresses: CompanyAddress[];
-  tel: string;
-  fax?: string;
-  email: string;
-  copyrightYear: number;
-  socials?: SocialItem[];
+  name: string
+  registrationNumber: string
+  addresses: CompanyAddress[]
+  tel: string
+  fax?: string
+  email: string
+  copyrightYear: number
+  socials?: SocialItem[]
 }
 
 export interface TimelineEvent extends CommonInfo {
-  year: number;
-  month: number;
-  title?: string;
-  description: string;
+  year: number
+  month: number
+  title?: string
+  description: string
 }
 
-
 export interface StepItem {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
 }
 
 export interface TestimonialItem {
-  lines: string[];
-  name: string;
-  role: string;
-  company?: string;
-  rating?: number;
-  avatar?: string;
+  lines: string[]
+  name: string
+  role: string
+  company?: string
+  rating?: number
+  avatar?: string
 }
 
 export interface PricingFeature {
-  text: string;
-  included: boolean;
+  text: string
+  included: boolean
 }
 
 export interface PricingItem {
-  name: string;
-  price: string;
-  period?: string;
-  description?: string;
-  features: PricingFeature[];
-  ctaLabel?: string;
-  isPopular?: boolean;
+  name: string
+  price: string
+  period?: string
+  description?: string
+  features: PricingFeature[]
+  ctaLabel?: string
+  isPopular?: boolean
 }
 
 export interface FaqItem {
-  question: string;
-  answer: string;
+  question: string
+  answer: string
 }
 
 export interface ClientItem {
-  name: string;
-  url: string;
-  logo: string;
+  name: string
+  url: string
+  logo: string
 }
 
 export interface SolutionItem extends CommonInfo {
-  category: string;
-  title: ReactNode;
-  description: string;
-  href?: string;
-  ctaLabel?: string;
-  icon?: ReactNode;
+  category: string
+  title: ReactNode
+  description: string
+  href?: string
+  ctaLabel?: string
+  icon?: ReactNode
 }

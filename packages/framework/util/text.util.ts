@@ -1,8 +1,8 @@
-import { COMPANY_NAME } from "./env.util";
+import { COMPANY_NAME } from './env.util'
 
-const COMPANY_TOKEN = "%c";
+const COMPANY_TOKEN = '%c'
 
-let warned = false;
+let warned = false
 
 /**
  * @deprecated 동작하지 않는다. tsup이 ui/util을 별개 번들로 빌드하면서 이 모듈이
@@ -12,15 +12,15 @@ let warned = false;
  */
 export function setCompanyName(_name: string) {
   if (!warned) {
-    warned = true;
+    warned = true
     console.warn(
-      "[@yeongseoksong/framework] setCompanyName()은 동작하지 않으며 2.0.0에서 제거됩니다. " +
-        "NEXT_PUBLIC_COMPANY_NAME 환경변수를 사용하세요.",
-    );
+      '[@yeongseoksong/framework] setCompanyName()은 동작하지 않으며 2.0.0에서 제거됩니다. ' +
+        'NEXT_PUBLIC_COMPANY_NAME 환경변수를 사용하세요.',
+    )
   }
 }
 
 /** 문자열 안의 `%c`를 회사명으로 치환한다. 서버/클라이언트 양쪽에서 안전하다. */
 export function t(text: string): string {
-  return text.replaceAll(COMPANY_TOKEN, COMPANY_NAME);
+  return text.replaceAll(COMPANY_TOKEN, COMPANY_NAME)
 }

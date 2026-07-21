@@ -1,4 +1,4 @@
-import type { OxlintConfig } from 'oxlint';
+import type { OxlintConfig } from 'oxlint'
 
 export default {
   plugins: ['react', 'typescript', 'jsx-a11y'],
@@ -28,4 +28,4 @@ export default {
       },
     ],
   },
-} satisfies OxlintConfig;
+} satisfies OxlintConfig

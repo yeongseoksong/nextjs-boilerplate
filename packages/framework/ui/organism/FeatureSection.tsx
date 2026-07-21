@@ -23,18 +23,18 @@ export function SdFeatureSection({
   ...boxProps
 }: SdFeatureSectionProps) {
   return (
-      <SdContainer py={py} {...boxProps}>
-        <Stack gap="xl">
-          <SdTextBox.Section
-            label={label}
-            title={title}
-            description={description}
-            maxDescWidth={520}
-            ta="center"
-            align="center"
-          />
-          <SdFeatures items={items} cols={cols} />
-        </Stack>
-      </SdContainer>
+    <SdContainer py={py} {...boxProps}>
+      <Stack gap="xl">
+        <SdTextBox.Section
+          label={label}
+          title={title}
+          description={description}
+          maxDescWidth={520}
+          ta="center"
+          align="center"
+        />
+        <SdFeatures items={items} cols={cols} />
+      </Stack>
+    </SdContainer>
   )
 }

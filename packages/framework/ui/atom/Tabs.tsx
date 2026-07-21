@@ -1,12 +1,12 @@
-import { Box, Tabs, TabsListProps, TabsProps, TabsPanelProps } from "@mantine/core";
-import { SdContainer } from "./Container";
+import { Box, Tabs, TabsListProps, TabsProps, TabsPanelProps } from '@mantine/core'
+import { SdContainer } from './Container'
 
 function SdPanel({ children, ...props }: TabsPanelProps) {
   return (
     <Tabs.Panel {...props}>
       <SdContainer py="xl">{children}</SdContainer>
     </Tabs.Panel>
-  );
+  )
 }
 
 function SdScrollableList({ children, ...props }: TabsListProps) {
@@ -14,17 +14,17 @@ function SdScrollableList({ children, ...props }: TabsListProps) {
     <Box style={{ overflowX: 'auto', width: '100%' }}>
       <Tabs.List {...props}>{children}</Tabs.List>
     </Box>
-  );
+  )
 }
 
 function createTabs(defaults: TabsProps, scrollable = false) {
   function SdTabsRoot(props: TabsProps) {
-    return <Tabs {...defaults} {...props} />;
+    return <Tabs {...defaults} {...props} />
   }
-  SdTabsRoot.List  = (scrollable ? SdScrollableList : Tabs.List) as typeof Tabs.List;
-  SdTabsRoot.Tab   = Tabs.Tab;
-  SdTabsRoot.Panel = SdPanel;
-  return SdTabsRoot;
+  SdTabsRoot.List = (scrollable ? SdScrollableList : Tabs.List) as typeof Tabs.List
+  SdTabsRoot.Tab = Tabs.Tab
+  SdTabsRoot.Panel = SdPanel
+  return SdTabsRoot
 }
 
 export const SdTabs = {
@@ -44,7 +44,11 @@ export const SdTabs = {
         flexWrap: 'wrap' as React.CSSProperties['flexWrap'],
         justifyContent: 'center',
       },
-      tab: { fontWeight: '500' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
+      tab: {
+        fontWeight: '500' as React.CSSProperties['fontWeight'],
+        fontSize: 'var(--mantine-h5-font-size)',
+        paddingInline: 'var(--mantine-spacing-lg)',
+      },
     },
   }),
 
@@ -53,7 +57,11 @@ export const SdTabs = {
     color: 'primary',
     styles: {
       list: { width: 'fit-content', margin: '0 auto', gap: 'var(--mantine-spacing-sm)' },
-      tab:  { fontWeight: '500' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
+      tab: {
+        fontWeight: '500' as React.CSSProperties['fontWeight'],
+        fontSize: 'var(--mantine-h5-font-size)',
+        paddingInline: 'var(--mantine-spacing-lg)',
+      },
     },
   }),
 
@@ -63,13 +71,17 @@ export const SdTabs = {
     radius: 'md',
     styles: {
       list: { width: 'fit-content', margin: '0 auto', gap: 'var(--mantine-spacing-sm)' },
-      tab:  { fontWeight: '500' as React.CSSProperties['fontWeight'], fontSize: 'var(--mantine-h5-font-size)', paddingInline: 'var(--mantine-spacing-lg)' },
+      tab: {
+        fontWeight: '500' as React.CSSProperties['fontWeight'],
+        fontSize: 'var(--mantine-h5-font-size)',
+        paddingInline: 'var(--mantine-spacing-lg)',
+      },
     },
   }),
-};
+}
 
 // SdTabs.Pills / .Underline / .Outline 은 .List / .Tab / .Panel 을 직접 속성으로 가짐
 // → 개별 export에서도 compound sub-component 그대로 사용 가능
-export const SdTabsPills     = SdTabs.Pills;
-export const SdTabsUnderline = SdTabs.Underline;
-export const SdTabsOutline   = SdTabs.Outline;
+export const SdTabsPills = SdTabs.Pills
+export const SdTabsUnderline = SdTabs.Underline
+export const SdTabsOutline = SdTabs.Outline

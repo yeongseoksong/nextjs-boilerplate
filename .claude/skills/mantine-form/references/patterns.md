@@ -1,6 +1,7 @@
 # @mantine/form Patterns
 
 ## Table of Contents
+
 - [Basic form with validation](#basic-form-with-validation)
 - [Nested object fields](#nested-object-fields)
 - [Array / list fields](#array--list-fields)
@@ -16,7 +17,7 @@
 ## Basic form with validation
 
 ```tsx
-import { useForm, isEmail, isNotEmpty, hasLength } from '@mantine/form';
+import { useForm, isEmail, isNotEmpty, hasLength } from '@mantine/form'
 
 function BasicForm() {
   const form = useForm({
@@ -26,7 +27,7 @@ function BasicForm() {
       email: isEmail('Invalid email'),
       password: hasLength({ min: 8 }, 'Password must be at least 8 characters'),
     },
-  });
+  })
 
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
@@ -35,7 +36,7 @@ function BasicForm() {
       <PasswordInput label="Password" {...form.getInputProps('password')} />
       <Button type="submit">Submit</Button>
     </form>
-  );
+  )
 }
 ```
 
@@ -79,8 +80,8 @@ const form = useForm({
 
 ```tsx
 interface Employee {
-  name: string;
-  role: string;
+  name: string
+  role: string
 }
 
 const form = useForm({
@@ -93,24 +94,18 @@ const form = useForm({
       role: isNotEmpty('Role required'),
     },
   },
-});
+})
 
 // Render the list
 const fields = form.values.employees.map((_, index) => (
   <Group key={form.key(`employees.${index}`)}>
-    <TextInput
-      {...form.getInputProps(`employees.${index}.name`)}
-      placeholder="Name"
-    />
-    <TextInput
-      {...form.getInputProps(`employees.${index}.role`)}
-      placeholder="Role"
-    />
+    <TextInput {...form.getInputProps(`employees.${index}.name`)} placeholder="Name" />
+    <TextInput {...form.getInputProps(`employees.${index}.role`)} placeholder="Role" />
     <ActionIcon onClick={() => form.removeListItem('employees', index)}>
       <IconTrash />
     </ActionIcon>
   </Group>
-));
+))
 
 return (
   <form onSubmit={form.onSubmit((values) => console.log(values))}>
@@ -120,16 +115,17 @@ return (
     </Button>
     <Button type="submit">Submit</Button>
   </form>
-);
+)
 ```
 
 **List methods:**
+
 ```tsx
-form.insertListItem('employees', { name: '', role: '' });       // append
-form.insertListItem('employees', { name: '', role: '' }, 0);    // prepend
-form.removeListItem('employees', index);
-form.reorderListItem('employees', { from: 2, to: 0 });
-form.replaceListItem('employees', index, { name: 'New', role: 'Dev' });
+form.insertListItem('employees', { name: '', role: '' }) // append
+form.insertListItem('employees', { name: '', role: '' }, 0) // prepend
+form.removeListItem('employees', index)
+form.reorderListItem('employees', { from: 2, to: 0 })
+form.replaceListItem('employees', index, { name: 'New', role: 'Dev' })
 ```
 
 ---
@@ -143,16 +139,16 @@ const form = useForm({
   initialValues: { username: '' },
   validate: {
     username: async (value, _values, _path, signal) => {
-      if (!value) return 'Username is required';
-      const response = await fetch(`/api/check-username?q=${value}`, { signal });
-      if (signal?.aborted) return null;
-      const { taken } = await response.json();
-      return taken ? 'Username is already taken' : null;
+      if (!value) return 'Username is required'
+      const response = await fetch(`/api/check-username?q=${value}`, { signal })
+      if (signal?.aborted) return null
+      const { taken } = await response.json()
+      return taken ? 'Username is already taken' : null
     },
   },
   validateInputOnChange: ['username'],
-  validateDebounce: 500,   // debounce async calls
-});
+  validateDebounce: 500, // debounce async calls
+})
 ```
 
 Check `form.isValidating()` to show a loading indicator while async validation runs.
@@ -165,14 +161,14 @@ Share one form instance across a component tree without prop drilling.
 
 ```tsx
 // 1. Create typed context once
-import { createFormContext, isNotEmpty } from '@mantine/form';
+import { createFormContext, isNotEmpty } from '@mantine/form'
 
 interface ProfileValues {
-  bio: string;
-  website: string;
+  bio: string
+  website: string
 }
 
-const [FormProvider, useFormContext, useProfileForm] = createFormContext<ProfileValues>();
+const [FormProvider, useFormContext, useProfileForm] = createFormContext<ProfileValues>()
 
 // 2. Wrap your form tree with FormProvider
 function ProfileForm() {
@@ -181,7 +177,7 @@ function ProfileForm() {
     validate: {
       bio: isNotEmpty('Bio is required'),
     },
-  });
+  })
 
   return (
     <FormProvider form={form}>
@@ -191,18 +187,18 @@ function ProfileForm() {
         <Button type="submit">Save</Button>
       </form>
     </FormProvider>
-  );
+  )
 }
 
 // 3. Access form in any child — no prop drilling
 function BioField() {
-  const form = useFormContext();
-  return <Textarea label="Bio" {...form.getInputProps('bio')} />;
+  const form = useFormContext()
+  return <Textarea label="Bio" {...form.getInputProps('bio')} />
 }
 
 function WebsiteField() {
-  const form = useFormContext();
-  return <TextInput label="Website" {...form.getInputProps('website')} />;
+  const form = useFormContext()
+  return <TextInput label="Website" {...form.getInputProps('website')} />
 }
 ```
 
@@ -215,17 +211,17 @@ Shape the values before they reach `onSubmit`. The transform is applied transpar
 ```tsx
 const form = useForm({
   initialValues: {
-    price: '',        // stored as string in input
+    price: '', // stored as string in input
     tags: 'a, b, c', // stored as comma-separated string
   },
   transformValues: (values) => ({
     price: Number(values.price),
     tags: values.tags.split(',').map((t) => t.trim()),
   }),
-});
+})
 
 // handler receives { price: number, tags: string[] }
-form.onSubmit((values) => console.log(values));
+form.onSubmit((values) => console.log(values))
 ```
 
 ---
@@ -261,22 +257,16 @@ const current = form.getValues();
 Manage a single field without a full form — useful for isolated inputs or custom field components.
 
 ```tsx
-import { useField, isEmail } from '@mantine/form';
+import { useField, isEmail } from '@mantine/form'
 
 function EmailField() {
   const field = useField({
     initialValue: '',
     validate: isEmail('Invalid email'),
     validateOnBlur: true,
-  });
+  })
 
-  return (
-    <TextInput
-      label="Email"
-      {...field.getInputProps()}
-      onBlur={() => field.validate()}
-    />
-  );
+  return <TextInput label="Email" {...field.getInputProps()} onBlur={() => field.validate()} />
 }
 ```
 
@@ -287,24 +277,26 @@ function EmailField() {
 Set server-side errors on fields after a failed API call.
 
 ```tsx
-const form = useForm({ initialValues: { email: '', password: '' } });
+const form = useForm({ initialValues: { email: '', password: '' } })
 
 const handleSubmit = async (values: typeof form.values) => {
   try {
-    await login(values);
+    await login(values)
   } catch (error) {
     if (error.fields) {
       // Map server field errors onto form
-      form.setErrors(error.fields);
+      form.setErrors(error.fields)
     } else {
-      form.setFieldError('password', 'Invalid email or password');
+      form.setFieldError('password', 'Invalid email or password')
     }
   }
-};
+}
 
-<form onSubmit={form.onSubmit(handleSubmit)}>
+;<form onSubmit={form.onSubmit(handleSubmit)}>
   <TextInput {...form.getInputProps('email')} label="Email" />
   <PasswordInput {...form.getInputProps('password')} label="Password" />
-  <Button type="submit" loading={form.submitting}>Sign in</Button>
+  <Button type="submit" loading={form.submitting}>
+    Sign in
+  </Button>
 </form>
 ```
