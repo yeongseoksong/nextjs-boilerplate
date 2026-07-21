@@ -29,12 +29,21 @@ import {
 } from "../../../data";
 import { Showcase, Variant } from "../../_catalog/Showcase";
 
-/** 데모 데이터의 로고 경로(/clients/*.png)는 저장소에 없으므로 플레이스홀더로 대체한다. */
-const demoClients: ClientItem[] = Array.from({ length: 8 }, (_, i) => ({
-  name: `고객사 ${i + 1}`,
-  url: "https://example.com",
-  logo: "/logo.svg",
-}));
+/**
+ * 데모 데이터의 로고 경로(/clients/*.png)는 저장소에 없으므로, 인지도 있는
+ * 브랜드 로고를 Simple Icons CDN(cdn.simpleicons.org)에서 외부 URL로 가져온다.
+ * images.unoptimized 모드라 외부 SVG도 remotePatterns 설정 없이 렌더된다.
+ */
+const demoClients: ClientItem[] = [
+  { name: "Google", url: "https://google.com", logo: "https://cdn.simpleicons.org/google" },
+  { name: "GitHub", url: "https://github.com", logo: "https://cdn.simpleicons.org/github" },
+  { name: "GitLab", url: "https://gitlab.com", logo: "https://cdn.simpleicons.org/gitlab" },
+  { name: "Vercel", url: "https://vercel.com", logo: "https://cdn.simpleicons.org/vercel" },
+  { name: "Cloudflare", url: "https://cloudflare.com", logo: "https://cdn.simpleicons.org/cloudflare" },
+  { name: "Docker", url: "https://docker.com", logo: "https://cdn.simpleicons.org/docker" },
+  { name: "Figma", url: "https://figma.com", logo: "https://cdn.simpleicons.org/figma" },
+  { name: "Notion", url: "https://notion.so", logo: "https://cdn.simpleicons.org/notion" },
+];
 
 const demoSteps = [
   { title: "요구사항 분석", description: "업무 환경과 요구사항을 파악해 방향을 도출합니다." },

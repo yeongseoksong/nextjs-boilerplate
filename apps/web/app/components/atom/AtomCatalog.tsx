@@ -67,20 +67,37 @@ export default function AtomCatalog() {
 
         <Showcase
           name="SdButton"
-          description="액션 버튼. 용도별로 색과 변형이 고정되어 있습니다."
+          description="액션 버튼. 스타일 변형(Primary~White)과 라벨·아이콘까지 고정된 표준 액션 버튼(Submit·Delete·Cancel·Excel)으로 나뉩니다. 표준 버튼은 children 없이 써도 기본 라벨이 표시됩니다."
           exports={[
-            "SdButtonPrimary", "SdButtonSecondary", "SdButtonOutline", "SdButtonGhost",
-            "SdButtonWhite", "SdButtonDelete", "SdButtonCancel",
+            "SdButtonPrimary", "SdButtonSecondary", "SdButtonOutline", "SdButtonGhost", "SdButtonWhite",
+            "SdButtonSubmit", "SdButtonDelete", "SdButtonCancel", "SdButtonExcel", "SdButtonDownload",
           ]}
         >
-          <Group gap="sm">
-            <SdButton.Primary>Primary</SdButton.Primary>
-            <SdButton.Secondary>Secondary</SdButton.Secondary>
-            <SdButton.Outline>Outline</SdButton.Outline>
-            <SdButton.Ghost>Ghost</SdButton.Ghost>
-            <SdButton.Delete>삭제</SdButton.Delete>
-            <SdButton.Cancel>취소</SdButton.Cancel>
-          </Group>
+          <Stack gap="lg">
+            <Variant label="스타일 변형">
+              <Group gap="sm">
+                <SdButton.Primary>Primary</SdButton.Primary>
+                <SdButton.Secondary>Secondary</SdButton.Secondary>
+                <SdButton.Outline>Outline</SdButton.Outline>
+                <SdButton.Ghost>Ghost</SdButton.Ghost>
+              </Group>
+            </Variant>
+            <Variant label="표준 액션 (라벨 고정)">
+              <Group gap="sm">
+                <SdButton.Submit />
+                <SdButton.Delete />
+                <SdButton.Cancel />
+                <SdButton.Excel />
+                <SdButton.Download />
+              </Group>
+            </Variant>
+            <Variant label="라벨 덮어쓰기">
+              <Group gap="sm">
+                <SdButton.Submit>문의 보내기</SdButton.Submit>
+                <SdButton.Excel>엑셀 다운로드</SdButton.Excel>
+              </Group>
+            </Variant>
+          </Stack>
         </Showcase>
 
         <Showcase

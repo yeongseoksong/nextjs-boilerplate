@@ -94,6 +94,24 @@ app/_catalog/nav.ts             사이트 네비게이션 (data/index.tsx의 nav
 
 `page.tsx`를 Server Component로 두고 데모를 client 파일로 분리한 이유는, client 페이지에서는 `export const metadata`가 동작하지 않기 때문이다. 이 구조 덕에 페이지별 metadata를 유지하면서 데모에서 훅과 네임스페이스 dot 접근을 쓸 수 있다.
 
+### ⚠️ 카탈로그는 UI의 거울 — 항상 함께 갱신
+
+`packages/framework/ui`를 수정하면 **같은 변경 단위 안에서** `apps/web`의 카탈로그도 반드시 갱신한다. 카탈로그가 곧 이 라이브러리의 문서이자 배포 경로 검증(서버 컴포넌트에서 flat export가 실제로 도는지)이므로, 뒤처지면 문서가 거짓말이 되고 회귀를 놓친다.
+
+UI 변경 종류별로 반영할 곳:
+
+| UI 변경 | 카탈로그 반영 |
+|---|---|
+| variant 추가/삭제/이름변경 | 해당 `*Catalog.tsx`의 `<Showcase>` + `exports={[...]}` 목록 |
+| 새 컴포넌트 추가 | 계층에 맞는 `*Catalog.tsx`에 `<Showcase>` 블록 신설 |
+| props 시그니처 변경 | 데모의 해당 props 사용부 |
+| 기본 라벨·기본값 변경 | 데모에서 그 기본값이 드러나도록 (예: `<SdButton.Submit />` 라벨 생략) |
+| 컴포넌트 제거 | `*Catalog.tsx`에서 `<Showcase>` 제거 + import 정리 |
+
+문서 3곳도 같이 맞춘다: 이 파일의 Component Factory Pattern 표, `packages/framework/README.md`의 flat export 표와 사용 예시.
+
+검증: `pnpm --filter framework build && pnpm --filter web build`. 카탈로그가 실제 배포 번들(`dist/ui`, flat export)을 소비하진 않지만 소스 기준 커버리지·타입은 이걸로 확인된다. flat export 커버리지는 아래 한 줄로 감사한다 — 네임스페이스 키마다 대응 `Sd<NS><Variant>` export가 있는지 검사(§Namespace dot access 참고).
+
 ### GitHub Pages 제약
 
 `next.config.mjs`가 `output: "export"` + `trailingSlash: true` + `images.unoptimized`로 동작한다. 프로젝트 페이지는 `/<repo>/` 아래에 서빙되므로 `NEXT_PUBLIC_BASE_PATH`가 필요하고, 워크플로(`.github/workflows/deploy-catalog.yml`)가 주입한다.
@@ -152,7 +170,7 @@ The same pattern applies to:
 | Component | Variants |
 |---|---|
 | `SdTitle` | Display / Section / Card / Sub |
-| `SdButton` | Primary / Outline / Ghost / White / **Delete** / **Cancel** |
+| `SdButton` | Primary / Secondary / Outline / Ghost / White / **Submit** / **Delete** / **Cancel** / **Excel** / **Download** |
 | `SdTextBox` | Hero / Section / Card / Sub |
 | `SdTabs` | Pills / Underline / Outline |
 | `SdTable` | default + Spec |

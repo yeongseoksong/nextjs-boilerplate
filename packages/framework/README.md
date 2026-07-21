@@ -98,7 +98,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 |---|---|
 | `SdText` | `SdTextStrong` `SdTextBody` `SdTextSub` `SdTextEyebrow` `SdTextError` `SdTextHint` `SdTextNumeric` |
 | `SdTitle` | `SdTitleDisplay` `SdTitleSection` `SdTitleCard` `SdTitleSub` |
-| `SdButton` | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonDelete` `SdButtonCancel` |
+| `SdButton` | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonSubmit` `SdButtonDelete` `SdButtonCancel` `SdButtonExcel` `SdButtonDownload` |
 | `SdBadge` | `SdBadgeDefault` `SdBadgePrimary` `SdBadgeSuccess` `SdBadgeWarning` |
 | `SdInput` | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputSelect` |
 | `SdQuote` | `SdQuotePlain` `SdQuoteCard` |
@@ -139,13 +139,31 @@ import { SdButton } from '@yeongseoksong/framework/ui'
 
 // 다크 배경 위
 <SdButton.White>시작하기</SdButton.White>
-
-// 삭제 (휴지통 아이콘 자동 포함)
-<SdButton.Delete onClick={handleDelete}>삭제</SdButton.Delete>
-
-// 취소 (X 아이콘 자동 포함)
-<SdButton.Cancel onClick={handleClose}>닫기</SdButton.Cancel>
 ```
+
+**표준 액션 버튼** — 라벨·색·아이콘이 고정되어 있습니다. `children`을 생략하면 기본 라벨이,
+넘기면 그 값이 라벨로 쓰입니다.
+
+```tsx
+// 아이콘 + 기본 라벨이 자동으로 붙는다
+<SdButton.Submit onClick={handleSubmit} />   {/* 종이비행기 + "전송" */}
+<SdButton.Delete onClick={handleDelete} />   {/* 휴지통 + "삭제" */}
+<SdButton.Cancel onClick={handleClose} />    {/* X + "취소" */}
+<SdButton.Excel  onClick={handleExport} />   {/* 스프레드시트 + "엑셀" */}
+<SdButton.Download onClick={handleDownload} /> {/* 다운로드 + "다운로드" */}
+
+// 라벨만 다르게 쓰고 싶으면 children으로 덮어쓴다
+<SdButton.Submit>문의 보내기</SdButton.Submit>
+<SdButton.Excel>엑셀 다운로드</SdButton.Excel>
+```
+
+| 변형 | 색 | 아이콘 | 기본 라벨 |
+|---|---|---|---|
+| `Submit` | primary (filled) | 종이비행기 | 전송 |
+| `Delete` | red (filled) | 휴지통 | 삭제 |
+| `Cancel` | slate (outline) | X | 취소 |
+| `Excel` | green (outline) | 스프레드시트 | 엑셀 |
+| `Download` | primary (light) | 다운로드 | 다운로드 |
 
 ### SdText / SdTitle
 

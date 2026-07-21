@@ -3,12 +3,14 @@
 import { Box, Paper, Stack } from "@mantine/core";
 import {
   HeroCarousel,
+  PageLayout,
   SdContainer,
   SdErrorView,
   SdFeatureSection,
   SdFooter,
   SdHeader,
   SdStepsSection,
+  SdText,
   SdTextBoxSection,
   SdTimelineSection,
 } from "@framework/ui";
@@ -115,6 +117,48 @@ export default function OrganismCatalog() {
           <FullBleed>
             <SdFooter company={companyInfo} navItems={navItems} />
           </FullBleed>
+        </Showcase>
+
+        <Showcase
+          name="PageLayout"
+          description="페이지 히어로 + 본문을 감싸는 템플릿. 페이지 파일에서 최상위로 사용합니다. (template — flat export 없음, 네임스페이스 dot으로만 사용)"
+          exports={["PageLayout"]}
+        >
+          <Stack gap="xl">
+            <Variant label="Brand · primary 그라디언트 배경">
+              <FullBleed>
+                <PageLayout.Brand label="Company" title="회사 소개" description="브랜드 그라디언트 히어로입니다.">
+                  <SdText.Body>본문 영역입니다.</SdText.Body>
+                </PageLayout.Brand>
+              </FullBleed>
+            </Variant>
+            <Variant label="Image · 이미지 배경 + frosted glass">
+              <FullBleed>
+                <PageLayout.Image
+                  image="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=80"
+                  label="Service"
+                  title="서비스"
+                  description="이미지 배경 위 frosted glass 카드입니다."
+                >
+                  <SdText.Body>본문 영역입니다.</SdText.Body>
+                </PageLayout.Image>
+              </FullBleed>
+            </Variant>
+            <Variant label="Minimal · 섹션 타이틀 + 구분선">
+              <FullBleed>
+                <PageLayout.Minimal label="Solutions" title="솔루션" description="히어로 없이 섹션 헤더로 시작합니다.">
+                  <SdText.Body>본문 영역입니다.</SdText.Body>
+                </PageLayout.Minimal>
+              </FullBleed>
+            </Variant>
+            <Variant label="Plain · 히어로 없이 컨테이너만">
+              <FullBleed>
+                <PageLayout.Plain>
+                  <SdText.Body>히어로 없이 SdContainer만 감쌉니다.</SdText.Body>
+                </PageLayout.Plain>
+              </FullBleed>
+            </Variant>
+          </Stack>
         </Showcase>
 
         <Showcase
