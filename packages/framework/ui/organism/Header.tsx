@@ -18,10 +18,9 @@ const BAR_HEIGHT = 60
 interface HeaderProps {
   navItems: NavItem[]
   loginFlag?: boolean
-  children?: ReactNode
 }
 
-export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
+export function SdHeader({ navItems, loginFlag }: HeaderProps) {
   const [opened, { toggle, close }] = useDisclosure()
 
   const visibleItems = filterAndSort(navItems)
@@ -104,16 +103,18 @@ export function SdHeader({ navItems, loginFlag, children }: HeaderProps) {
                   </Stack>
                 )
               })}
+              
             </Group>
-
+              
+            
             <Group h={BAR_HEIGHT} align="center" gap="sm" wrap="nowrap">
               <Burger hiddenFrom="sm" opened={opened} onClick={toggle} />
+
               {loginFlag && (
                 <Group gap="sm" visibleFrom="sm">
                   <SdButton.Primary size="xs">로그인</SdButton.Primary>
                 </Group>
               )}
-              {children}
             </Group>
           </Group>
         </SdContainer>

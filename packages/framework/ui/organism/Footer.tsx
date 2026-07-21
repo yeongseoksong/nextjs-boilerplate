@@ -27,18 +27,19 @@ interface SdFooterProps {
 function FooterNavColumns({ items }: { items: NavItem[] }) {
   const topLevel = items.filter((item) => !item.parentId)
   const getChildren = (parentId: number) => items.filter((item) => item.parentId === parentId)
-
+  const CHILD_THRESH =4
   return (
     <>
       {topLevel.map((group) => (
         <Grid.Col key={group.id} span={{ base: 6, sm: 4, md: 'auto' }}>
-          <Stack gap="sm">
+          <Stack gap="xs">
             <SdText.Sub>{group.label}</SdText.Sub>
-            {getChildren(group.id).map((link) => (
-              <SdLink.Hint key={link.id} href={link.href}>
+            {getChildren(group.id).map((link,id) => {
+              if (id >= CHILD_THRESH ) return
+              return <SdLink.Hint key={link.id} href={link.href}>
                 {link.label}
               </SdLink.Hint>
-            ))}
+          })}
           </Stack>
         </Grid.Col>
       ))}
