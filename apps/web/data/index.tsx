@@ -425,7 +425,7 @@ export const clientItems: ClientItem[] = [
 
 // CompanyInfo
 export const companyInfo: CompanyInfo = {
-  name: '주식회사 회사명',
+  name: '%c',
   registrationNumber: '000-00-00000',
   addresses: [
     {

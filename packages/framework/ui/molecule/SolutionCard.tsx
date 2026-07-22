@@ -15,18 +15,18 @@ interface SdSolutionCardItemProps extends Omit<CardProps, 'children'> {
 
 function SolutionCardItem({ item, onSelect, ...cardProps }: SdSolutionCardItemProps) {
   return (
-    <Card withBorder {...cardProps}>
-      <Stack gap="md">
+    <Card withBorder h="100%" style={{ display: 'flex', flexDirection: 'column' }} {...cardProps}>
+      <Stack gap="md" style={{ flex: 1 }}>
         {item.icon}
         <SdBadge.Primary>{item.category}</SdBadge.Primary>
         <SdTitle.Card>{item.title}</SdTitle.Card>
         <SdText.Body>{item.description}</SdText.Body>
         {item.href ? (
-          <Button variant="subtle" color="slate" component={Link} href={item.href}>
+          <Button variant="subtle" color="slate" component={Link} href={item.href} mt="auto">
             {item.ctaLabel ?? '자세히 보기'} →
           </Button>
         ) : (
-          <SdButton.Ghost onClick={() => onSelect?.(item)}>
+          <SdButton.Ghost onClick={() => onSelect?.(item)} mt="auto">
             {item.ctaLabel ?? '자세히 보기'} →
           </SdButton.Ghost>
         )}

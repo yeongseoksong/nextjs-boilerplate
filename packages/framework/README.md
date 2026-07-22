@@ -162,6 +162,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdClients`      | `SdClientsGrid` `SdClientsMarquee`                                                                                                                                            |
 | `SdMap`          | `SdMapSingle` `SdMapTabs`                                                                                                                                                     |
 | `SdErrorView`    | `SdErrorViewPage` `SdErrorViewNotFound`                                                                                                                                       |
+| `SdHeader`       | `SdHeaderMega` `SdHeaderSimple` (`SdHeader` 자체는 `Mega`와 동일)                                                                                                             |
 
 **클라이언트 컴포넌트에서는 네임스페이스 형태(`SdText.Body`)를 그대로 써도 됩니다.** `SdModal`은 `opened`/`onClose` 상태가 필요해 애초에 클라이언트 전용이므로 flat export가 없습니다.
 
@@ -469,6 +470,14 @@ const policyLinks: NavItem[] = [
 `SdHeader`는 데스크톱에서 헤더에 마우스를 올리면(또는 Tab으로 포커스가 들어오면) 헤더가 아래로 확장되며
 `parentId`로 묶인 하위 링크가 각 상위 항목 **바로 아래 컬럼**으로 동시에 노출됩니다. 하위 항목이 하나도 없으면 확장이 일어나지 않습니다.
 상위 항목의 `href`를 비우면 링크 대신 그룹 제목으로 렌더됩니다. 모바일(`< sm`)에서는 버거 드로어의 중첩 아코디언으로 전환됩니다.
+
+헤더 바 높이를 60px로 고정하고 싶다면 `SdHeader.Simple`(서버 컴포넌트에서는 `SdHeaderSimple`)을 씁니다.
+하위 항목을 가진 상위 항목마다 Mantine `Menu`가 하나씩 붙어 개별 드롭다운으로 열리며(마우스 hover · 클릭 · 키보드 모두 지원),
+드롭다운은 포털로 렌더되므로 `overflow: hidden` 컨테이너 안에서도 잘리지 않습니다. 모바일 드로어는 기본 변형과 동일합니다.
+
+```tsx
+<SdHeader.Simple navItems={navItems} loginFlag />
+```
 
 `navItems`는 같은 `parentId` 구조로 푸터 링크 컬럼도 만들고, 구분선 아래 하단 바에 카피라이트 · `policyLinks` · `company.socials` 아이콘이 놓입니다.
 `socials.platform`은 `x | youtube | instagram | facebook | linkedin | github | blog`를 지원합니다.

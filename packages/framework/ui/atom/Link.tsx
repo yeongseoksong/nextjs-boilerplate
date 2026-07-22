@@ -2,6 +2,7 @@
 import { Anchor as MantineAnchor, AnchorProps } from '@mantine/core'
 import { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react'
 import { toCssColor } from '../../util/style.util'
+import { t } from '../../util/text.util'
 
 type Props = AnchorProps &
   Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color' | 'style'> & {
@@ -19,6 +20,9 @@ const HOVER_COLOR = 'var(--mantine-color-primary-6)'
 function createLink(defaults: AnchorProps) {
   return function SdLink({ children, onMouseEnter, onMouseLeave, ...props }: Props) {
     const baseColor = toCssColor(props.c ?? defaults.c)
+    const resolved = typeof children === 'string' ? t(children) : children
+    
+
 
     const handleEnter = (e: MouseEvent<HTMLAnchorElement>) => {
       e.currentTarget.style.color = HOVER_COLOR
@@ -37,7 +41,7 @@ function createLink(defaults: AnchorProps) {
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        {children}
+        {resolved}
       </MantineAnchor>
     )
   }

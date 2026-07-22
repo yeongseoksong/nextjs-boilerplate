@@ -9,6 +9,7 @@ import {
   SdFeatureSection,
   SdFooter,
   SdHeader,
+  SdHeaderSimple,
   SdStepsSection,
   SdText,
   SdTextBoxSection,
@@ -101,15 +102,22 @@ export default function OrganismCatalog() {
 
         <Showcase
           name="SdHeader"
-          description="상단 네비게이션. 헤더에 마우스를 올리면 navItems의 parentId로 묶인 하위 링크가 각 상위 항목 아래 컬럼으로 확장되고, 모바일에서는 버거 드로어의 아코디언으로 전환됩니다."
-          exports={['SdHeader']}
+          description="상단 네비게이션. navItems의 parentId로 묶인 하위 링크를 Mega 변형은 헤더 전체 확장으로, Simple 변형은 상위 항목마다 붙는 Mantine Menu로 노출합니다. 모바일에서는 두 변형 모두 버거 드로어의 아코디언으로 전환됩니다."
+          exports={['SdHeader', 'SdHeaderMega', 'SdHeaderSimple']}
         >
-          <FullBleed>
-            {/* pos="relative" — 확장된 헤더가 아래 Showcase를 밀어내지 않고 덮도록 */}
-            <Box h={60} pos="relative">
-              <SdHeader navItems={navItems} />
-            </Box>
-          </FullBleed>
+          <Variant label="Mega(기본) — 헤더 전체가 아래로 확장">
+            <FullBleed>
+              {/* pos="relative" — 확장된 헤더가 아래 Showcase를 밀어내지 않고 덮도록 */}
+              <Box h={60} pos="relative">
+                <SdHeader navItems={navItems} />
+              </Box>
+            </FullBleed>
+          </Variant>
+          <Variant label="Simple — 항목마다 개별 드롭다운, 바 높이 고정">
+            <FullBleed>
+              <SdHeaderSimple navItems={navItems} />
+            </FullBleed>
+          </Variant>
         </Showcase>
 
         <Showcase

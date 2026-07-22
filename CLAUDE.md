@@ -53,7 +53,7 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 
 - `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`, `SdLink`
 - `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
-- `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, 모바일은 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
+- `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운, 모바일은 둘 다 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
 - `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용)
@@ -192,6 +192,7 @@ The same pattern applies to:
 | `SdClients`      | Grid / Marquee                                                                                                  |
 | `SdMap`          | Single / Tabs                                                                                                   |
 | `SdErrorView`    | Page / NotFound                                                                                                 |
+| `SdHeader`       | Mega(= default) / Simple                                                                                        |
 
 All UI components are Client Components — tsup adds `"use client"` banner to the UI bundle only.
 
