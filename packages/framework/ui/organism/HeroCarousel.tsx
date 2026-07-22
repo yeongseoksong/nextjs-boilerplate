@@ -46,7 +46,7 @@ export function HeroCarousel({ slides, children }: HeroCarouselProps) {
           <Box
             style={{
               height: '100%',
-              backgroundImage: `url(${slide.image})`,
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${slide.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               display: 'flex',
