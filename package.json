@@ -23,7 +23,11 @@
     ],
     "overrides": {
       "@types/react": "19.2.14",
-      "@types/react-dom": "19.2.1"
+      "@types/react-dom": "19.2.1",
+      "@mantine/core": "9.4.2",
+      "@mantine/hooks": "9.4.2",
+      "@mantine/carousel": "9.4.2",
+      "@mantine/notifications": "9.4.2"
     }
   }
 }

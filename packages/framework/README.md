@@ -11,7 +11,7 @@ pnpm add @yeongseoksong/framework
 피어 의존성 설치:
 
 ```bash
-pnpm add @mantine/core @mantine/hooks @mantine/carousel react react-dom next
+pnpm add @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications react react-dom next
 ```
 
 ## 설정
@@ -22,19 +22,25 @@ pnpm add @mantine/core @mantine/hooks @mantine/carousel react react-dom next
 // app/layout.tsx
 import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
+import '@mantine/notifications/styles.css'
 import { MantineProvider } from '@mantine/core'
-import { theme } from '@yeongseoksong/framework/ui'
+import { theme, SdToastProvider } from '@yeongseoksong/framework/ui'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <SdToastProvider />
+          {children}
+        </MantineProvider>
       </body>
     </html>
   )
 }
 ```
+
+`SdToastProvider`는 토스트가 실제로 그려지는 자리입니다. 넣지 않으면 `SdToast.*` 호출이 조용히 아무 일도 하지 않습니다(아래 SdToast 항목 참고).
 
 ### 2. 환경변수 설정
 
@@ -108,7 +114,8 @@ import { appTheme } from './theme'
 | `secondary` | 보조 강조                                                              |
 | `slate`     | 중립 전반 — 모든 `SdText`/`SdTitle` 본문색, 보더, 표 헤더. `dark` 별칭 |
 | `red`       | `SdText.Error`, `SdButton.Delete`                                      |
-| `green`     | `SdButton.Excel`                                                       |
+| `green`     | `SdButton.Excel`, `SdToast.Success`, `SdResult.Success`                |
+| `amber`     | `SdBadge.Warning`, `SdToast.Warning`                                   |
 
 10단계 램프를 손으로 만들기 번거로우면 [`@mantine/colors-generator`](https://mantine.dev/colors-generator/)의 `generateColors('#0b5ed7')`로 hex 하나에서 뽑을 수 있습니다(별도 설치 필요).
 
@@ -163,6 +170,8 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdMap`          | `SdMapSingle` `SdMapTabs`                                                                                                                                                     |
 | `SdErrorView`    | `SdErrorViewPage` `SdErrorViewNotFound`                                                                                                                                       |
 | `SdLoginView`    | `SdLoginViewCard` `SdLoginViewSplit`                                                                                                                                          |
+| `SdResult`       | `SdResultSuccess` `SdResultError`                                                                                                                                             |
+| `SdToast`        | `SdToastSuccess` `SdToastError` `SdToastWarning` `SdToastInfo` `SdToastLoading` `SdToastUpdate` `SdToastHide` `SdToastClean`                                                                                                                                       |
 | `SdHeader`       | `SdHeaderMega` `SdHeaderSimple` (`SdHeader` 자체는 `Mega`와 동일)                                                                                                             |
 
 **클라이언트 컴포넌트에서는 네임스페이스 형태(`SdText.Body`)를 그대로 써도 됩니다.** `SdModal`은 `opened`/`onClose` 상태가 필요해 애초에 클라이언트 전용이므로 flat export가 없습니다.
@@ -514,6 +523,60 @@ export default function LoginPage() {
 `Split`은 `brandTitle`/`brandDescription`으로 좌측 패널 문구를 받고(기본값 `%c`), 브랜드 면은 `PageLayout.Brand` 히어로와 같은 배경(`ui/surface.ts`)을 씁니다. 좌측 패널은 `md` 미만에서 숨겨져 폼만 남습니다.
 전체 화면이 기본(`mih="100svh"`)이므로, 좁은 영역에 끼워 넣을 때만 `mih`를 줄입니다.
 
+### SdToast — 순간 피드백
+
+저장·삭제·로그인처럼 **잠깐 알리고 사라져야 하는** 결과에 씁니다. 컴포넌트가 아니라 호출하는 함수입니다.
+
+```tsx
+'use client'
+import { SdToast } from '@yeongseoksong/framework/ui'
+
+await save()
+SdToast.Success('저장했습니다.')
+SdToast.Error('저장하지 못했습니다.', { title: '네트워크 오류' })
+```
+
+변형마다 색·아이콘·기본 제목이 고정됩니다 — `Success`(green ✓ "완료") · `Error`(red ✕ "오류") · `Warning`(amber ⚠ "주의") · `Info`(primary ⓘ "안내") · `Loading`(스피너, 자동으로 닫히지 않음 "처리 중").
+두 번째 인자로 Mantine `NotificationData`를 그대로 넘겨 제목·색·`autoClose`를 덮어쓸 수 있습니다.
+
+오래 걸리는 작업은 `Loading`으로 띄운 뒤 반환된 id로 결과 변형으로 **교체**합니다.
+
+```tsx
+const id = SdToast.Loading('업로드하는 중입니다…')
+try {
+  await upload(file)
+  SdToast.Update(id, 'Success', '업로드를 마쳤습니다.')
+} catch {
+  SdToast.Update(id, 'Error', '업로드에 실패했습니다.')
+}
+```
+
+`SdToast.Hide(id)`로 하나, `SdToast.Clean()`으로 전부 닫습니다.
+
+> 동작 조건 두 가지: 앱 레이아웃에 **`<SdToastProvider />`가 한 번 렌더**되어 있어야 하고, **`@mantine/notifications/styles.css`를 임포트**해야 합니다(위 설정 항목 참고). 위치·자동 닫힘·동시 표시 개수는 `SdToastProvider`가 `top-right` · 4초 · 3개로 고정하며, prop으로 덮어쓸 수 있습니다.
+
+### SdResult — 결과 화면
+
+가입 완료·결제 실패처럼 **페이지 전체가 결과**인 경우에 씁니다. 원형 아이콘 + 제목 + 설명 + 액션 버튼 구성입니다.
+
+```tsx
+'use client'
+import { SdResult } from '@yeongseoksong/framework/ui'
+
+<SdResult.Success
+  title="가입이 완료되었습니다"
+  description="입력하신 이메일로 인증 메일을 보냈습니다."
+  primaryAction={{ label: '시작하기', onClick: () => router.push('/') }}
+  secondaryAction={{ label: '홈으로', onClick: () => router.push('/') }}
+/>
+```
+
+`Success`(green ✓) / `Error`(red ✕) 두 변형이 있고, 제목은 변형별 기본값(`'완료되었습니다'` / `'문제가 발생했습니다'`)을 씁니다.
+액션은 `SdButton`이 `component` prop을 받지 못하므로 `href`가 아니라 `onClick`만 받습니다 — 라우팅은 호출부에서 처리하세요.
+주문번호 요약 같은 상세 정보는 `children`으로 넣고, 좁은 영역에 담을 때만 `mih`(기본 `'60vh'`)를 줄입니다.
+
+서버 오류(500)·404처럼 **화면 자체가 오류**인 경우는 `SdResult.Error`가 아니라 `SdErrorView`를 씁니다.
+
 ### MainLayout
 
 헤더 + 본문 + 푸터가 포함된 전체 레이아웃입니다.
@@ -584,6 +647,7 @@ import type {
 | `@mantine/core`     | ^9.2.2 |
 | `@mantine/hooks`    | ^9.2.2 |
 | `@mantine/carousel` | ^9.2.2 |
+| `@mantine/notifications` | ^9.2.2 |
 | `next`              | 16.2.2 |
 | `react`             | 19.2.4 |
 | `react-dom`         | 19.2.4 |

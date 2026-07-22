@@ -11,6 +11,7 @@ import {
   SdHeader,
   SdHeaderSimple,
   SdLoginView,
+  SdResult,
   SdStepsSection,
   SdText,
   SdTextBoxSection,
@@ -210,6 +211,36 @@ export default function OrganismCatalog() {
                   findPasswordHref="#"
                   signUpHref="#"
                   onSubmit={() => undefined}
+                />
+              </FullBleed>
+            </Variant>
+          </Stack>
+        </Showcase>
+
+        <Showcase
+          name="SdResult"
+          description="작업 결과 화면. 원형 아이콘 + 제목·설명 + 액션 버튼으로 성공/실패를 알립니다. 서버 오류·404처럼 화면 자체가 오류인 경우는 SdErrorView를 씁니다."
+          exports={['SdResultSuccess', 'SdResultError']}
+        >
+          <Stack gap="xl">
+            <Variant label="Success">
+              <FullBleed>
+                <SdResult.Success
+                  mih={420}
+                  title="가입이 완료되었습니다"
+                  description="입력하신 이메일로 인증 메일을 보냈습니다. 메일의 링크를 눌러 인증을 마쳐 주세요."
+                  primaryAction={{ label: '시작하기', onClick: () => undefined }}
+                  secondaryAction={{ label: '홈으로', onClick: () => undefined }}
+                />
+              </FullBleed>
+            </Variant>
+            <Variant label="Error">
+              <FullBleed>
+                <SdResult.Error
+                  mih={420}
+                  title="결제에 실패했습니다"
+                  description="카드사 승인이 거절되었습니다. 다른 결제 수단으로 다시 시도해 주세요."
+                  primaryAction={{ label: '다시 시도', onClick: () => undefined }}
                 />
               </FullBleed>
             </Variant>

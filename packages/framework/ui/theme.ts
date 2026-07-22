@@ -70,9 +70,23 @@ const green: MantineColorsTuple = [
   '#14532d', // 9  green-900
 ]
 
+// Semantic — Tailwind amber. SdToast.Warning · SdBadge.Warning
+const amber: MantineColorsTuple = [
+  '#fffbeb', // 0  amber-50
+  '#fef3c7', // 1  amber-100
+  '#fde68a', // 2  amber-200
+  '#fcd34d', // 3  amber-300
+  '#fbbf24', // 4  amber-400
+  '#f59e0b', // 5  amber-500
+  '#d97706', // 6  amber-600
+  '#b45309', // 7  amber-700
+  '#92400e', // 8  amber-800
+  '#78350f', // 9  amber-900
+]
+
 export const theme = createTheme({
   /* ---- Color ---- */
-  colors: { primary, secondary, slate, red, green, dark: slate },
+  colors: { primary, secondary, slate, red, green, amber, dark: slate },
   primaryColor: 'primary',
   primaryShade: { light: 6, dark: 5 },
 

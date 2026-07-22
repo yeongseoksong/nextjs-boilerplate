@@ -9,10 +9,11 @@
     "lint": "oxlint ."
   },
   "dependencies": {
+    "@mantine/carousel": "^9.4.2",
+    "@mantine/core": "^9.4.2",
+    "@mantine/hooks": "^9.4.2",
+    "@mantine/notifications": "^9.2.2",
     "@yeongseoksong/framework": "workspace:*",
-    "@mantine/carousel": "^9.2.2",
-    "@mantine/core": "^9.2.2",
-    "@mantine/hooks": "^9.2.2",
     "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4"

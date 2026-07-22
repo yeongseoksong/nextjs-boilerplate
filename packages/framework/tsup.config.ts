@@ -17,6 +17,7 @@ export default defineConfig([
       '@mantine/core',
       '@mantine/hooks',
       '@mantine/carousel',
+      '@mantine/notifications',
       '@tabler/icons-react',
       'next',
     ],

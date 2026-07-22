@@ -21,7 +21,7 @@ export const SdBadge = {
   /** 성공/완료 */
   Success: createBadge({ variant: 'light', color: 'green' }),
   /** 주의/경고 */
-  Warning: createBadge({ variant: 'light', color: 'orange' }),
+  Warning: createBadge({ variant: 'light', color: 'amber' }),
 }
 
 // Server Component에서 직접 import 가능한 개별 export.

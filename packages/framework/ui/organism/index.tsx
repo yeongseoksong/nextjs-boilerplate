@@ -13,3 +13,5 @@ export * from './StepsSection'
 export * from './ErrorView'
 
 export * from './LoginView'
+
+export * from './Result'

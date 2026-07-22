@@ -16,7 +16,8 @@ const PALETTES = [
   { name: 'secondary', note: '보조 강조' },
   { name: 'slate', note: '중립 — 텍스트·보더·배경 전반 (dark 별칭)' },
   { name: 'red', note: '위험·오류 — SdText.Error, SdButton.Delete' },
-  { name: 'green', note: '성공·확인 — SdButton.Excel' },
+  { name: 'green', note: '성공·확인 — SdButton.Excel, SdToast.Success, SdResult.Success' },
+  { name: 'amber', note: '경고 — SdBadge.Warning, SdToast.Warning' },
 ] as const
 
 /** theme의 primaryShade에서 브랜드 앵커 인덱스를 끌어온다(하드코딩하지 않는다). */

@@ -1,9 +1,10 @@
 import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
+import '@mantine/notifications/styles.css'
 import './index.css'
 import type { Metadata } from 'next'
 import { MantineProvider, ColorSchemeScript, mantineHtmlProps } from '@mantine/core'
-import { theme, MainLayout } from '@framework/ui'
+import { MainLayout, SdToastProvider } from '@framework/ui'
 import { companyInfo } from '../data'
 import { catalogNav } from './_catalog/nav'
 import { appTheme } from './theme'
@@ -28,6 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <MantineProvider theme={appTheme} defaultColorScheme="light">
+          {/* 토스트가 렌더되는 곳 — 이게 없으면 SdToast 호출이 아무 일도 하지 않는다. */}
+          <SdToastProvider />
           <MainLayout navItems={catalogNav} companyInfo={companyInfo}>
             {children}
           </MainLayout>

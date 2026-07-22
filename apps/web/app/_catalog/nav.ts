@@ -45,6 +45,7 @@ const atoms = [
   'SdQuote',
   'SdSkeleton',
   'SdModal',
+  'SdToast',
   'SdContainer',
 ]
 
@@ -72,6 +73,7 @@ const organisms = [
   'SdFooter',
   'PageLayout',
   'SdLoginView',
+  'SdResult',
   'SdErrorView',
 ]
 

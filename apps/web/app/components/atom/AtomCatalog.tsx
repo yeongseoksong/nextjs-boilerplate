@@ -18,6 +18,7 @@ import {
   SdText,
   SdTextBoxSection,
   SdTitle,
+  SdToast,
 } from '@framework/ui'
 import { ceoMessage } from '../../../data'
 import { Showcase, Variant } from '../../_catalog/Showcase'
@@ -378,6 +379,51 @@ export default function AtomCatalog() {
                 <SdText.Body>모달 본문입니다. SdModal.Body로 감싸 여백이 적용됩니다.</SdText.Body>
               </SdModal.Body>
             </SdModal>
+          </Stack>
+        </Showcase>
+
+        <Showcase
+          name="SdToast"
+          description="화면 모서리에 잠깐 떴다 사라지는 알림. 컴포넌트가 아니라 호출하는 함수이며, 레이아웃에 SdToastProvider가 한 번 놓여 있어야 동작합니다."
+          exports={[
+            'SdToastSuccess',
+            'SdToastError',
+            'SdToastWarning',
+            'SdToastInfo',
+            'SdToastLoading',
+            'SdToastUpdate',
+            'SdToastHide',
+            'SdToastClean',
+            'SdToastProvider',
+          ]}
+        >
+          <Stack gap="lg" align="flex-start">
+            <Variant label="변형 — 색·아이콘·기본 제목이 고정">
+              <Group>
+                <SdButton.Outline onClick={() => SdToast.Success('저장했습니다.')}>
+                  Success
+                </SdButton.Outline>
+                <SdButton.Outline onClick={() => SdToast.Error('저장하지 못했습니다.')}>
+                  Error
+                </SdButton.Outline>
+                <SdButton.Outline onClick={() => SdToast.Warning('되돌릴 수 없는 작업입니다.')}>
+                  Warning
+                </SdButton.Outline>
+                <SdButton.Outline onClick={() => SdToast.Info('새 버전이 배포되었습니다.')}>
+                  Info
+                </SdButton.Outline>
+              </Group>
+            </Variant>
+            <Variant label="Loading → Update — 진행 중 알림을 결과로 교체">
+              <SdButton.Outline
+                onClick={() => {
+                  const id = SdToast.Loading('업로드하는 중입니다…')
+                  setTimeout(() => SdToast.Update(id, 'Success', '업로드를 마쳤습니다.'), 2000)
+                }}
+              >
+                업로드 시작
+              </SdButton.Outline>
+            </Variant>
           </Stack>
         </Showcase>
 
