@@ -125,7 +125,7 @@ export function SdFooter({ company, navItems, policyLinks, description }: SdFoot
 
   return (
     <Box component="footer">
-      <SdContainer>
+      <SdContainer py="lg">
         <Stack>
           <Logo size="sm" />
           {description && <SdText.Sub>{description}</SdText.Sub>}
