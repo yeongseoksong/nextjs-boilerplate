@@ -26,7 +26,7 @@ pnpm --filter framework dev     # tsup --watch
 nextjs-boilerplate/
 ├── apps/web/               # 컴포넌트 카탈로그 (Next.js 16, GitHub Pages 정적 배포)
 ├── packages/framework/     # Shared UI library (private, not published)
-│   └── store/              # Zustand 스토어 — 별도 entry 없이 ui/index에서 재수출
+│   └── store/              # Zustand 스토어 — 독립 entry (@yeongseoksong/framework/store)
 ├── turbo.json              # Build task orchestration
 ├── pnpm-workspace.yaml     # Workspace roots: apps/*, packages/framework
 └── tsconfig.json           # Base TypeScript config (extended by all packages)
@@ -40,6 +40,7 @@ nextjs-boilerplate/
 
 ```
 @framework/ui    → packages/framework/ui/index.tsx
+@framework/store → packages/framework/store/index.ts
 @framework/util  → packages/framework/util/index.ts
 @framework/types → packages/framework/types/index.ts
 ```
@@ -59,7 +60,8 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 - `ui/typography.ts` — `textStyles` 토큰(fw·c·fz·style). `SdText`와 `SdLink`가 공유하는 유일한 출처이며(`SdLink.X`는 `href`가 없으면 같은 강조도의 `SdText.X`로 폴백한다 — `NavItem.href`가 선택이라 호출부의 삼항을 없애기 위함), `SdLink`는 여기에 `underline: 'never'` 같은 링크 전용 프로퍼티만 `Object.assign`으로 얹는다 (`AnchorProps`가 `TextProps`를 포함하므로 토큰 하나로 양쪽이 통한다). 변형 값 수정은 이 파일에서만.
 - `ui/surface.ts` — `brandSurface`(slate 바탕 + primary radial 광원) · `brandDotTexture`. `PageLayout.Brand` 히어로와 `SdLoginView.Split` 좌측 패널이 공유하는 어두운 브랜드 면의 유일한 출처.
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
-- `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용)
+- `ui/style.util.ts` — `toCssColor()`. Mantine 컬러 토큰("slate.4")을 `var(--mantine-color-slate-4)`로 바꾸는 헬퍼. `--mantine-color-*` 네이밍이 Mantine 규약이라 UI 레이어 전용이며, `util/`의 나머지처럼 Mantine 없이 쓸 수 있는 순수 유틸이 아니므로 `/util` 공개 경로로 내보내지 않는다. 현재 `SdLink`(hover 시 색 복원용)만 소비.
+- `util/` — 여기 있는 모든 것은 React/Mantine 없이도 동작하는 순수 함수다(공개 `/util` 경로로 나가는 것과 일치). `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `josa.util.ts` — 한글 조사 순수 유틸(`josa`/`withJosa`/`fixJosa`/`hasFinalConsonant`). 받침 판정은 한글 종성 + 숫자·알파벳 읽는 소리까지 보며, `으로/로`만 ㄹ 받침을 받침 없음처럼 다룬다. `t()`는 `fixJosa`를 자동 호출하지 **않는다** — 필요한 문자열에서만 감싼다; `finalize.util.ts` — `Finalizer`/`Finalizers`/`runFinalizers`(§State Management 참고); `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용). **새 util을 추가할 때 기준**: Mantine·DOM·React 훅 없이 쓸 수 있으면 `util/`, 그렇지 않고 특정 UI 컴포넌트만을 위한 것이면 그 컴포넌트 옆이나 `ui/*.util.ts`(현재 `style.util.ts`가 유일한 예)에 둔다.
 - `types/` — Shared interfaces only. Demo data lives in `apps/web/data/index.tsx` (the consumer owns its own content).
 
 ## State Management — Zustand
@@ -74,7 +76,9 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 
 **폼은 `useSdForm` 하나로 통일한다.** 폼마다 `useState`로 값·에러·제출중을 따로 들면 제출 처리가 조금씩 달라지므로, 검증 → 중복 제출 차단 → 전송 → 성공/실패 `SdToast` → `resetOnSuccess`/`onSuccess`/`onError` → `finalize`까지를 훅 안에 고정했다. 상태는 `formId`로 칸을 나눠 스토어에 두므로 같은 id를 쓰는 컴포넌트끼리 상태를 공유한다(마법사 단계 분리, 페이지 이동 후 입력값 복원). 입력에는 `{...form.getInputProps('name')}`, 체크박스·스위치는 `{ type: 'checkbox' }`를 넘긴다. Mantine 입력은 onChange로 **이벤트를 주는 것**(TextInput·Checkbox)과 **값을 주는 것**(Select·NumberInput·Slider·DateInput)으로 갈리는데, `readChangePayload()`가 그 차이를 흡수하므로 호출부는 어느 입력이든 같은 한 줄이다. `form.state.ts`가 `ui/atom/Toast`를 import하는 건 같은 `ui` 번들 안이라 순환이 없다.
 
-**`store/`는 별도 export 경로를 만들지 않는다.** tsup은 entry마다 모듈을 인라인 복사하므로, 스토어를 자체 entry로 두고 `ui`에서도 import하면 같은 스토어가 두 번들에 복사되어 **상태가 갈라진다** — `setCompanyName()`이 조용히 no-op이던 것과 같은 원인이다. 그래서 `ui/index.tsx`가 `export * from '../store'`로 재수출하고, 소비자는 `@yeongseoksong/framework/ui`에서 훅을 가져간다. 검증은 `dist/ui/index.mjs`에 스토어 코드가 한 번만, `dist/util`에는 0번 나오는지로 한다.
+**`store/`는 `@yeongseoksong/framework/store`라는 독립된 진입점이다** (`tsup.config.ts`에 `store/index` 별도 빌드 패스, `package.json`의 `exports["./store"]`, `apps/web/tsconfig.json`의 `@framework/store`). 소비자는 `import { useAuthStore } from '@yeongseoksong/framework/store'`로 가져간다.
+
+이게 안전한 이유는 **`ui/index.tsx`가 스토어를 재수출하지 않기 때문**이다. tsup(esbuild)은 상대 경로 import를 만나면 그 모듈을 인라인 복사한다 — 만약 `ui`가 `export * from '../store'`를 했다면 스토어 코드가 `dist/ui`와 `dist/store` 두 번들에 각각 있게 되고 `create()`도 두 번 호출되어, 소비자가 `/store`에서 가져온 스토어와 어떤 `ui` 컴포넌트가 내부에서 쓰는 스토어가 서로 다른 인스턴스가 된다 — `setCompanyName()`이 조용히 no-op이던 것과 같은 dual-bundle 모듈 상태 분열이다. 그래서 **지금 `ui/` 안의 어떤 컴포넌트도 스토어를 직접 import하지 않는다** — 이 불변식이 깨지면(예: `SdHeader`가 나중에 `useAuthStore`를 내부에서 읽도록 바뀌면) 스토어도 `ui`의 자체 entry로 다시 인라인해야 한다. `form.state.ts → ui/atom/Toast`처럼 반대 방향(store가 ui를 가져오는 것)은 문제없다 — Toast는 상태 없는 얇은 래퍼라 두 번들에 복사돼도 안전하다. 검증은 `dist/ui/index.mjs`에 `zustand`/스토어 코드가 0번, `dist/store/index.mjs`에 스토어별로 `create()`가 정확히 한 번씩 나오는지로 한다. 카탈로그(`apps/web/app/state/StateCatalog.tsx`)도 이 세 훅을 `@framework/ui`가 아니라 `@framework/store`에서 가져온다 — `Showcase`의 `from` prop이 코드 예시의 import 경로를 결정한다(기본값 `/ui`).
 
 `useAuthStore`는 `skipHydration: true`다. 자동 복원은 모듈 평가 시점에 일어나 첫 클라이언트 렌더가 이미 로그인 상태가 되는데, 서버 HTML(`output: "export"`면 빌드 시점 고정)은 항상 로그아웃이라 하이드레이션이 어긋난다. 복원은 `useAuthHydrated()`가 이펙트에서 한 번만 트리거하며, 이 훅이 `false`를 주는 동안 로그인 의존 UI는 **로그아웃 상태로** 그려야 한다. 토큰은 스토어에 넣지 않는다(`partialize`가 프로필만 저장).
 

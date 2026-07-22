@@ -1,7 +1,7 @@
 'use client'
 import { Anchor as MantineAnchor, AnchorProps, TextProps } from '@mantine/core'
 import { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react'
-import { toCssColor } from '../../util/style.util'
+import { toCssColor } from '../style.util'
 import { t } from '../../util/text.util'
 import { textStyles } from '../typography'
 import { SdText } from './Text'

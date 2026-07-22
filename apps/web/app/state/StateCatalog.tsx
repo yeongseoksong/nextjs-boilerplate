@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Box, Checkbox, Group, LoadingOverlay, Paper, SimpleGrid, Stack } from '@mantine/core'
 import {
-  formRules,
   SdBadge,
   SdButton,
   SdContainer,
@@ -13,11 +12,8 @@ import {
   SdTextBoxSection,
   SdTitle,
   SdToast,
-  useAuthHydrated,
-  useAuthStore,
-  useSdForm,
-  useUiStore,
 } from '@framework/ui'
+import { formRules, useAuthHydrated, useAuthStore, useSdForm, useUiStore } from '@framework/store'
 import { Showcase, Variant } from '../_catalog/Showcase'
 
 /** 상태 한 줄 — 라벨 + 현재 값 배지. */
@@ -385,6 +381,7 @@ export default function StateCatalog() {
           name="useAuthStore"
           description="인증 세션. 로그인 폼과 세션 패널이 같은 스토어를 공유하며, localStorage에 사용자 프로필만 저장합니다."
           exports={['useAuthStore', 'useAuthHydrated', 'AuthUser']}
+          from="@yeongseoksong/framework/store"
         >
           <AuthDemo />
         </Showcase>
@@ -393,6 +390,7 @@ export default function StateCatalog() {
           name="useSdForm"
           description="모든 폼이 공유하는 상태 + 제출 파이프라인. 검증 → 중복 제출 차단 → 전송 → 성공/실패 토스트 → 초기화까지 한 훅으로 흐릅니다. formId로 칸을 나눠 쓰므로 같은 id면 컴포넌트끼리 상태를 공유합니다."
           exports={['useSdForm', 'formRules', 'useFormStore']}
+          from="@yeongseoksong/framework/store"
         >
           <FormDemo />
         </Showcase>
@@ -401,6 +399,7 @@ export default function StateCatalog() {
           name="useUiStore"
           description="화면 간 공유가 필요한 UI 상태 — 전역 로딩 오버레이와 사이드 내비 열림 상태."
           exports={['useUiStore']}
+          from="@yeongseoksong/framework/store"
         >
           <UiDemo />
         </Showcase>

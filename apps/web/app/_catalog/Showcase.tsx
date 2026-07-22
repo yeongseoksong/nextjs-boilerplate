@@ -59,15 +59,18 @@ export function Showcase({
   name,
   description,
   exports: exportNames,
+  from = '@yeongseoksong/framework/ui',
   children,
 }: {
   name: string
   description: string
   /** 이 컴포넌트가 제공하는 flat export 이름들 */
   exports: string[]
+  /** import 출처. atom/molecule/organism은 전부 `/ui`, 스토어는 `/store`. */
+  from?: string
   children: ReactNode
 }) {
-  const code = `import {\n${exportNames.map((e) => `  ${e},`).join('\n')}\n} from "@yeongseoksong/framework/ui";`
+  const code = `import {\n${exportNames.map((e) => `  ${e},`).join('\n')}\n} from "${from}";`
 
   return (
     // id는 nav의 앵커 대상이다(`nav.ts`의 anchors()가 이 name을 그대로 참조).

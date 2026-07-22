@@ -160,3 +160,9 @@ export const PageLayout = {
   /** 히어로 없이 SdContainer + py="xl" 만 */
   Plain,
 }
+
+
+export const PageLayoutImage = PageLayout.Image
+export const PageLayoutMinimal = PageLayout.Minimal
+export const PageLayoutBrand = PageLayout.Brand
+export const PageLayoutPlain = PageLayout.Plain

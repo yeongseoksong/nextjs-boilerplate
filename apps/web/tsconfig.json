@@ -5,6 +5,7 @@
     "incremental": true,
     "paths": {
       "@framework/ui": ["../../packages/framework/ui/index.tsx"],
+      "@framework/store": ["../../packages/framework/store/index.ts"],
       "@framework/util": ["../../packages/framework/util/index.ts"],
       "@framework/types": ["../../packages/framework/types/index.ts"]
     },

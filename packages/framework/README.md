@@ -125,7 +125,8 @@ import { appTheme } from './theme'
 | 경로                             | 내용                                          |
 | -------------------------------- | --------------------------------------------- |
 | `@yeongseoksong/framework/ui`    | UI 컴포넌트 전체 + `theme` (`"use client"`)   |
-| `@yeongseoksong/framework/util`  | `t()`, `COMPANY_NAME`, `LOGO_SRC`, `LOGO_ALT` |
+| `@yeongseoksong/framework/store` | Zustand 스토어 — `useAuthStore` · `useUiStore` · `useSdForm` (`"use client"`) |
+| `@yeongseoksong/framework/util`  | `t()`, 한글 조사(`josa` · `withJosa` · `fixJosa`), `runFinalizers`, `filterAndSort`, `COMPANY_NAME`, `LOGO_SRC`, `LOGO_ALT` |
 | `@yeongseoksong/framework/types` | 공유 인터페이스                               |
 
 ---
@@ -526,11 +527,11 @@ export default function LoginPage() {
 
 ### 상태 관리 — useAuthStore / useUiStore
 
-전역 클라이언트 상태는 **Zustand** 스토어로 제공됩니다. Provider가 없으므로 어디서든 훅으로 바로 읽고 씁니다. 스토어는 별도 경로가 아니라 **`/ui`에서** 나갑니다(같은 스토어가 두 번들에 복사되어 상태가 갈라지는 것을 막기 위해서입니다).
+전역 클라이언트 상태는 **Zustand** 스토어로 **`@yeongseoksong/framework/store`** 경로에서 제공됩니다. Provider가 없으므로 어디서든 훅으로 바로 읽고 씁니다.
 
 ```tsx
 'use client'
-import { useAuthStore, useAuthHydrated } from '@yeongseoksong/framework/ui'
+import { useAuthStore, useAuthHydrated } from '@yeongseoksong/framework/store'
 
 function UserMenu() {
   const hydrated = useAuthHydrated()
@@ -575,7 +576,8 @@ const setGlobalLoading = useUiStore((s) => s.setGlobalLoading)
 
 ```tsx
 'use client'
-import { useSdForm, formRules, SdInput, SdButton } from '@yeongseoksong/framework/ui'
+import { useSdForm, formRules } from '@yeongseoksong/framework/store'
+import { SdInput, SdButton } from '@yeongseoksong/framework/ui'
 
 function ContactForm() {
   const form = useSdForm({
@@ -752,6 +754,32 @@ t('%c에 오신 것을 환영합니다') // → '내 회사에 오신 것을 환
 ```
 
 `SdText`/`SdTitle`은 문자열 children에 `t()`를 자동으로 적용하므로 직접 호출할 일은 드뭅니다.
+
+### 한글 조사 — josa / withJosa / fixJosa
+
+회사명·사용자 이름·품목명처럼 **런타임에 정해지는 값** 뒤에 조사가 붙을 때, 받침에 맞는 형태를 골라 줍니다. React·DOM에 의존하지 않는 순수 함수라 서버·클라이언트 어디서든 씁니다.
+
+```ts
+import { josa, withJosa, fixJosa, hasFinalConsonant } from '@yeongseoksong/framework/util'
+
+josa('가나전자', '은/는') // '는'
+josa('한빛', '은/는') // '은'
+withJosa('한빛', '을/를') // '한빛을'
+hasFinalConsonant('수박') // true
+```
+
+지원 쌍: `은/는` `이/가` `을/를` `과/와` `으로/로` `아/야` `이라/라` `이나/나` `이란/란` `이여/여`. 표기는 항상 **'받침 있을 때/없을 때'** 순서입니다.
+
+판단 기준은 마지막 소리입니다 — 한글 음절은 종성으로, **숫자는 읽는 소리로**(`3` 삼 → 받침 있음, `2` 이 → 없음), **알파벳도 읽는 소리로**(`URL`의 L=엘 → 받침 있음, `API`의 I=아이 → 없음) 봅니다. 괄호·문장부호로 끝나면 그 앞의 실제 글자까지 거슬러 올라갑니다(`가나(주)` → '주' 기준). `으로/로`만 예외로 **ㄹ 받침을 받침 없음처럼** 다룹니다(`서울로`, `7로`).
+
+원고에 두 형태를 병기해 두고 마지막에 한 번 정리하는 방식도 됩니다.
+
+```ts
+fixJosa(t('%c은(는) 이렇게 일합니다')) // → '가나전자는 이렇게 일합니다'
+fixJosa('서울(으)로 이전했습니다') // → '서울로 이전했습니다'
+```
+
+`은(는)` `이(가)` `을(를)` `과(와)`(역순 표기 포함)와 `(으)로` `(이)라` `(이)나` `(이)란` `(이)여`를 알아봅니다. 그 외의 괄호(`(주)가나`)는 건드리지 않습니다. `t()`는 `fixJosa`를 자동으로 부르지 **않습니다** — 필요한 문자열에서만 감싸 쓰세요.
 
 > `setCompanyName()`은 **deprecated이며 2.0.0에서 제거됩니다.** tsup이 `ui`와 `util`을 별개 번들로 빌드하면서 `text.util`이 `dist/ui`에 인라인 복사되기 때문에, 이 함수로 값을 바꿔도 `t()`를 실제로 호출하는 `SdText`/`SdTitle`은 다른 사본을 읽습니다. 즉 처음부터 동작하지 않았습니다. 환경변수는 번들러가 양쪽 번들에 동일한 리터럴을 박아넣으므로 이 문제가 없습니다.
 

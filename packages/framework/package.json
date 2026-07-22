@@ -19,6 +19,16 @@
         "default": "./dist/ui/index.cjs"
       }
     },
+    "./store": {
+      "import": {
+        "types": "./dist/store/index.d.mts",
+        "default": "./dist/store/index.mjs"
+      },
+      "require": {
+        "types": "./dist/store/index.d.ts",
+        "default": "./dist/store/index.cjs"
+      }
+    },
     "./util": {
       "import": {
         "types": "./dist/util/index.d.mts",

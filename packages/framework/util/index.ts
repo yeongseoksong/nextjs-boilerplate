@@ -1,5 +1,5 @@
 export * from './env.util'
 export * from './text.util'
-export * from './style.util'
 export * from './sort.util'
 export * from './finalize.util'
+export * from './josa.util'
