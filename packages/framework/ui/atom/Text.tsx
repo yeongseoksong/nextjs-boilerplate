@@ -1,6 +1,7 @@
 import { Text as MantineText, TextProps } from '@mantine/core'
 import { ReactNode } from 'react'
 import { t } from '../../util/text.util'
+import { textStyles } from '../typography'
 
 type Props = TextProps & { children?: ReactNode }
 
@@ -16,24 +17,15 @@ function createText(defaults: TextProps) {
   }
 }
 
+// 값은 ui/typography.ts의 공용 토큰에서 온다 (SdLink와 공유).
 export const SdText = {
-  Strong: createText({ fw: 700, c: 'slate.9', fz: 'md', style: { letterSpacing: '-0.04em' } }),
-  Body: createText({ fw: 400, c: 'slate.7', fz: 'md', lh: 1.7 }),
-  Sub: createText({ fw: 400, c: 'slate.5', fz: 'xs', lh: 1.6 }),
-  Eyebrow: createText({
-    fw: 700,
-    c: 'primary.6',
-    fz: 'xs',
-    style: { letterSpacing: '0.12em', textTransform: 'uppercase' },
-  }),
-  Error: createText({ fw: 400, c: 'red.6', fz: 'sm' }),
-  Hint: createText({ fw: 400, c: 'slate.4', fz: 'xs', lh: 1.5 }),
-  Numeric: createText({
-    fw: 700,
-    c: 'slate.8',
-    fz: 'md',
-    style: { fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em' },
-  }),
+  Strong: createText(textStyles.Strong),
+  Body: createText(textStyles.Body),
+  Sub: createText(textStyles.Sub),
+  Eyebrow: createText(textStyles.Eyebrow),
+  Error: createText(textStyles.Error),
+  Hint: createText(textStyles.Hint),
+  Numeric: createText(textStyles.Numeric),
 }
 
 // Server Component에서 직접 import 가능한 개별 export.

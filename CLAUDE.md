@@ -55,6 +55,7 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 - `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
 - `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운, 모바일은 둘 다 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
+- `ui/typography.ts` — `textStyles` 토큰(fw·c·fz·style). `SdText`와 `SdLink`가 공유하는 유일한 출처이며(`SdLink.X`는 `href`가 없으면 같은 강조도의 `SdText.X`로 폴백한다 — `NavItem.href`가 선택이라 호출부의 삼항을 없애기 위함), `SdLink`는 여기에 `underline: 'never'` 같은 링크 전용 프로퍼티만 `Object.assign`으로 얹는다 (`AnchorProps`가 `TextProps`를 포함하므로 토큰 하나로 양쪽이 통한다). 변형 값 수정은 이 파일에서만.
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
 - `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용)
 - `types/` — Shared interfaces only. Demo data lives in `apps/web/data/index.tsx` (the consumer owns its own content).
@@ -234,7 +235,7 @@ Every variant therefore has a flat `Sd<Namespace><Variant>` export alongside the
 | Variant | fw  | c         | fz  | Notes                      |
 | ------- | --- | --------- | --- | -------------------------- |
 | Strong  | 700 | slate.9   | md  | lts: -0.04em               |
-| Body    | 400 | slate.7   | md  | lh: 1.7                    |
+| Body    | 500 | slate.7   | sm  | lh: 1.7                    |
 | Sub     | 400 | slate.5   | xs  | lh: 1.6                    |
 | Eyebrow | 700 | primary.6 | xs  | uppercase, lts: 0.12em     |
 | Numeric | 700 | slate.8   | md  | tabular-nums, lts: -0.04em |
@@ -260,6 +261,7 @@ Both `SdText` and `SdTitle` variants automatically apply `t()` to their children
 
 All colors originate from:
 
+0. `ui/typography.ts`의 `textStyles` (SdText · SdLink 공용)
 1. `SdText`/`SdTitle` variant defaults
 2. Mantine component defaults in `theme.ts` (e.g., `Anchor → primary.6`)
 

@@ -22,6 +22,10 @@ export const navItems: NavItem[] = [
   { id: 5, order: 5, isShow: true, label: '기타테스트', href: '/solutions/detail' },
   { id: 15, order: 1, isShow: true, label: '기타테스트', href: '/solutions/detail', parentId: 5 },
   { id: 16, order: 2, isShow: true, label: '기타테스트', href: '/solutions/detail', parentId: 5 },
+  // href 없는 상위 항목 — 링크가 아니라 그룹 제목으로 렌더된다(SdLink가 SdText로 폴백).
+  { id: 7, order: 7, isShow: true, label: '고객지원' },
+  { id: 71, order: 1, isShow: true, label: '공지사항', href: '/support/notice', parentId: 7 },
+  { id: 72, order: 2, isShow: true, label: '문의하기', href: '/support/contact', parentId: 7 },
   { id: 6, order: 6, isShow: true, label: '요금제', href: '/pricing' },
 ]
 

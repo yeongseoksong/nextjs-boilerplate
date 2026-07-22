@@ -151,15 +151,25 @@ export default function AtomCatalog() {
 
         <Showcase
           name="SdLink"
-          description="앵커 표준. hover 시 primary.6으로 전환되며, 쓰이는 위치가 아니라 강조도(Strong→Hint)로 variant를 고릅니다."
+          description="앵커 표준. hover 시 primary.6으로 전환되며, 쓰이는 위치가 아니라 강조도(Strong→Hint)로 variant를 고릅니다. 타이포 값은 ui/typography.ts의 토큰을 SdText와 공유합니다."
           exports={['SdLinkStrong', 'SdLinkBody', 'SdLinkSub', 'SdLinkHint']}
         >
-          <Group gap="xl">
-            <SdLink.Strong href="#">강조 링크</SdLink.Strong>
-            <SdLink.Body href="#">기본 링크</SdLink.Body>
-            <SdLink.Sub href="#">보조 링크</SdLink.Sub>
-            <SdLink.Hint href="#">최소 강조 링크</SdLink.Hint>
-          </Group>
+          <Stack gap="lg">
+            <Group gap="xl">
+              <SdLink.Strong href="#">강조 링크</SdLink.Strong>
+              <SdLink.Body href="#">기본 링크</SdLink.Body>
+              <SdLink.Sub href="#">보조 링크</SdLink.Sub>
+              <SdLink.Hint href="#">최소 강조 링크</SdLink.Hint>
+            </Group>
+            <Variant label="href 없음 — 같은 강조도의 SdText로 폴백 (죽은 앵커를 만들지 않음)">
+              <Group gap="xl">
+                <SdLink.Strong>강조 링크</SdLink.Strong>
+                <SdLink.Body>기본 링크</SdLink.Body>
+                <SdLink.Sub>보조 링크</SdLink.Sub>
+                <SdLink.Hint>최소 강조 링크</SdLink.Hint>
+              </Group>
+            </Variant>
+          </Stack>
         </Showcase>
 
         <Showcase

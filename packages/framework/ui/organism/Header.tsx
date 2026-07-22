@@ -4,7 +4,6 @@ import { SdContainer } from '../atom/Container'
 import { Logo } from '../atom/Logo'
 import { SdButton } from '../atom/Button'
 import { SdLink } from '../atom/Link'
-import { SdText } from '../atom/Text'
 import { IconChevronDown } from '@tabler/icons-react'
 import { useDisclosure, useFocusWithin, useHover, useMergedRef } from '@mantine/hooks'
 import { NavItem } from '../../types'
@@ -59,6 +58,8 @@ function MobileNav({ opened, close, topItems, childrenOf, loginFlag }: MobileNav
             <NavLink
               key={item.id}
               label={item.label}
+              /* href 없는 상위 항목은 아코디언 토글 전용 — <a href> 없이는 포커스가 안 잡힌다. */
+              component={item.href ? 'a' : 'button'}
               href={item.href}
               childrenOffset={28}
               onClick={kids.length > 0 ? undefined : close}
@@ -126,11 +127,8 @@ function MegaHeader({ navItems, loginFlag }: HeaderProps) {
                 return (
                   <Stack key={item.id} gap={0} align="center">
                     <Group h={BAR_HEIGHT} align="center">
-                      {item.href ? (
-                        <SdLink.Body href={item.href}>{item.label}</SdLink.Body>
-                      ) : (
-                        <SdText.Strong>{item.label}</SdText.Strong>
-                      )}
+                      {/* href가 없는 상위 항목은 SdLink.Body가 SdText.Body로 폴백한다. */}
+                      <SdLink.Body href={item.href}>{item.label}</SdLink.Body>
                     </Group>
                     {kids.length > 0 && (
                       /*
@@ -209,13 +207,12 @@ function SimpleHeader({ navItems, loginFlag }: HeaderProps) {
               {topItems.map((item) => {
                 const kids = childrenOf(item.id)
 
+                // SdLink.Body는 href가 없으면 SdText.Body로 폴백한다.
                 if (kids.length === 0) {
-                  return item.href ? (
+                  return (
                     <SdLink.Body key={item.id} href={item.href}>
                       {item.label}
                     </SdLink.Body>
-                  ) : (
-                    <SdText.Strong key={item.id}>{item.label}</SdText.Strong>
                   )
                 }
 
@@ -239,22 +236,23 @@ function SimpleHeader({ navItems, loginFlag }: HeaderProps) {
                     <Menu.Target>
                       <Box style={{ cursor: 'pointer' }}>
                         <Group gap={4} align="center" wrap="nowrap">
-                          {item.href ? (
-                            <SdLink.Body href={item.href}>{item.label}</SdLink.Body>
-                          ) : (
-                            <SdText.Strong>{item.label}</SdText.Strong>
-                          )}
+                          <SdLink.Body href={item.href}>{item.label}</SdLink.Body>
                           <IconChevronDown size={14} stroke={2} />
                         </Group>
                       </Box>
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                      {kids.map((kid) => (
-                        <Menu.Item key={kid.id} component="a" href={kid.href}>
-                          {kid.label}
-                        </Menu.Item>
-                      ))}
+                      {/* href 없는 자식은 <a>가 아니라 비활성 항목으로 — 죽은 링크를 만들지 않는다. */}
+                      {kids.map((kid) =>
+                        kid.href ? (
+                          <Menu.Item key={kid.id} component="a" href={kid.href}>
+                            {kid.label}
+                          </Menu.Item>
+                        ) : (
+                          <Menu.Label key={kid.id}>{kid.label}</Menu.Label>
+                        ),
+                      )}
                     </Menu.Dropdown>
                   </Menu>
                 )

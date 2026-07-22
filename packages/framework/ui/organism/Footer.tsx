@@ -33,7 +33,7 @@ function FooterNavColumns({ items }: { items: NavItem[] }) {
       {topLevel.map((group) => (
         <Grid.Col key={group.id} span={{ base: 6, sm: 4, md: 'auto' }}>
           <Stack gap="xs">
-            <SdText.Sub>{group.label}</SdText.Sub>
+            <SdLink.Sub>{group.label}</SdLink.Sub>
             {getChildren(group.id).map((link,id) => {
               if (id >= CHILD_THRESH ) return
               return <SdLink.Hint key={link.id} href={link.href}>
@@ -155,7 +155,7 @@ export function SdFooter({ company, navItems, policyLinks, description }: SdFoot
               {visiblePolicy.length > 0 && (
                 <Group gap="lg">
                   {visiblePolicy.map((item) => {
-                    const Link = item.highlight ? SdLink.Strong : SdLink.Sub
+                    const Link = item.highlight ? SdLink.Body : SdLink.Sub
                     return (
                       <Link key={item.id} href={item.href}>
                         {item.label}
