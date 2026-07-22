@@ -10,6 +10,7 @@ import {
   SdFooter,
   SdHeader,
   SdHeaderSimple,
+  SdLoginView,
   SdStepsSection,
   SdText,
   SdTextBoxSection,
@@ -180,6 +181,36 @@ export default function OrganismCatalog() {
                 <PageLayout.Plain>
                   <SdText.Body>히어로 없이 SdContainer만 감쌉니다.</SdText.Body>
                 </PageLayout.Plain>
+              </FullBleed>
+            </Variant>
+          </Stack>
+        </Showcase>
+
+        <Showcase
+          name="SdLoginView"
+          description="로그인 화면. 이메일·비밀번호·자동 로그인·비밀번호 찾기·회원가입 링크에 소셜 로그인 슬롯까지 묶은 표준 폼입니다. 폼은 비제어(FormData)라 onSubmit으로 { email, password, remember }를 그대로 받습니다."
+          exports={['SdLoginViewCard', 'SdLoginViewSplit']}
+        >
+          <Stack gap="xl">
+            <Variant label="Card(기본) — 중앙 정렬 카드">
+              <FullBleed>
+                <SdLoginView.Card
+                  mih={640}
+                  findPasswordHref="#"
+                  signUpHref="#"
+                  socials={[{ provider: 'google' }, { provider: 'kakao' }]}
+                  onSubmit={() => undefined}
+                />
+              </FullBleed>
+            </Variant>
+            <Variant label="Split — 좌측 브랜드 패널 + 우측 폼 (md 이상)">
+              <FullBleed>
+                <SdLoginView.Split
+                  mih={560}
+                  findPasswordHref="#"
+                  signUpHref="#"
+                  onSubmit={() => undefined}
+                />
               </FullBleed>
             </Variant>
           </Stack>

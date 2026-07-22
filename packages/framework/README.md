@@ -162,6 +162,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdClients`      | `SdClientsGrid` `SdClientsMarquee`                                                                                                                                            |
 | `SdMap`          | `SdMapSingle` `SdMapTabs`                                                                                                                                                     |
 | `SdErrorView`    | `SdErrorViewPage` `SdErrorViewNotFound`                                                                                                                                       |
+| `SdLoginView`    | `SdLoginViewCard` `SdLoginViewSplit`                                                                                                                                          |
 | `SdHeader`       | `SdHeaderMega` `SdHeaderSimple` (`SdHeader` 자체는 `Mega`와 동일)                                                                                                             |
 
 **클라이언트 컴포넌트에서는 네임스페이스 형태(`SdText.Body`)를 그대로 써도 됩니다.** `SdModal`은 `opened`/`onClose` 상태가 필요해 애초에 클라이언트 전용이므로 flat export가 없습니다.
@@ -482,6 +483,37 @@ const policyLinks: NavItem[] = [
 `navItems`는 같은 `parentId` 구조로 푸터 링크 컬럼도 만들고, 구분선 아래 하단 바에 카피라이트 · `policyLinks` · `company.socials` 아이콘이 놓입니다.
 `socials.platform`은 `x | youtube | instagram | facebook | linkedin | github | blog`를 지원합니다.
 
+### SdLoginView
+
+로그인 화면 전체를 담당하는 organism입니다. `Card`(중앙 정렬 카드, 기본)와 `Split`(좌측 브랜드 패널 + 우측 폼) 두 변형이 있습니다.
+
+```tsx
+'use client'
+import { SdLoginView } from '@yeongseoksong/framework/ui'
+
+export default function LoginPage() {
+  return (
+    <SdLoginView.Card
+      findPasswordHref="/find-password"
+      signUpHref="/signup"
+      socials={[
+        { provider: 'google', onClick: () => signIn('google') },
+        { provider: 'kakao', onClick: () => signIn('kakao') },
+      ]}
+      onSubmit={({ email, password, remember }) => login(email, password, remember)}
+    />
+  )
+}
+```
+
+폼은 **비제어**(`FormData` 기반)입니다 — `@mantine/form`을 의존성으로 들이지 않고도 `onSubmit`이 `{ email, password, remember }`를 그대로 넘겨주므로, 인증 호출과 검증은 소비자가 담당합니다.
+`loading`으로 제출 버튼의 로딩 상태를, `error`로 폼 상단 오류 메시지를 제어합니다. `withRemember={false}`면 자동 로그인 체크박스가 사라지고, `findPasswordHref`/`signUpHref`/`socials`는 넘기지 않으면 해당 영역(구분선 포함)이 렌더되지 않습니다. 폼 아래 약관 안내 같은 추가 내용은 `children`으로 넣습니다.
+
+`socials[].provider`는 `google | kakao | naver | apple | github`을 지원하며, 아이콘과 기본 라벨("구글로 로그인" 등)이 함께 고정됩니다. `label`로 라벨만 덮어쓸 수 있습니다.
+
+`Split`은 `brandTitle`/`brandDescription`으로 좌측 패널 문구를 받고(기본값 `%c`), 브랜드 면은 `PageLayout.Brand` 히어로와 같은 배경(`ui/surface.ts`)을 씁니다. 좌측 패널은 `md` 미만에서 숨겨져 폼만 남습니다.
+전체 화면이 기본(`mih="100svh"`)이므로, 좁은 영역에 끼워 넣을 때만 `mih`를 줄입니다.
+
 ### MainLayout
 
 헤더 + 본문 + 푸터가 포함된 전체 레이아웃입니다.
@@ -496,6 +528,14 @@ export default function Page() {
     </MainLayout>
   )
 }
+```
+
+`headerVariant`로 어떤 헤더를 쓸지 고릅니다 — `mega`(기본, hover 시 확장되는 메가 메뉴) 또는 `simple`(바 높이 고정 + 항목별 드롭다운).
+
+```tsx
+<MainLayout navItems={navItems} companyInfo={company} headerVariant="simple" loginFlag>
+  <main>페이지 내용</main>
+</MainLayout>
 ```
 
 ### t() — 회사명 치환

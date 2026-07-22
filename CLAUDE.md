@@ -53,9 +53,10 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 
 - `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`, `SdLink`
 - `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
-- `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운, 모바일은 둘 다 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`
+- `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운, 모바일은 둘 다 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`, `SdLoginView`(`Card` 중앙 카드 / `Split` 좌측 브랜드 패널 + 우측 폼 — 비제어 폼이라 `onSubmit`이 `{ email, password, remember }`를 넘긴다)
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
 - `ui/typography.ts` — `textStyles` 토큰(fw·c·fz·style). `SdText`와 `SdLink`가 공유하는 유일한 출처이며(`SdLink.X`는 `href`가 없으면 같은 강조도의 `SdText.X`로 폴백한다 — `NavItem.href`가 선택이라 호출부의 삼항을 없애기 위함), `SdLink`는 여기에 `underline: 'never'` 같은 링크 전용 프로퍼티만 `Object.assign`으로 얹는다 (`AnchorProps`가 `TextProps`를 포함하므로 토큰 하나로 양쪽이 통한다). 변형 값 수정은 이 파일에서만.
+- `ui/surface.ts` — `brandSurface`(slate 바탕 + primary radial 광원) · `brandDotTexture`. `PageLayout.Brand` 히어로와 `SdLoginView.Split` 좌측 패널이 공유하는 어두운 브랜드 면의 유일한 출처.
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
 - `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용)
 - `types/` — Shared interfaces only. Demo data lives in `apps/web/data/index.tsx` (the consumer owns its own content).
@@ -76,7 +77,7 @@ Env vars also sidestep the dual-bundle problem that made the old `setCompanyName
 
 Access must be the full `process.env.NEXT_PUBLIC_X` expression — destructuring defeats static replacement. `env.util.ts` declares a module-scoped `process` type rather than depending on `@types/node`, which would pull Node globals into a browser-targeted library.
 
-Array/object config (`navItems`, `companyInfo`) cannot go in env vars and stays as props on `MainLayout`.
+Array/object config (`navItems`, `companyInfo`) cannot go in env vars and stays as props on `MainLayout`. 헤더 변형도 `MainLayout`의 `headerVariant?: 'mega' | 'simple'` prop으로 고른다 (기본 `mega`) — `MainLayout`이 `"use client"`이므로 내부에서 `SdHeader.Mega`/`.Simple` dot 접근이 안전하다.
 
 색상은 env var이 아니라 **테마 오버라이드**로 주입한다. `theme`은 `createTheme()`의 `MantineThemeOverride`이므로 소비자가 `mergeThemeOverrides(theme, { colors: { primary: [...] } })`로 합친다. 이 merge는 반드시 소비자의 `"use client"` 모듈에서 해야 한다 — 서버 컴포넌트는 `theme`을 prop으로 **넘길** 수는 있어도 client reference proxy라 **읽을** 수 없다. 컴포넌트가 의존하는 키는 `primary`/`secondary`/`slate`/`red`/`green`이며, 키를 제거하면 Mantine 기본 팔레트로 폴백한다.
 
@@ -193,6 +194,7 @@ The same pattern applies to:
 | `SdClients`      | Grid / Marquee                                                                                                  |
 | `SdMap`          | Single / Tabs                                                                                                   |
 | `SdErrorView`    | Page / NotFound                                                                                                 |
+| `SdLoginView`    | Card(= default) / Split                                                                                         |
 | `SdHeader`       | Mega(= default) / Simple                                                                                        |
 
 All UI components are Client Components — tsup adds `"use client"` banner to the UI bundle only.

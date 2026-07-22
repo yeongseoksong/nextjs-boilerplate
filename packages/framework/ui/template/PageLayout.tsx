@@ -3,6 +3,7 @@ import { SdContainer } from '../atom/Container'
 import { ReactNode } from 'react'
 import { SdTextBox } from '../molecule/TextBox'
 import { SdText } from '../atom/Text'
+import { brandDotTexture, brandSurface } from '../surface'
 
 interface PageHeroBaseProps {
   label?: ReactNode
@@ -130,28 +131,14 @@ function Brand({ label, title, description, children }: PageHeroBaseProps) {
           borderBottom: '1px solid var(--mantine-color-slate-8)',
           /*
             대각선 그라디언트 한 줄 대신, 어두운 slate 바탕 위에 primary 광원 두 개를
-            radial로 얹는다. 배너보다 조명에 가까워 톤이 차분하고, primary 팔레트를
-            갈아끼워도 무너지지 않는다.
+            radial로 얹는다. 배너보다 조명에 가까워 톤이 차분하다.
+            값은 ui/surface.ts — SdLoginView.Split의 좌측 패널과 공유한다.
           */
-          background: `
-            radial-gradient(90% 120% at 12% 0%, var(--mantine-color-primary-7) 0%, transparent 58%),
-            radial-gradient(70% 100% at 100% 100%, var(--mantine-color-primary-9) 0%, transparent 55%),
-            var(--mantine-color-slate-9)`,
+          ...brandSurface,
         }}
       >
         {/* 도트 텍스처 — 아래로 갈수록 사라져 텍스트 가독성을 해치지 않는다. */}
-        <Box
-          aria-hidden
-          pos="absolute"
-          inset={0}
-          style={{
-            backgroundImage: 'radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px)',
-            backgroundSize: '18px 18px',
-            maskImage: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 70%)',
-            WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
+        <Box aria-hidden pos="absolute" inset={0} style={brandDotTexture} />
         <SdContainer pos="relative" py={HERO_PY} style={{ zIndex: 1, width: '100%' }}>
           <HeroCopy label={label} title={title} description={description} />
         </SdContainer>

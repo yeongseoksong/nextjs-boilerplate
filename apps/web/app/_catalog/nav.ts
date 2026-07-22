@@ -71,6 +71,7 @@ const organisms = [
   'SdHeader',
   'SdFooter',
   'PageLayout',
+  'SdLoginView',
   'SdErrorView',
 ]
 

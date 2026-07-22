@@ -16,6 +16,7 @@ import { SdLink, SdText } from '../atom'
 import { Logo } from '../atom/Logo'
 import { CompanyInfo, NavItem, SocialItem, SocialPlatform } from '../../types'
 import { filterAndSort } from '../../util/sort.util'
+import { t } from '../../util'
 
 interface SdFooterProps {
   company: CompanyInfo
@@ -33,7 +34,7 @@ function FooterNavColumns({ items }: { items: NavItem[] }) {
       {topLevel.map((group) => (
         <Grid.Col key={group.id} span={{ base: 6, sm: 4, md: 'auto' }}>
           <Stack gap="xs">
-            <SdLink.Sub>{group.label}</SdLink.Sub>
+            <SdLink.Sub key={group.id} href={group.href}>{group.label}</SdLink.Sub>
             {getChildren(group.id).map((link,id) => {
               if (id >= CHILD_THRESH ) return
               return <SdLink.Hint key={link.id} href={link.href}>
@@ -149,7 +150,7 @@ export function SdFooter({ company, navItems, policyLinks, description }: SdFoot
           {/* Bottom bar */}
           <Group justify="space-between" wrap="wrap" gap="xs">
             <SdText.Sub>
-              © {company.copyrightYear} {company.name}. All rights reserved.
+              © {company.copyrightYear} {t(company.name)}. All rights reserved.
             </SdText.Sub>
             <Group gap="lg" wrap="wrap">
               {visiblePolicy.length > 0 && (
