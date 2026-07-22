@@ -1,8 +1,8 @@
-import { Box, Divider, Space, Stack } from '@mantine/core'
+import { Box, Divider, Group, Space, Stack } from '@mantine/core'
 import { SdContainer } from '../atom/Container'
 import { ReactNode } from 'react'
 import { SdTextBox } from '../molecule/TextBox'
-import { ST } from 'next/dist/shared/lib/utils'
+import { SdText } from '../atom/Text'
 
 interface PageHeroBaseProps {
   label?: ReactNode
@@ -14,6 +14,11 @@ interface PageHeroBaseProps {
 interface WithImageProps extends PageHeroBaseProps {
   image?: string
 }
+
+/** 히어로 최소 높이 · 세로 여백. Image/Brand가 같은 리듬을 갖도록 한 곳에서 관리한다. */
+const HERO_MIN_H = '38svh'
+const HERO_PY = { base: 56, sm: 88 }
+const HERO_MAW = 680
 
 function Content({ children }: { children: ReactNode }) {
   return (
@@ -29,13 +34,11 @@ function LayoutGap() {
 
 function Minimal({ label, title, description, children }: PageHeroBaseProps) {
   return (
-    <>
-      <Plain>
-        <SdTextBox.Section label={label} title={title} description={description ?? ''} />
-        <Divider />
-        {children}
-      </Plain>
-    </>
+    <Plain>
+      <SdTextBox.Section label={label} title={title} description={description ?? ''} />
+      <Divider />
+      {children}
+    </Plain>
   )
 }
 
@@ -48,52 +51,64 @@ function Plain({ children }: { children: ReactNode }) {
   )
 }
 
-/* Image — 이미지 배경 + frosted glass 카드 */
+/**
+ * 어두운 히어로 위의 텍스트 블록. Image/Brand 공용.
+ *
+ * SdTextBox의 `label`을 쓰지 않고 eyebrow를 직접 렌더한다 — SdText.Eyebrow의 기본
+ * primary.6은 어두운 배경에서 대비가 부족해서, 여기서만 밝은 톤으로 올린다.
+ */
+function HeroCopy({ label, title, description }: Omit<PageHeroBaseProps, 'children'>) {
+  return (
+    <Stack gap="md" maw={HERO_MAW}>
+      {label && (
+        <Group gap="sm" align="center" wrap="nowrap">
+          <Box w={28} h={2} bg="primary.3" style={{ borderRadius: 2 }} />
+          <SdText.Eyebrow c="primary.1">{label}</SdText.Eyebrow>
+        </Group>
+      )}
+      <SdTextBox.Hero
+        title={title}
+        description={description}
+        gap="sm"
+        maxDescWidth={560}
+        ta="left"
+        align="flex-start"
+      />
+    </Stack>
+  )
+}
+
+/* Image — 사진 배경 + 아래로 짙어지는 스크림 + 좌측 정렬 텍스트 */
 function Image({ image, label, title, description, children }: WithImageProps) {
   return (
     <>
       <Box
+        pos="relative"
         style={{
-          position: 'relative',
-          minHeight: '30svh',
+          minHeight: HERO_MIN_H,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           backgroundImage: image ? `url(${image})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundColor: 'var(--mantine-color-slate-9)',
         }}
       >
-        {/* 전체 어둠 스크림 */}
+        {/*
+          균일한 검정 오버레이 대신 위→아래로 짙어지는 스크림.
+          사진은 위쪽에서 살아 있고, 텍스트가 놓이는 아래쪽에서만 대비를 확보한다.
+        */}
         <Box
+          aria-hidden
+          pos="absolute"
+          inset={0}
           style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.55)',
+            background:
+              'linear-gradient(180deg, rgba(15,23,42,0.25) 0%, rgba(15,23,42,0.72) 62%, rgba(15,23,42,0.94) 100%)',
           }}
         />
-        <SdContainer style={{ position: 'relative', zIndex: 1, width: '100%' }}>
-          {/* frosted glass 카드 */}
-          <Box
-            py={48}
-            px={40}
-            maw={420}
-            style={{
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              background: 'rgba(255,255,255,0.10)',
-              borderRadius: 'var(--mantine-radius-md)',
-              border: '1px solid rgba(255,255,255,0.18)',
-            }}
-          >
-            <SdTextBox.Hero
-              label={label}
-              title={title}
-              description={description}
-              ta="left"
-              align="flex-start"
-            />
-          </Box>
+        <SdContainer pos="relative" py={HERO_PY} style={{ zIndex: 1, width: '100%' }}>
+          <HeroCopy label={label} title={title} description={description} />
         </SdContainer>
       </Box>
       <Content>{children}</Content>
@@ -101,57 +116,44 @@ function Image({ image, label, title, description, children }: WithImageProps) {
   )
 }
 
-/* Brand — primary 그라디언트 배경 + 중앙 텍스트 + 장식 원 */
+/* Brand — slate 바탕에 primary 라이트 + 도트 텍스처 */
 function Brand({ label, title, description, children }: PageHeroBaseProps) {
   return (
     <>
       <Box
+        pos="relative"
         style={{
-          position: 'relative',
-          minHeight: '40svh',
+          minHeight: HERO_MIN_H,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           overflow: 'hidden',
-          background:
-            'linear-gradient(135deg, var(--mantine-color-primary-8) 0%, var(--mantine-color-primary-6) 50%, var(--mantine-color-primary-4) 100%)',
+          borderBottom: '1px solid var(--mantine-color-slate-8)',
+          /*
+            대각선 그라디언트 한 줄 대신, 어두운 slate 바탕 위에 primary 광원 두 개를
+            radial로 얹는다. 배너보다 조명에 가까워 톤이 차분하고, primary 팔레트를
+            갈아끼워도 무너지지 않는다.
+          */
+          background: `
+            radial-gradient(90% 120% at 12% 0%, var(--mantine-color-primary-7) 0%, transparent 58%),
+            radial-gradient(70% 100% at 100% 100%, var(--mantine-color-primary-9) 0%, transparent 55%),
+            var(--mantine-color-slate-9)`,
         }}
       >
+        {/* 도트 텍스처 — 아래로 갈수록 사라져 텍스트 가독성을 해치지 않는다. */}
         <Box
+          aria-hidden
+          pos="absolute"
+          inset={0}
           style={{
-            position: 'absolute',
-            top: -80,
-            right: -80,
-            width: 360,
-            height: 360,
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.06)',
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px)',
+            backgroundSize: '18px 18px',
+            maskImage: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 70%)',
+            WebkitMaskImage: 'linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 70%)',
             pointerEvents: 'none',
           }}
         />
-        <Box
-          style={{
-            position: 'absolute',
-            bottom: -60,
-            left: -60,
-            width: 240,
-            height: 240,
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.04)',
-            pointerEvents: 'none',
-          }}
-        />
-        <SdContainer style={{ position: 'relative', zIndex: 1, width: '100%' }}>
-          <SdTextBox.Hero
-            label={label}
-            title={title}
-            description={description}
-            ta="center"
-            align="center"
-            maw={640}
-            mx="auto"
-            pt={80}
-            pb={64}
-          />
+        <SdContainer pos="relative" py={HERO_PY} style={{ zIndex: 1, width: '100%' }}>
+          <HeroCopy label={label} title={title} description={description} />
         </SdContainer>
       </Box>
       <Content>{children}</Content>
@@ -162,11 +164,11 @@ function Brand({ label, title, description, children }: PageHeroBaseProps) {
 /* Plain — 히어로 없이 SdContainer만 */
 
 export const PageLayout = {
-  /** 이미지 배경 + 대각선 그라디언트 + 좌하단 텍스트 */
+  /** 사진 배경 + 하단 스크림 + 좌측 정렬 텍스트 */
   Image,
   /** SdTextBox.Section 타이틀 + Plain 컨테이너 */
   Minimal,
-  /** primary 그라디언트 배경 + 중앙 텍스트 */
+  /** slate 바탕 + primary 라이트 + 도트 텍스처 */
   Brand,
   /** 히어로 없이 SdContainer + py="xl" 만 */
   Plain,

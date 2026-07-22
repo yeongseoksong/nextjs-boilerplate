@@ -141,24 +141,24 @@ export default function OrganismCatalog() {
           exports={['PageLayout']}
         >
           <Stack gap="xl">
-            <Variant label="Brand · primary 그라디언트 배경">
+            <Variant label="Brand · slate 바탕 + primary 라이트">
               <FullBleed>
                 <PageLayout.Brand
                   label="Company"
                   title="회사 소개"
-                  description="브랜드 그라디언트 히어로입니다."
+                  description="어두운 바탕에 primary 광원을 얹은 브랜드 히어로입니다."
                 >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Brand>
               </FullBleed>
             </Variant>
-            <Variant label="Image · 이미지 배경 + frosted glass">
+            <Variant label="Image · 사진 배경 + 하단 스크림">
               <FullBleed>
                 <PageLayout.Image
                   image="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=80"
                   label="Service"
                   title="서비스"
-                  description="이미지 배경 위 frosted glass 카드입니다."
+                  description="사진 위로 짙어지는 스크림에 텍스트를 얹습니다."
                 >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Image>
