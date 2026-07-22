@@ -175,25 +175,99 @@ export default function AtomCatalog() {
 
         <Showcase
           name="SdInput"
-          description="폼 입력 요소. Mantine 입력 컴포넌트에 디자인 기본값을 입혔습니다."
+          description="폼 입력 한 벌. Mantine 입력을 통과시키되 모든 변형이 label·description·error를 같은 방식으로 받습니다(라벨 프로퍼티가 없는 Slider·Rating·Segmented·PinCode는 Input.Wrapper로 감쌌습니다). useSdForm의 getInputProps를 그대로 펼쳐 넣을 수 있습니다."
           exports={[
             'SdInputText',
             'SdInputEmail',
             'SdInputPassword',
             'SdInputTextarea',
+            'SdInputJson',
+            'SdInputNumber',
+            'SdInputSlider',
+            'SdInputRating',
+            'SdInputPinCode',
             'SdInputSelect',
+            'SdInputNativeSelect',
+            'SdInputMultiSelect',
+            'SdInputAutocomplete',
+            'SdInputTags',
+            'SdInputRadioGroup',
+            'SdInputSegmented',
+            'SdInputCheckbox',
+            'SdInputSwitch',
+            'SdInputFile',
+            'SdInputColor',
+            'SdInputDate',
+            'SdInputDateRange',
+            'SdInputTime',
           ]}
         >
-          <Stack gap="md" maw={460}>
-            <SdInput.Text label="이름" placeholder="홍길동" required />
-            <SdInput.Email label="업무 이메일" placeholder="you@company.com" />
-            <SdInput.Password label="비밀번호" placeholder="••••••••" />
-            <SdInput.Select
-              label="팀 규모"
-              placeholder="선택하세요"
-              data={['1–10명', '11–50명', '51–200명']}
-            />
-            <SdInput.Textarea label="문의 내용" placeholder="자유롭게 적어주세요." />
+          <Stack gap="xl">
+            <Variant label="텍스트">
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                <SdInput.Text label="이름" placeholder="홍길동" required />
+                <SdInput.Email label="업무 이메일" placeholder="you@company.com" />
+                <SdInput.Password label="비밀번호" placeholder="••••••••" />
+                <SdInput.Textarea label="문의 내용" placeholder="자유롭게 적어주세요." />
+                <SdInput.Json label="설정(JSON)" placeholder='{ "key": "value" }' />
+              </SimpleGrid>
+            </Variant>
+
+            <Variant label="숫자">
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                <SdInput.Number label="수량" placeholder="0" min={0} />
+                <SdInput.PinCode label="인증번호" length={6} />
+                <SdInput.Slider label="예산 비중" defaultValue={40} />
+                <SdInput.Rating label="만족도" defaultValue={4} />
+              </SimpleGrid>
+            </Variant>
+
+            <Variant label="선택">
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                <SdInput.Select
+                  label="팀 규모"
+                  placeholder="선택하세요"
+                  data={['1–10명', '11–50명', '51–200명']}
+                />
+                <SdInput.NativeSelect label="문의 유형" data={['도입 문의', '기술 지원']} />
+                <SdInput.MultiSelect
+                  label="관심 분야"
+                  placeholder="복수 선택"
+                  data={['자산 관리', '프로젝트', '리포팅']}
+                />
+                <SdInput.Autocomplete
+                  label="회사명"
+                  placeholder="입력하며 검색"
+                  data={['주식회사 가나', '주식회사 다라']}
+                />
+                <SdInput.Tags label="태그" placeholder="입력 후 Enter" />
+                <SdInput.Segmented label="요금제" data={['월간', '연간']} />
+                <SdInput.Radio
+                  label="연락 방법"
+                  data={[
+                    { value: 'email', label: '이메일' },
+                    { value: 'phone', label: '전화' },
+                  ]}
+                />
+              </SimpleGrid>
+            </Variant>
+
+            <Variant label="불리언 · 기타">
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                <SdInput.Checkbox label="개인정보 수집에 동의합니다." />
+                <SdInput.Switch label="이메일 알림 받기" />
+                <SdInput.File label="첨부 파일" placeholder="파일 선택" />
+                <SdInput.Color label="브랜드 색상" defaultValue="#0b5ed7" />
+              </SimpleGrid>
+            </Variant>
+
+            <Variant label="날짜 · 시간 (@mantine/dates)">
+              <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                <SdInput.Date label="희망 도입일" placeholder="YYYY-MM-DD" />
+                <SdInput.DateRange label="조회 기간" placeholder="시작 – 종료" />
+                <SdInput.Time label="미팅 시각" />
+              </SimpleGrid>
+            </Variant>
           </Stack>
         </Showcase>
 

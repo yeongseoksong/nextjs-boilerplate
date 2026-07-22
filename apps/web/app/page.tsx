@@ -75,7 +75,7 @@ export default function HomePage() {
           />
           <CodeBlock
             code={
-              'pnpm add @yeongseoksong/framework @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications'
+              'pnpm add @yeongseoksong/framework @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications @mantine/dates dayjs zustand'
             }
           />
         </Stack>

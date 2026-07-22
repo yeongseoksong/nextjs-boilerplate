@@ -11,7 +11,7 @@ pnpm add @yeongseoksong/framework
 피어 의존성 설치:
 
 ```bash
-pnpm add @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications react react-dom next
+pnpm add @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications @mantine/dates dayjs zustand react react-dom next
 ```
 
 ## 설정
@@ -23,6 +23,7 @@ pnpm add @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications r
 import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
 import '@mantine/notifications/styles.css'
+import '@mantine/dates/styles.css'
 import { MantineProvider } from '@mantine/core'
 import { theme, SdToastProvider } from '@yeongseoksong/framework/ui'
 
@@ -152,7 +153,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdTitle`        | `SdTitleDisplay` `SdTitleSection` `SdTitleCard` `SdTitleSub`                                                                                                                  |
 | `SdButton`       | `SdButtonPrimary` `SdButtonSecondary` `SdButtonOutline` `SdButtonGhost` `SdButtonWhite` `SdButtonSubmit` `SdButtonDelete` `SdButtonCancel` `SdButtonExcel` `SdButtonDownload` |
 | `SdBadge`        | `SdBadgeDefault` `SdBadgePrimary` `SdBadgeSuccess` `SdBadgeWarning`                                                                                                           |
-| `SdInput`        | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputSelect`                                                                                              |
+| `SdInput`        | `SdInputText` `SdInputEmail` `SdInputPassword` `SdInputTextarea` `SdInputJson` `SdInputNumber` `SdInputSlider` `SdInputRating` `SdInputPinCode` `SdInputSelect` `SdInputNativeSelect` `SdInputMultiSelect` `SdInputAutocomplete` `SdInputTags` `SdInputRadioGroup` `SdInputSegmented` `SdInputCheckbox` `SdInputSwitch` `SdInputFile` `SdInputColor` `SdInputDate` `SdInputDateRange` `SdInputTime`                                                                                          |
 | `SdLink`         | `SdLinkStrong` `SdLinkBody` `SdLinkSub` `SdLinkHint`                                                                                                                          |
 | `SdQuote`        | `SdQuotePlain` `SdQuoteCard`                                                                                                                                                  |
 | `SdTable`        | `SdTableSpec`                                                                                                                                                                 |
@@ -523,6 +524,144 @@ export default function LoginPage() {
 `Split`은 `brandTitle`/`brandDescription`으로 좌측 패널 문구를 받고(기본값 `%c`), 브랜드 면은 `PageLayout.Brand` 히어로와 같은 배경(`ui/surface.ts`)을 씁니다. 좌측 패널은 `md` 미만에서 숨겨져 폼만 남습니다.
 전체 화면이 기본(`mih="100svh"`)이므로, 좁은 영역에 끼워 넣을 때만 `mih`를 줄입니다.
 
+### 상태 관리 — useAuthStore / useUiStore
+
+전역 클라이언트 상태는 **Zustand** 스토어로 제공됩니다. Provider가 없으므로 어디서든 훅으로 바로 읽고 씁니다. 스토어는 별도 경로가 아니라 **`/ui`에서** 나갑니다(같은 스토어가 두 번들에 복사되어 상태가 갈라지는 것을 막기 위해서입니다).
+
+```tsx
+'use client'
+import { useAuthStore, useAuthHydrated } from '@yeongseoksong/framework/ui'
+
+function UserMenu() {
+  const hydrated = useAuthHydrated()
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+
+  // 복원 전에는 로그아웃 상태로 그린다 — 아래 설명 참고
+  if (!hydrated || !isAuthenticated) return <LoginButton />
+  return <button onClick={logout}>{user?.name} 로그아웃</button>
+}
+```
+
+로그인 성공 시 `login()`에 사용자 정보를 넣습니다. `SdLoginView`의 `onSubmit`과 바로 이어집니다.
+
+```tsx
+<SdLoginView.Card
+  onSubmit={async ({ email, password }) => {
+    const user = await api.login(email, password)   // 토큰은 httpOnly 쿠키로
+    useAuthStore.getState().login({ id: user.id, email: user.email, name: user.name })
+    SdToast.Success('로그인했습니다.')
+  }}
+/>
+```
+
+> **액세스 토큰을 스토어에 넣지 마세요.** `partialize`가 사용자 프로필만 localStorage(`sd-auth` 키)에 저장하도록 막아 두었습니다. 토큰을 localStorage에 담으면 XSS 한 번에 그대로 노출됩니다 — 세션 토큰은 httpOnly 쿠키가 맡습니다.
+
+**`useAuthHydrated()`가 필요한 이유**: 저장된 세션 복원을 이펙트로 미룹니다(`skipHydration: true`). 자동 복원은 모듈 평가 시점에 일어나 첫 클라이언트 렌더가 이미 로그인 상태가 되는데, 서버가 만든 HTML은 항상 로그아웃 상태라 하이드레이션이 어긋납니다. 이 훅이 `false`를 주는 동안에는 **로그아웃 상태로** 그리세요. 복원은 훅을 여러 곳에서 써도 앱당 한 번만 실행됩니다.
+
+`useUiStore`는 화면 간 공유가 필요한 UI 상태를 담습니다 — `globalLoading`(전역 로딩 오버레이)과 `sideNavOpened`(사이드 내비) + 토글 액션.
+
+```tsx
+const globalLoading = useUiStore((s) => s.globalLoading)
+const setGlobalLoading = useUiStore((s) => s.setGlobalLoading)
+```
+
+`SdHeader`의 모바일 드로어는 일부러 이 스토어를 쓰지 않습니다 — 한 페이지에 헤더가 둘 이상 있으면 드로어가 함께 열리므로 인스턴스 로컬 상태로 남겨 두었습니다.
+
+### 폼 — useSdForm
+
+모든 폼이 같은 방식으로 값·검증·제출을 다루도록 훅 하나로 통일했습니다.
+
+```tsx
+'use client'
+import { useSdForm, formRules, SdInput, SdButton } from '@yeongseoksong/framework/ui'
+
+function ContactForm() {
+  const form = useSdForm({
+    id: 'contact',                        // 스토어에서 이 폼이 쓸 칸
+    initialValues: { name: '', email: '', agree: false },
+    rules: {
+      name: formRules.required(),
+      email: formRules.email(),
+      agree: formRules.checked('개인정보 수집에 동의해야 합니다.'),
+    },
+    successMessage: '문의를 접수했습니다.',
+    resetOnSuccess: true,
+    onSubmit: async (values) => {
+      await api.contact(values)           // 예외를 던지면 실패 경로로 간다
+    },
+  })
+
+  return (
+    <form onSubmit={form.onSubmit}>
+      <SdInput.Text label="이름" {...form.getInputProps('name')} />
+      <SdInput.Email label="이메일" {...form.getInputProps('email')} />
+      <SdInput.Select label="유형" data={['도입', '지원']} {...form.getInputProps('type')} />
+      <SdInput.Date label="희망일" {...form.getInputProps('startDate')} />
+      <Checkbox label="동의합니다" {...form.getInputProps('agree', { type: 'checkbox' })} />
+      <SdButton.Submit type="submit" loading={form.submitting} />
+    </form>
+  )
+}
+```
+
+제출은 항상 같은 순서로 흐릅니다.
+
+1. `rules` 검증 → 실패하면 필드 아래 메시지를 붙이고 멈춥니다(값을 고치면 그 필드 에러만 즉시 사라집니다).
+2. `submitting`을 켜고 — **이 동안 재제출은 무시됩니다** — `onSubmit(values)`를 부릅니다.
+3. 성공: `SdToast.Success`(끄려면 `successMessage: false`) → `resetOnSuccess`면 초기화 → `onSuccess(values)`.
+4. 실패(`onSubmit`이 던진 예외): `SdToast.Error` + `form.error`에 메시지 + `onError(error)`. 문구는 `errorMessage(error)`로 바꿉니다.
+5. `finalize` — 성공·실패와 무관하게 **항상** 실행됩니다(`finally`에 해당). 아래 항목 참고.
+
+`getInputProps`는 **어느 입력이든 같은 한 줄**입니다. Mantine 입력은 `onChange`로 이벤트를 주는 것(`TextInput`·`Checkbox`)과 값을 그대로 주는 것(`Select`·`NumberInput`·`Slider`·`DateInput`)으로 갈리는데, 훅이 그 차이를 흡수합니다. 값을 `checked`로 받아야 하는 체크박스·스위치만 `{ type: 'checkbox' }`를 붙이세요.
+
+### finalize — 끝나면 항상 도는 뒷정리
+
+`Finalizer`는 폼 전용 타입이 아닙니다. 라우팅·모달 닫기·목록 새로고침처럼 "작업이 끝나면 정리한다"가 필요한 곳이면 어느 스토어에서든 같은 타입을 씁니다.
+
+```ts
+import { runFinalizers, type Finalizers } from '@yeongseoksong/framework/util'
+
+type Finalizer = () => unknown | Promise<unknown>   // 인자 없음
+type Finalizers = Finalizer | Finalizer[]           // 여러 개면 순서대로
+```
+
+인자를 받지 않으므로 **기존 함수를 그대로 꽂습니다.**
+
+```tsx
+useSdForm({
+  id: 'edit-user',
+  initialValues,
+  onSubmit: (values) => api.save(values),
+  finalize: closeModal,                            // 하나
+  // finalize: [closeModal, refetchList, () => router.push('/users')],   // 여러 개
+})
+```
+
+결과에 따라 갈라져야 하는 일은 `onSuccess(values)` / `onError(error)`에 둡니다 — `finalize`는 결과를 보지 않습니다.
+
+프로미스를 돌려주면 기다렸다가 끝냅니다. `submitting`이 내려간 **뒤에** 실행되므로 여기서 `reset()`이나 다음 제출을 불러도 막히지 않고, `finalize`에서 예외가 나도 작업 결과는 뒤집히지 않습니다(콘솔에만 남습니다). 검증에서 걸려 전송을 하지 않은 경우에는 호출되지 않습니다.
+
+직접 만든 비동기 액션에도 같은 규약을 붙일 수 있습니다.
+
+```ts
+async function deleteUser(id: string, finalize?: Finalizers) {
+  try {
+    await api.delete(id)
+    SdToast.Success('삭제했습니다.')
+  } finally {
+    await runFinalizers(finalize, 'deleteUser')     // label은 콘솔 메시지에만 쓰입니다
+  }
+}
+```
+
+`form`이 돌려주는 것: `values` · `errors` · `submitting` · `error` · `setValue` · `setValues` · `reset` · `getInputProps` · `onSubmit`.
+
+상태는 `formId`로 칸을 나눠 스토어에 있으므로, **같은 id를 쓰면 서로 다른 컴포넌트가 같은 폼을 공유**합니다 — 마법사처럼 단계를 여러 컴포넌트로 쪼개거나, 페이지를 오간 뒤 입력값을 복원할 때 그대로 씁니다. 값까지 지우려면 `useFormStore.getState().removeForm(id)`를 부르세요.
+
+`formRules`: `required()` · `email()` · `minLength(n)` · `checked()` · `sameAs('password')`. 규칙은 `(value, values) => string | null` 형태라 직접 만들어 섞어도 됩니다.
+
 ### SdToast — 순간 피드백
 
 저장·삭제·로그인처럼 **잠깐 알리고 사라져야 하는** 결과에 씁니다. 컴포넌트가 아니라 호출하는 함수입니다.
@@ -648,6 +787,8 @@ import type {
 | `@mantine/hooks`    | ^9.2.2 |
 | `@mantine/carousel` | ^9.2.2 |
 | `@mantine/notifications` | ^9.2.2 |
+| `@mantine/dates`    | ^9.2.2 (dayjs 필요) |
+| `zustand`           | ^5.0.14 |
 | `next`              | 16.2.2 |
 | `react`             | 19.2.4 |
 | `react-dom`         | 19.2.4 |

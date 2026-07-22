@@ -77,11 +77,14 @@ const organisms = [
   'SdErrorView',
 ]
 
+const stores = ['useAuthStore', 'useSdForm', 'useUiStore']
+
 export const catalogNav: NavItem[] = [
   { id: 1, order: 1, isShow: true, label: '개요',  },
   { id: 2, order: 2, isShow: true, label: 'Atom', href: `${base}/components/atom/` },
   { id: 3, order: 3, isShow: true, label: 'Molecule', href: `${base}/components/molecule/` },
   { id: 4, order: 4, isShow: true, label: 'Organism', href: `${base}/components/organism/` },
+  { id: 5, order: 5, isShow: true, label: 'State', href: `${base}/state/` },
 
   // 개요 페이지의 섹션 앵커
   { id: 101, order: 1, isShow: true, label: '설치', href: `${base}/#install`, parentId: 1 },
@@ -91,4 +94,5 @@ export const catalogNav: NavItem[] = [
   ...anchors(2, '/components/atom/', atoms),
   ...anchors(3, '/components/molecule/', molecules),
   ...anchors(4, '/components/organism/', organisms),
+  ...anchors(5, '/state/', stores),
 ]

@@ -26,6 +26,7 @@ pnpm --filter framework dev     # tsup --watch
 nextjs-boilerplate/
 ├── apps/web/               # 컴포넌트 카탈로그 (Next.js 16, GitHub Pages 정적 배포)
 ├── packages/framework/     # Shared UI library (private, not published)
+│   └── store/              # Zustand 스토어 — 별도 entry 없이 ui/index에서 재수출
 ├── turbo.json              # Build task orchestration
 ├── pnpm-workspace.yaml     # Workspace roots: apps/*, packages/framework
 └── tsconfig.json           # Base TypeScript config (extended by all packages)
@@ -51,7 +52,7 @@ New exports require changes in three places: `tsup.config.ts` entry, `package.js
 
 Follows Atomic Design with `Sd` prefix on all design system components:
 
-- `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`, `SdLink`, `SdToast`(컴포넌트가 아니라 `notifications.show()`를 감싼 함수 네임스페이스 + `SdToastProvider`)
+- `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`(Mantine 입력 한 벌 — 텍스트·숫자·선택·불리언·파일/색상 + `@mantine/dates` 날짜/시각. 라벨 프로퍼티가 없는 Slider·Rating·Segmented·PinCode는 `Input.Wrapper`로 감싸 API를 통일), `SdLink`, `SdToast`(컴포넌트가 아니라 `notifications.show()`를 감싼 함수 네임스페이스 + `SdToastProvider`)
 - `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
 - `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운, 모바일은 둘 다 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`, `SdResult`(작업 결과 화면 — 성공/실패), `SdLoginView`(`Card` 중앙 카드 / `Split` 좌측 브랜드 패널 + 우측 폼 — 비제어 폼이라 `onSubmit`이 `{ email, password, remember }`를 넘긴다)
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
@@ -60,6 +61,26 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 - `ui/theme.ts` — Full Mantine theme: color palette, typography (Noto Sans KR), spacing, shadows, component defaults, `other.logoSizes`
 - `util/` — `env.util.ts` reads consumer-injected `NEXT_PUBLIC_*` constants; `text.util.ts` exports `t(text)` for `%c` → company name substitution; `sort.util.ts` exports `filterAndSort` (`isShow` 필터 + `order` 정렬, `CommonInfo` 상속 타입 공용)
 - `types/` — Shared interfaces only. Demo data lives in `apps/web/data/index.tsx` (the consumer owns its own content).
+
+## State Management — Zustand
+
+전역 클라이언트 상태는 **Zustand**로 표준화한다. Provider가 없어 `MantineProvider`/`SdToastProvider` 위에 계층을 더 얹지 않고, `persist`가 내장이라 세션 유지에 추가 의존성이 없다. (Jotai는 스토어 2개 규모에 atom 파편화 비용이 크고, Redux Toolkit은 UI 라이브러리가 소비자에게 강제하기엔 무겁다. 서버 데이터 캐싱은 직교하는 문제라 필요해지면 TanStack Query를 **병행** 도입한다.)
+
+| 스토어         | 파일                     | 담는 것                                                        |
+| -------------- | ------------------------ | -------------------------------------------------------------- |
+| `useAuthStore` | `store/auth.store.ts`    | `user` · `isAuthenticated` · `login()` / `logout()`, localStorage 영속 |
+| `useUiStore`   | `store/ui.store.ts`      | `globalLoading` · `sideNavOpened` — 화면 간 공유가 필요한 UI 상태 |
+| `useSdForm`    | `store/form.state.ts`    | 모든 폼 공용 — 값·필드 에러·`submitting`과 제출 파이프라인. `formRules` 검증 규칙 동봉 |
+
+**폼은 `useSdForm` 하나로 통일한다.** 폼마다 `useState`로 값·에러·제출중을 따로 들면 제출 처리가 조금씩 달라지므로, 검증 → 중복 제출 차단 → 전송 → 성공/실패 `SdToast` → `resetOnSuccess`/`onSuccess`/`onError` → `finalize`까지를 훅 안에 고정했다. 상태는 `formId`로 칸을 나눠 스토어에 두므로 같은 id를 쓰는 컴포넌트끼리 상태를 공유한다(마법사 단계 분리, 페이지 이동 후 입력값 복원). 입력에는 `{...form.getInputProps('name')}`, 체크박스·스위치는 `{ type: 'checkbox' }`를 넘긴다. Mantine 입력은 onChange로 **이벤트를 주는 것**(TextInput·Checkbox)과 **값을 주는 것**(Select·NumberInput·Slider·DateInput)으로 갈리는데, `readChangePayload()`가 그 차이를 흡수하므로 호출부는 어느 입력이든 같은 한 줄이다. `form.state.ts`가 `ui/atom/Toast`를 import하는 건 같은 `ui` 번들 안이라 순환이 없다.
+
+**`store/`는 별도 export 경로를 만들지 않는다.** tsup은 entry마다 모듈을 인라인 복사하므로, 스토어를 자체 entry로 두고 `ui`에서도 import하면 같은 스토어가 두 번들에 복사되어 **상태가 갈라진다** — `setCompanyName()`이 조용히 no-op이던 것과 같은 원인이다. 그래서 `ui/index.tsx`가 `export * from '../store'`로 재수출하고, 소비자는 `@yeongseoksong/framework/ui`에서 훅을 가져간다. 검증은 `dist/ui/index.mjs`에 스토어 코드가 한 번만, `dist/util`에는 0번 나오는지로 한다.
+
+`useAuthStore`는 `skipHydration: true`다. 자동 복원은 모듈 평가 시점에 일어나 첫 클라이언트 렌더가 이미 로그인 상태가 되는데, 서버 HTML(`output: "export"`면 빌드 시점 고정)은 항상 로그아웃이라 하이드레이션이 어긋난다. 복원은 `useAuthHydrated()`가 이펙트에서 한 번만 트리거하며, 이 훅이 `false`를 주는 동안 로그인 의존 UI는 **로그아웃 상태로** 그려야 한다. 토큰은 스토어에 넣지 않는다(`partialize`가 프로필만 저장).
+
+**`finalize`는 폼 전용이 아니다.** 타입(`Finalizer` / `Finalizers`)과 실행기(`runFinalizers`)는 `util/finalize.util.ts`에 있고 `/util`로도 나간다 — 라우팅·모달 닫기·목록 새로고침처럼 "끝나면 정리한다"가 필요한 다른 스토어·액션도 같은 규약을 쓴다. 인자를 받지 않으므로 기존 함수(`closeModal`, `refetch`)를 그대로 꽂고, 여러 개는 배열로 순서대로 돈다. 결과에 따라 갈라지는 일은 `onSuccess`/`onError` 몫이다. `submitting`을 내린 **뒤에** 실행되며, 여기서 난 예외는 본 작업 결과를 뒤집지 않고 콘솔에만 남는다. (util은 stateless라 ui 번들에 인라인 복사돼도 안전하다 — 모듈 상태가 있는 스토어와 다른 점이다.)
+
+`SdHeader`의 모바일 드로어는 의도적으로 `useUiStore`를 쓰지 않는다 — 한 페이지에 헤더가 둘 이상 렌더되면 드로어가 함께 열리므로 인스턴스 로컬(`useDisclosure`)로 남긴다.
 
 ## Consumer Config Injection
 
@@ -185,6 +206,7 @@ The same pattern applies to:
 | `SdQuote`        | Plain / Card                                                                                                    |
 | `SdBadge`        | Default / Primary / Success / Warning                                                                           |
 | `SdLink`         | Strong / Body / Sub / Hint                                                                                      |
+| `SdInput`        | Text / Email / Password / Textarea / Json · Number / Slider / Rating / PinCode · Select / NativeSelect / MultiSelect / Autocomplete / Tags / Radio / Segmented · Checkbox / Switch · File / Color · Date / DateRange / Time |
 | `SdTestimonial`  | Card / Strip / Grid                                                                                             |
 | `SdPricingCard`  | default + Grid                                                                                                  |
 | `SdFaq`          | default + WithHeader                                                                                            |
@@ -290,4 +312,5 @@ Both emit ESM (`.mjs`) + CJS (`.js`) + type declarations (`.d.ts`/`.d.mts`).
 | TypeScript | 6.0.2        |
 | Mantine    | 9.4.2 (core · hooks · carousel · notifications) |
 | tsup       | latest (8.x) |
+| zustand    | 5.0.x        |
 | Linter     | oxlint       |
