@@ -170,6 +170,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdSolutionCard` | `SdSolutionCardItem` `SdSolutionCardGrid`                                                                                                                                     |
 | `SdClients`      | `SdClientsGrid` `SdClientsMarquee`                                                                                                                                            |
 | `SdMap`          | `SdMapSingle` `SdMapTabs`                                                                                                                                                     |
+| `SdBreadcrumb`   | `SdBreadcrumb` (변형 없는 단일 컴포넌트 — 이름 자체가 flat export)                                                                                                            |
 | `SdErrorView`    | `SdErrorViewPage` `SdErrorViewNotFound`                                                                                                                                       |
 | `SdLoginView`    | `SdLoginViewCard` `SdLoginViewSplit`                                                                                                                                          |
 | `SdResult`       | `SdResultSuccess` `SdResultError`                                                                                                                                             |
@@ -434,6 +435,38 @@ const clients: ClientItem[] = [
 // 무한 마키 스크롤 (호버 시 일시정지)
 <SdClients.Marquee items={clients} speed={40} />
 ```
+
+### SdBreadcrumb
+
+`SdHeader`와 **같은 `navItems`**를 넘기면, `parentId` 트리에서 현재 경로가 놓인 위치를 찾아
+`홈 아이콘 > 조상 > … > 현재 페이지` 순의 브레드크럼을 그립니다. 마지막 크럼(현재 페이지)은
+링크가 아닌 강조 텍스트로 렌더됩니다.
+
+```tsx
+import { SdBreadcrumb } from '@yeongseoksong/framework/ui'
+
+// currentHref를 생략하면 usePathname()으로 현재 경로를 자동 추론합니다.
+// 예: /about/company/history → 홈 > 소개 > 회사소개 > 연혁
+<SdBreadcrumb navItems={navItems} />
+
+// 명시적으로 경로를 줄 수도 있습니다(상세 페이지 등 정적으로 알고 있을 때).
+<SdBreadcrumb navItems={navItems} currentHref="/about/company/history" />
+```
+
+- **자동 추론** — `currentHref`가 없으면 `next/navigation`의 `usePathname()`을 씁니다. Next.js 앱
+  라우터 컨텍스트 안에서 렌더해야 합니다.
+- **접두 매칭** — 정확히 일치하는 `href`가 없으면, 현재 경로의 상위 경로인 `href` 중 가장 구체적인
+  것을 현재로 삼습니다. 목록(`/blog`) 아래 상세(`/blog/123`) 페이지에서 목록까지의 트레일이 잡힙니다.
+- **홈 크럼** — 기본 `/`로 링크됩니다. `homeHref`/`homeLabel`로 바꿀 수 있습니다.
+
+> **`PageLayout`에 기본 내장** — `PageLayout`(Image/Minimal/Brand/Plain)에 `navItems`를 넘기면
+> 본문 최상단에 이 브레드크럼이 **자동으로** 붙습니다. `breadcrumb={false}`로 끄고, `currentHref`로
+> 경로를 강제할 수 있습니다.
+>
+> ```tsx
+> <PageLayout.Minimal navItems={navItems} title="제조">…</PageLayout.Minimal>       // 브레드크럼 자동
+> <PageLayout.Minimal navItems={navItems} breadcrumb={false} title="제조">…</PageLayout.Minimal> // 끄기
+> ```
 
 ### SdHeader / SdFooter
 

@@ -3,9 +3,24 @@ import { SdContainer } from '../atom/Container'
 import { ReactNode } from 'react'
 import { SdTextBox } from '../molecule/TextBox'
 import { SdText } from '../atom/Text'
+import { SdBreadcrumb } from '../molecule/Breadcrumb'
+import { NavItem } from '../../types'
 import { brandDotTexture, brandSurface } from '../surface'
 
-interface PageHeroBaseProps {
+/**
+ * 모든 변형이 공유하는 브레드크럼 설정.
+ * `navItems`가 있고 `breadcrumb`이 false가 아니면 본문 최상단에 브레드크럼을 그린다.
+ */
+interface BreadcrumbProps {
+  /** 브레드크럼용 네비 트리. 없으면 브레드크럼을 렌더하지 않는다. */
+  navItems?: NavItem[]
+  /** 브레드크럼 표시 여부. 기본 `true` — `navItems`가 있을 때만 실제로 그려진다. `false`로 끈다. */
+  breadcrumb?: boolean
+  /** 현재 경로 강제 지정. 생략 시 `SdBreadcrumb`가 `usePathname()`으로 추론한다. */
+  currentHref?: string
+}
+
+interface PageHeroBaseProps extends BreadcrumbProps {
   label?: ReactNode
   title: ReactNode
   description?: ReactNode
@@ -21,21 +36,37 @@ const HERO_MIN_H = '38svh'
 const HERO_PY = { base: 56, sm: 88 }
 const HERO_MAW = 680
 
-function Content({ children }: { children: ReactNode }) {
+function Content({
+  children,
+  navItems,
+  breadcrumb = true,
+  currentHref,
+}: BreadcrumbProps & { children: ReactNode }) {
+  const showBreadcrumb = breadcrumb && !!navItems && navItems.length > 0
   return (
     <SdContainer py="xl">
+      {showBreadcrumb && <SdBreadcrumb navItems={navItems} currentHref={currentHref} mb="lg" />}
       <Stack gap="xl">{children}</Stack>
     </SdContainer>
   )
 }
 
 function LayoutGap() {
-  return <Space h={48} />
+  return <Space/>
 }
 
-function Minimal({ label, title, description, children }: PageHeroBaseProps) {
+function Minimal({
+  label,
+  title,
+  description,
+  children,
+  navItems,
+  breadcrumb,
+  currentHref,
+}: PageHeroBaseProps) {
   return (
-    <Plain>
+    <Plain navItems={navItems} breadcrumb={breadcrumb} currentHref={currentHref}>
+      <LayoutGap></LayoutGap>
       <SdTextBox.Section label={label} title={title} description={description ?? ''} />
       <Divider />
       {children}
@@ -43,11 +74,17 @@ function Minimal({ label, title, description, children }: PageHeroBaseProps) {
   )
 }
 
-function Plain({ children }: { children: ReactNode }) {
+function Plain({
+  children,
+  navItems,
+  breadcrumb,
+  currentHref,
+}: BreadcrumbProps & { children: ReactNode }) {
   return (
     <>
-      <LayoutGap />
-      <Content>{children}</Content>
+      <Content navItems={navItems} breadcrumb={breadcrumb} currentHref={currentHref}>
+        {children}
+      </Content>
     </>
   )
 }
@@ -80,7 +117,16 @@ function HeroCopy({ label, title, description }: Omit<PageHeroBaseProps, 'childr
 }
 
 /* Image — 사진 배경 + 아래로 짙어지는 스크림 + 좌측 정렬 텍스트 */
-function Image({ image, label, title, description, children }: WithImageProps) {
+function Image({
+  image,
+  label,
+  title,
+  description,
+  children,
+  navItems,
+  breadcrumb,
+  currentHref,
+}: WithImageProps) {
   return (
     <>
       <Box
@@ -112,13 +158,23 @@ function Image({ image, label, title, description, children }: WithImageProps) {
           <HeroCopy label={label} title={title} description={description} />
         </SdContainer>
       </Box>
-      <Content>{children}</Content>
+      <Content navItems={navItems} breadcrumb={breadcrumb} currentHref={currentHref}>
+        {children}
+      </Content>
     </>
   )
 }
 
 /* Brand — slate 바탕에 primary 라이트 + 도트 텍스처 */
-function Brand({ label, title, description, children }: PageHeroBaseProps) {
+function Brand({
+  label,
+  title,
+  description,
+  children,
+  navItems,
+  breadcrumb,
+  currentHref,
+}: PageHeroBaseProps) {
   return (
     <>
       <Box
@@ -143,7 +199,9 @@ function Brand({ label, title, description, children }: PageHeroBaseProps) {
           <HeroCopy label={label} title={title} description={description} />
         </SdContainer>
       </Box>
-      <Content>{children}</Content>
+      <Content navItems={navItems} breadcrumb={breadcrumb} currentHref={currentHref}>
+        {children}
+      </Content>
     </>
   )
 }

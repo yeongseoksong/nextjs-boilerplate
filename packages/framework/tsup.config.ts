@@ -22,6 +22,9 @@ export default defineConfig([
       '@tabler/icons-react',
       'zustand',
       'next',
+      // esbuild는 'next'를 외부로 잡아도 서브패스는 자동으로 포함하지 않는다.
+      // SdBreadcrumb가 쓰는 next/navigation을 명시해 번들에 인라인되지 않게 한다.
+      'next/navigation',
     ],
     banner: { js: '"use client";' },
   },

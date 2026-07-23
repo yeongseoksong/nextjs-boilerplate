@@ -148,48 +148,54 @@ export default function OrganismCatalog() {
 
         <Showcase
           name="PageLayout"
-          description="페이지 히어로 + 본문을 감싸는 템플릿. 페이지 파일에서 최상위로 사용합니다. (template — flat export 없음, 네임스페이스 dot으로만 사용)"
+          description="페이지 히어로 + 본문을 감싸는 템플릿. 페이지 파일에서 최상위로 사용합니다. navItems를 넘기면 본문 최상단에 SdBreadcrumb가 기본으로 붙고(현재 경로는 usePathname으로 추론), breadcrumb={false}로 끕니다. (template — flat export 없음, 네임스페이스 dot으로만 사용)"
           exports={['PageLayout']}
         >
           <Stack gap="xl">
-            <Variant label="Brand · slate 바탕 + primary 라이트">
+            <Variant label="Brand · slate 바탕 + primary 라이트 (브레드크럼 기본)">
               <FullBleed>
                 <PageLayout.Brand
                   label="Company"
                   title="회사 소개"
                   description="어두운 바탕에 primary 광원을 얹은 브랜드 히어로입니다."
+                  navItems={navItems}
+                  currentHref="/about/company"
                 >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Brand>
               </FullBleed>
             </Variant>
-            <Variant label="Image · 사진 배경 + 하단 스크림">
+            <Variant label="Image · 사진 배경 + 하단 스크림 (브레드크럼 기본)">
               <FullBleed>
                 <PageLayout.Image
                   image="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&q=80"
                   label="Service"
                   title="서비스"
                   description="사진 위로 짙어지는 스크림에 텍스트를 얹습니다."
+                  navItems={navItems}
+                  currentHref="/services"
                 >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Image>
               </FullBleed>
             </Variant>
-            <Variant label="Minimal · 섹션 타이틀 + 구분선">
+            <Variant label="Minimal · 섹션 타이틀 + 구분선 (브레드크럼 기본)">
               <FullBleed>
                 <PageLayout.Minimal
                   label="Solutions"
-                  title="솔루션"
-                  description="히어로 없이 섹션 헤더로 시작합니다."
+                  title="제조"
+                  description="브레드크럼은 타이틀 위에 놓입니다."
+                  navItems={navItems}
+                  currentHref="/solutions/industry/manufacturing"
                 >
                   <SdText.Body>본문 영역입니다.</SdText.Body>
                 </PageLayout.Minimal>
               </FullBleed>
             </Variant>
-            <Variant label="Plain · 히어로 없이 컨테이너만">
+            <Variant label="Plain · breadcrumb={false}로 끈 경우">
               <FullBleed>
-                <PageLayout.Plain>
-                  <SdText.Body>히어로 없이 SdContainer만 감쌉니다.</SdText.Body>
+                <PageLayout.Plain navItems={navItems} breadcrumb={false} currentHref="/pricing">
+                  <SdText.Body>navItems를 넘겨도 breadcrumb={'{false}'}면 그리지 않습니다.</SdText.Body>
                 </PageLayout.Plain>
               </FullBleed>
             </Variant>

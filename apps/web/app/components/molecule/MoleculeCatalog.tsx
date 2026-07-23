@@ -2,6 +2,7 @@
 
 import { Stack } from '@mantine/core'
 import {
+  SdBreadcrumb,
   SdClients,
   SdContainer,
   SdCta,
@@ -21,6 +22,7 @@ import type { ClientItem } from '@framework/types'
 import {
   companyInfo,
   faqItems,
+  navItems,
   featureItems,
   pricingItems,
   solutionItems,
@@ -65,6 +67,27 @@ export default function MoleculeCatalog() {
           title="조합 컴포넌트"
           description="atom을 조합해 하나의 의미 단위를 이룹니다. 대부분 데이터 배열을 props로 받습니다."
         />
+
+        <Showcase
+          name="SdBreadcrumb"
+          description="네비게이션 계층 기반 브레드크럼. navItems의 parentId 트리에서 현재 경로가 놓인 위치를 찾아 홈 아이콘 > 조상 > … > 현재 페이지 순으로 그립니다. currentHref를 생략하면 usePathname()으로 자동 추론하고, 정확히 일치하는 href가 없으면 가장 구체적인 상위 경로로 매칭합니다(상세 페이지). 마지막 크럼은 링크가 아닌 강조 텍스트입니다."
+          exports={['SdBreadcrumb']}
+        >
+          <Stack gap="lg">
+            <Variant label="3단계 — /about/company/history">
+              <SdBreadcrumb navItems={navItems} currentHref="/about/company/history" />
+            </Variant>
+            <Variant label="그룹 제목 조상(href 없음) — /support/notice/updates">
+              <SdBreadcrumb navItems={navItems} currentHref="/support/notice/updates" />
+            </Variant>
+            <Variant label="접두 매칭(상세 페이지) — /solutions/industry/manufacturing/detail-42">
+              <SdBreadcrumb
+                navItems={navItems}
+                currentHref="/solutions/industry/manufacturing/detail-42"
+              />
+            </Variant>
+          </Stack>
+        </Showcase>
 
         <Showcase
           name="SdTextBox"
