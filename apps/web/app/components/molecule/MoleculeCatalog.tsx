@@ -2,6 +2,7 @@
 
 import { Stack } from '@mantine/core'
 import {
+  NavProvider,
   SdBreadcrumb,
   SdClients,
   SdContainer,
@@ -70,7 +71,7 @@ export default function MoleculeCatalog() {
 
         <Showcase
           name="SdBreadcrumb"
-          description="네비게이션 계층 기반 브레드크럼. navItems의 parentId 트리에서 현재 경로가 놓인 위치를 찾아 홈 아이콘 > 조상 > … > 현재 페이지 순으로 그립니다. currentHref를 생략하면 usePathname()으로 자동 추론하고, 정확히 일치하는 href가 없으면 가장 구체적인 상위 경로로 매칭합니다(상세 페이지). 마지막 크럼은 링크가 아닌 강조 텍스트입니다."
+          description="네비게이션 계층 기반 브레드크럼. navItems의 parentId 트리에서 현재 경로가 놓인 위치를 찾아 홈 아이콘 > 조상 > … > 현재 페이지 순으로 그립니다. navItems는 선택입니다 — 생략하면 상위 NavProvider가 제공하는 useNav() 컨텍스트에서 읽습니다(SdProvider가 자동으로 감쌉니다). currentHref를 생략하면 usePathname()으로 자동 추론하고, 정확히 일치하는 href가 없으면 가장 구체적인 상위 경로로 매칭합니다(상세 페이지). 마지막 크럼은 링크가 아닌 강조 텍스트입니다."
           exports={['SdBreadcrumb']}
         >
           <Stack gap="lg">
@@ -85,6 +86,11 @@ export default function MoleculeCatalog() {
                 navItems={navItems}
                 currentHref="/solutions/industry/manufacturing/detail-42"
               />
+            </Variant>
+            <Variant label="navItems 없이 — NavProvider 컨텍스트에서 읽기">
+              <NavProvider navItems={navItems}>
+                <SdBreadcrumb currentHref="/about/company/history" />
+              </NavProvider>
             </Variant>
           </Stack>
         </Showcase>

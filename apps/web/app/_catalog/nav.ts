@@ -77,7 +77,7 @@ const organisms = [
   'SdErrorView',
 ]
 
-const stores = ['useAuthStore', 'useSdForm', 'useUiStore']
+const stores = ['useAuthStore', 'useSdForm', 'useUiStore', 'useNavStore']
 
 export const catalogNav: NavItem[] = [
   { id: 1, order: 1, isShow: true, label: '개요',  },

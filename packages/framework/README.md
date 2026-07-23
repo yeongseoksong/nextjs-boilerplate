@@ -16,7 +16,9 @@ pnpm add @mantine/core @mantine/hooks @mantine/carousel @mantine/notifications @
 
 ## 설정
 
-### 1. MantineProvider + theme
+### 1. SdProvider
+
+`SdProvider` 하나가 **프로바이더/컨텍스트 조립**을 묶습니다 — `MantineProvider`(테마) + `SdToastProvider`(토스트 렌더 지점) + `NavProvider`(navItems Context). 이걸 최상단에 두고, 헤더/푸터 크롬은 `MainLayout`(또는 페이지별 `PageLayout`)으로 그 **안쪽**에 배치하세요.
 
 ```tsx
 // app/layout.tsx
@@ -24,24 +26,41 @@ import '@mantine/core/styles.css'
 import '@mantine/carousel/styles.css'
 import '@mantine/notifications/styles.css'
 import '@mantine/dates/styles.css'
-import { MantineProvider } from '@mantine/core'
-import { theme, SdToastProvider } from '@yeongseoksong/framework/ui'
+import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core'
+import { SdProvider, MainLayout } from '@yeongseoksong/framework/ui'
+import { navItems, companyInfo } from './data'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" />
+      </head>
       <body>
-        <MantineProvider theme={theme}>
-          <SdToastProvider />
-          {children}
-        </MantineProvider>
+        <SdProvider navItems={navItems}>
+          <MainLayout navItems={navItems} companyInfo={companyInfo}>
+            {children}
+          </MainLayout>
+        </SdProvider>
       </body>
     </html>
   )
 }
 ```
 
-`SdToastProvider`는 토스트가 실제로 그려지는 자리입니다. 넣지 않으면 `SdToast.*` 호출이 조용히 아무 일도 하지 않습니다(아래 SdToast 항목 참고).
+**SdProvider props**
+
+| prop                 | 기본값             | 설명                                                                 |
+| -------------------- | ------------------ | -------------------------------------------------------------------- |
+| `navItems`           | (필수)             | `NavProvider` Context에 얹을 네비게이션 트리                          |
+| `theme`              | 프레임워크 기본    | 색 오버라이드는 `mergeThemeOverrides(theme, …)` 결과를 넘긴다(2번 참고) |
+| `defaultColorScheme` | `light`            | Mantine 색 구성                                                      |
+
+헤더/푸터를 안 붙이는 화면(로그인 등)은 `MainLayout` 없이 `SdProvider` 안에 바로 내용을 둡니다. 헤더 변형(`mega`/`simple`/`panel`)·`loginFlag`·`companyInfo`는 이제 `MainLayout` prop입니다(아래 MainLayout 항목).
+
+`ColorSchemeScript`와 Mantine CSS import는 `<head>`/서버 layout 몫이라 `SdProvider`에 포함되지 않습니다. 회사명/로고는 `SdProvider`가 아니라 env var로 주입합니다(2번 참고).
+
+내부의 `SdToastProvider`는 토스트가 실제로 그려지는 자리입니다 — `SdProvider`를 쓰면 자동으로 포함됩니다(아래 SdToast 항목 참고). `SdProvider`는 `navItems`를 `NavProvider`(React Context)로도 감싸므로, 그 아래의 `SdBreadcrumb`는 `navItems` prop 없이도 동작합니다.
 
 ### 2. 환경변수 설정
 
@@ -99,10 +118,9 @@ export const appTheme = mergeThemeOverrides(theme, {
 
 ```tsx
 // app/layout.tsx — Server Component 그대로 둡니다
-import { MantineProvider } from '@mantine/core'
 import { appTheme } from './theme'
 
-<MantineProvider theme={appTheme} defaultColorScheme="light">
+<SdProvider theme={appTheme} navItems={navItems}>
 ```
 
 오버라이드하지 않은 키(타이포·spacing·shadows·컴포넌트 기본값)는 프레임워크 값이 그대로 유지됩니다.
@@ -125,7 +143,7 @@ import { appTheme } from './theme'
 | 경로                             | 내용                                          |
 | -------------------------------- | --------------------------------------------- |
 | `@yeongseoksong/framework/ui`    | UI 컴포넌트 전체 + `theme` (`"use client"`)   |
-| `@yeongseoksong/framework/store` | Zustand 스토어 — `useAuthStore` · `useUiStore` · `useSdForm` (`"use client"`) |
+| `@yeongseoksong/framework/store` | Zustand 스토어 — `useAuthStore` · `useUiStore` · `useNavStore` · `useSdForm` (`"use client"`) |
 | `@yeongseoksong/framework/util`  | `t()`, 한글 조사(`josa` · `withJosa` · `fixJosa`), `runFinalizers`, `filterAndSort`, `COMPANY_NAME`, `LOGO_SRC`, `LOGO_ALT` |
 | `@yeongseoksong/framework/types` | 공유 인터페이스                               |
 
@@ -567,7 +585,7 @@ export default function LoginPage() {
 `Split`은 `brandTitle`/`brandDescription`으로 좌측 패널 문구를 받고(기본값 `%c`), 브랜드 면은 `PageLayout.Brand` 히어로와 같은 배경(`ui/surface.ts`)을 씁니다. 좌측 패널은 `md` 미만에서 숨겨져 폼만 남습니다.
 전체 화면이 기본(`mih="100svh"`)이므로, 좁은 영역에 끼워 넣을 때만 `mih`를 줄입니다.
 
-### 상태 관리 — useAuthStore / useUiStore
+### 상태 관리 — useAuthStore / useUiStore / useNavStore
 
 전역 클라이언트 상태는 **Zustand** 스토어로 **`@yeongseoksong/framework/store`** 경로에서 제공됩니다. Provider가 없으므로 어디서든 훅으로 바로 읽고 씁니다.
 
@@ -611,6 +629,23 @@ const setGlobalLoading = useUiStore((s) => s.setGlobalLoading)
 ```
 
 `SdHeader`의 모바일 드로어는 일부러 이 스토어를 쓰지 않습니다 — 한 페이지에 헤더가 둘 이상 있으면 드로어가 함께 열리므로 인스턴스 로컬 상태로 남겨 두었습니다.
+
+`useNavStore`는 네비게이션 상태(`navItems` + `setNavItems`)를 담습니다 — 렌더 트리 **밖**에서 navItems가 필요할 때(라우팅 로직 등) 씁니다.
+
+```tsx
+import { useNavStore } from '@yeongseoksong/framework/store'
+useNavStore.getState().setNavItems(navItems)
+```
+
+트리 **안** 컴포넌트(`SdBreadcrumb`)는 이 스토어가 아니라 `@yeongseoksong/framework/ui`의 `NavProvider`(React Context) + `useNav`로 navItems를 읽습니다 — `ui` 번들이 스토어를 직접 import하면 `dist/ui`에 인라인돼 인스턴스가 갈라지기 때문입니다. `SdProvider`가 `NavProvider`를 자동으로 감싸므로, 보통은 소비자가 직접 다룰 일이 없습니다.
+
+```tsx
+import { NavProvider, useNav, SdBreadcrumb } from '@yeongseoksong/framework/ui'
+
+<NavProvider navItems={navItems}>
+  <SdBreadcrumb />        {/* navItems prop 없이 useNav()로 읽음 */}
+</NavProvider>
+```
 
 ### 폼 — useSdForm
 

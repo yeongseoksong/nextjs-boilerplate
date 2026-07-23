@@ -1,5 +1,12 @@
 # web
 
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies
+  - @yeongseoksong/framework@1.6.0
+
 ## 0.1.9
 
 ### Patch Changes

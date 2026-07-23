@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { Box, Checkbox, Group, LoadingOverlay, Paper, SimpleGrid, Stack } from '@mantine/core'
 import {
+  NavProvider,
   SdBadge,
+  SdBreadcrumb,
   SdButton,
   SdContainer,
   SdInput,
@@ -13,8 +15,23 @@ import {
   SdTitle,
   SdToast,
 } from '@framework/ui'
-import { formRules, useAuthHydrated, useAuthStore, useSdForm, useUiStore } from '@framework/store'
+import {
+  formRules,
+  useAuthHydrated,
+  useAuthStore,
+  useNavStore,
+  useSdForm,
+  useUiStore,
+} from '@framework/store'
+import { NavItem } from '@framework/types'
 import { Showcase, Variant } from '../_catalog/Showcase'
+
+/** 데모용 네비게이션 샘플 — parentId로 회사소개 > 연혁 계층을 만든다. */
+const sampleNav: NavItem[] = [
+  { id: 1, order: 1, isShow: true, label: '회사소개', href: '/about' },
+  { id: 2, order: 1, isShow: true, label: '연혁', href: '/about/history', parentId: 1 },
+  { id: 3, order: 2, isShow: true, label: '지원', href: '/support' },
+]
 
 /** 상태 한 줄 — 라벨 + 현재 값 배지. */
 function StateRow({ label, value }: { label: string; value: boolean | string | null }) {
@@ -169,6 +186,66 @@ function UiDemo() {
           `SdHeader`의 모바일 드로어는 일부러 이 스토어를 쓰지 않습니다. 한 페이지에 헤더가 둘
           이상 렌더되면(카탈로그의 Mega/Simple 쇼케이스처럼) 드로어가 함께 열리기 때문에, 그건
           인스턴스 로컬 상태로 남겨 두었습니다.
+        </SdText.Sub>
+      </Paper>
+    </Stack>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   useNavStore + NavProvider — 네비게이션 상태.
+   스토어는 트리 밖 접근용, Context(useNav)는 SdBreadcrumb 같은
+   트리 안 컴포넌트가 prop 없이 읽는 경로.
+───────────────────────────────────────────── */
+function NavDemo() {
+  const navItems = useNavStore((state) => state.navItems)
+  const setNavItems = useNavStore((state) => state.setNavItems)
+
+  return (
+    <Stack gap="lg">
+      <Variant label="useNavStore — 트리 밖에서 네비게이션 상태 읽고 쓰기">
+        <Stack gap="sm">
+          <Group>
+            <SdButton.Outline onClick={() => setNavItems(sampleNav)}>샘플 주입</SdButton.Outline>
+            <SdButton.Ghost onClick={() => setNavItems([])}>비우기</SdButton.Ghost>
+            <StateRow label="navItems.length" value={String(navItems.length)} />
+          </Group>
+          <Paper withBorder radius="md" p="md">
+            {navItems.length === 0 ? (
+              <SdText.Sub>비어 있음 — “샘플 주입”을 눌러 setNavItems로 채웁니다.</SdText.Sub>
+            ) : (
+              <Stack gap={4}>
+                {navItems.map((item) => (
+                  <SdText.Body key={item.id}>
+                    {item.parentId ? '└ ' : ''}
+                    {item.label} · {item.href}
+                  </SdText.Body>
+                ))}
+              </Stack>
+            )}
+          </Paper>
+        </Stack>
+      </Variant>
+
+      <Variant label="NavProvider + SdBreadcrumb — Context로 navItems 없이 렌더">
+        <Stack gap="sm">
+          <SdText.Sub>
+            `NavProvider`(React Context)로 감싸면 하위 `SdBreadcrumb`는 `navItems` prop 없이도
+            `useNav()`로 트리를 읽습니다. 실제 앱에선 `SdProvider`가 이 래핑을 자동으로 합니다.
+          </SdText.Sub>
+          <NavProvider navItems={sampleNav}>
+            <Paper withBorder radius="md" p="md">
+              <SdBreadcrumb currentHref="/about/history" />
+            </Paper>
+          </NavProvider>
+        </Stack>
+      </Variant>
+
+      <Paper withBorder radius="md" p="lg" bg="slate.0">
+        <SdText.Sub>
+          `useNavStore`와 `NavProvider`는 별개입니다. 트리 안 컴포넌트(브레드크럼)는 Context를
+          쓰는데, `ui` 번들이 스토어를 직접 import하면 `dist/ui`에 인라인돼 인스턴스가 갈라지기
+          때문입니다. 스토어는 라우팅 로직처럼 트리 밖에서 navItems가 필요할 때 씁니다.
         </SdText.Sub>
       </Paper>
     </Stack>
@@ -402,6 +479,15 @@ export default function StateCatalog() {
           from="@yeongseoksong/framework/store"
         >
           <UiDemo />
+        </Showcase>
+
+        <Showcase
+          name="useNavStore"
+          description="네비게이션 상태 스토어 — 트리 밖에서 navItems 접근. 트리 안 SdBreadcrumb는 대신 @yeongseoksong/framework/ui의 NavProvider/useNav(React Context)로 읽는다(아래 두 번째 Variant)."
+          exports={['useNavStore']}
+          from="@yeongseoksong/framework/store"
+        >
+          <NavDemo />
         </Showcase>
       </Stack>
     </SdContainer>

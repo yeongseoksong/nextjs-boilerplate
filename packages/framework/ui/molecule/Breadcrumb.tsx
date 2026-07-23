@@ -5,9 +5,12 @@ import { usePathname } from 'next/navigation'
 import { IconChevronRight, IconHome } from '@tabler/icons-react'
 import { NavItem } from '../../types'
 import { SdLink } from '../atom/Link'
+// template 배럴이 아니라 파일에서 직접 가져온다 — 배럴(`../template`)은 molecule을
+// 되-export하므로 molecule→template→molecule 순환이 된다.
+import { useNav } from '../template/NavProvider'
 
 interface SdBreadcrumbProps extends BoxProps {
-  navItems: NavItem[]
+  navItems?: NavItem[]
   /** 현재 경로. 생략하면 `usePathname()`으로 자동 추론한다. */
   currentHref?: string
   /** 홈(첫 크럼) 링크 대상. 기본 `/`. */
@@ -66,12 +69,15 @@ function buildTrail(navItems: NavItem[], currentHref: string): NavItem[] {
  * `SdLink.Body`라 링크가 아닌 강조 텍스트(`SdText.Body`)로 폴백해 현재 위치를 나타낸다.
  */
 export function SdBreadcrumb({
-  navItems,
+  navItems: navItemsProp,
   currentHref,
   homeHref = '/',
   homeLabel = '홈',
   ...boxProps
 }: SdBreadcrumbProps) {
+  // navItems prop이 우선, 없으면 NavProvider가 제공하는 컨텍스트 값으로 폴백한다.
+  const navFromContext = useNav()
+  const navItems = navItemsProp ?? navFromContext
   const pathname = usePathname()
   const trail = buildTrail(navItems, currentHref ?? pathname ?? '')
 

@@ -20,4 +20,6 @@ export * from './auth.store'
 
 export * from './ui.store'
 
+export * from './nav.store'
+
 export * from './form.state'
