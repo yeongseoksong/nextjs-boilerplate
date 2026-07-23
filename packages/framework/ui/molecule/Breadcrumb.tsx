@@ -81,6 +81,8 @@ export function SdBreadcrumb({
   const pathname = usePathname()
   const trail = buildTrail(navItems, currentHref ?? pathname ?? '')
 
+  if (navItems.length===0) return
+
   return (
     <Box {...boxProps}>
       <Breadcrumbs

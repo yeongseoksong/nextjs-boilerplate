@@ -42,10 +42,9 @@ function Content({
   breadcrumb = true,
   currentHref,
 }: BreadcrumbProps & { children: ReactNode }) {
-  const showBreadcrumb = breadcrumb && !!navItems && navItems.length > 0
   return (
     <SdContainer py="xl">
-      {showBreadcrumb && <SdBreadcrumb navItems={navItems} currentHref={currentHref} mb="lg" />}
+      {breadcrumb && <SdBreadcrumb navItems={navItems} currentHref={currentHref} mb="lg" />}
       <Stack gap="xl">{children}</Stack>
     </SdContainer>
   )
