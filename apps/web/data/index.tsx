@@ -13,18 +13,27 @@ import type {
 
 // NavItem
 export const navItems: NavItem[] = [
+  // ── 소개 (상위 href 있음) → 회사소개 → 3단계 손자 ──
   { id: 1, order: 1, isShow: true, label: '소개', href: '/about' },
   { id: 11, order: 1, isShow: true, label: '회사소개', href: '/about/company', parentId: 1 },
+  // 3단계(손자) — Mega는 컬럼 내 그룹, Simple은 Menu.Sub 플라이아웃, 모바일은 중첩 아코디언
+  { id: 111, order: 1, isShow: true, label: '연혁', href: '/about/company/history', parentId: 11 },
+  { id: 112, order: 2, isShow: true, label: '오시는 길', href: '/about/company/location', parentId: 11 },
   { id: 12, order: 2, isShow: true, label: '팀소개', href: '/about/team', parentId: 1 },
   { id: 2, order: 2, isShow: true, label: '서비스', href: '/services' },
+  // ── 솔루션 (상위 href 있음) → 산업별 → 3단계 손자 ──
   { id: 3, order: 3, isShow: true, label: '솔루션', href: '/solutions' },
-  { id: 4, order: 4, isShow: true, label: '상세보기', href: '/solutions/detail' },
-  { id: 5, order: 5, isShow: true, label: '기타테스트', href: '/solutions/detail' },
-  { id: 15, order: 1, isShow: true, label: '기타테스트', href: '/solutions/detail', parentId: 5 },
-  { id: 16, order: 2, isShow: true, label: '기타테스트', href: '/solutions/detail', parentId: 5 },
-  // href 없는 상위 항목 — 링크가 아니라 그룹 제목으로 렌더된다(SdLink가 SdText로 폴백).
+  { id: 31, order: 1, isShow: true, label: '산업별', href: '/solutions/industry', parentId: 3 },
+  { id: 311, order: 1, isShow: true, label: '제조', href: '/solutions/industry/manufacturing', parentId: 31 },
+  { id: 312, order: 2, isShow: true, label: '금융', href: '/solutions/industry/finance', parentId: 31 },
+  { id: 313, order: 3, isShow: true, label: '공공', href: '/solutions/industry/public', parentId: 31 },
+  { id: 32, order: 2, isShow: true, label: '규모별', href: '/solutions/scale', parentId: 3 },
+  // ── 고객지원 (상위 href 없음 = 그룹 제목) → 공지사항 → 3단계 손자 ──
+  // href 없는 상위 항목은 링크가 아니라 그룹 제목으로 렌더된다(SdLink가 SdText로 폴백).
   { id: 7, order: 7, isShow: true, label: '고객지원' },
   { id: 71, order: 1, isShow: true, label: '공지사항', href: '/support/notice', parentId: 7 },
+  { id: 711, order: 1, isShow: true, label: '업데이트', href: '/support/notice/updates', parentId: 71 },
+  { id: 712, order: 2, isShow: true, label: '점검 안내', href: '/support/notice/maintenance', parentId: 71 },
   { id: 72, order: 2, isShow: true, label: '문의하기', href: '/support/contact', parentId: 7 },
   { id: 6, order: 6, isShow: true, label: '요금제', href: '/pricing' },
 ]

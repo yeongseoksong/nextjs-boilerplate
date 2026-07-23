@@ -4,11 +4,12 @@ import { SdHeader, SdFooter } from '../organism'
 import { CompanyInfo, NavItem } from '../../types'
 
 /** 헤더 변형 선택자 — SdHeader의 네임스페이스 키와 1:1로 대응한다. */
-export type HeaderVariant = 'mega' | 'simple'
+export type HeaderVariant = 'mega' | 'simple' | 'panel'
 
 const headers: Record<HeaderVariant, typeof SdHeader.Mega> = {
   mega: SdHeader.Mega,
   simple: SdHeader.Simple,
+  panel: SdHeader.Panel,
 }
 
 export function MainLayout({
@@ -22,7 +23,7 @@ export function MainLayout({
   navItems: NavItem[]
   companyInfo: CompanyInfo
   loginFlag?: boolean
-  /** 기본 `mega` — hover 시 헤더가 확장되는 메가 메뉴. `simple`은 바 높이 고정 + 개별 드롭다운. */
+  /** 기본 `mega` — hover 시 헤더가 확장되는 메가 메뉴. `simple`은 바 높이 고정 + 개별 드롭다운. `panel`은 바 높이 고정 + 드롭다운 내부를 Mega식 그룹 컬럼으로. */
   headerVariant?: HeaderVariant
 }) {
   const Header = headers[headerVariant]

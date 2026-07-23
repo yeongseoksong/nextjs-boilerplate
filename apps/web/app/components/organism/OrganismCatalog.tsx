@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Paper, Stack } from '@mantine/core'
+import { Paper, Stack } from '@mantine/core'
 import {
   HeroCarousel,
   PageLayout,
@@ -10,6 +10,7 @@ import {
   SdFooter,
   SdHeader,
   SdHeaderSimple,
+  SdHeaderPanel,
   SdLoginView,
   SdResult,
   SdStepsSection,
@@ -104,20 +105,28 @@ export default function OrganismCatalog() {
 
         <Showcase
           name="SdHeader"
-          description="상단 네비게이션. navItems의 parentId로 묶인 하위 링크를 Mega 변형은 헤더 전체 확장으로, Simple 변형은 상위 항목마다 붙는 Mantine Menu로 노출합니다. 모바일에서는 두 변형 모두 버거 드로어의 아코디언으로 전환됩니다."
-          exports={['SdHeader', 'SdHeaderMega', 'SdHeaderSimple']}
+          description="상단 네비게이션. navItems의 parentId로 상위→자식→손자 3단계까지 묶입니다. Mega 변형은 헤더 전체 확장 컬럼(손자는 그룹으로), Simple 변형은 상위 항목마다 붙는 Mantine Menu(손자는 Menu.Sub 플라이아웃), Panel 변형은 Simple처럼 바 높이는 고정하되 드롭다운 내부를 Mega식 그룹 컬럼(손자는 자식 아래 하위 링크)으로 노출합니다. 모바일에서는 세 변형 모두 버거 드로어의 중첩 아코디언으로 전환됩니다."
+          exports={['SdHeader', 'SdHeaderMega', 'SdHeaderSimple', 'SdHeaderPanel']}
         >
-          <Variant label="Mega(기본) — 헤더 전체가 아래로 확장">
+          <Variant label="Mega(기본) — hover 시 헤더 전체가 아래로 확장">
+            {/*
+              고정 높이 박스로 감싸지 않는다 — Mega는 hover 시 헤더 자체가 커지는데,
+              h={60} 고정 + FullBleed의 overflow:hidden이 그 확장분을 잘라내 hover가
+              동작 안 하는 것처럼 보였다. 카드가 함께 자라도록 SdHeader를 직접 담는다.
+              (실제 배포에서는 AppShell.Header가 pos:relative로 아래 콘텐츠 위에 덮는다.)
+            */}
             <FullBleed>
-              {/* pos="relative" — 확장된 헤더가 아래 Showcase를 밀어내지 않고 덮도록 */}
-              <Box h={60} pos="relative">
-                <SdHeader navItems={navItems} />
-              </Box>
+              <SdHeader navItems={navItems} />
             </FullBleed>
           </Variant>
           <Variant label="Simple — 항목마다 개별 드롭다운, 바 높이 고정">
             <FullBleed>
               <SdHeaderSimple navItems={navItems} />
+            </FullBleed>
+          </Variant>
+          <Variant label="Panel — 바 높이 고정 + 드롭다운 내부는 Mega식 그룹 컬럼">
+            <FullBleed>
+              <SdHeaderPanel navItems={navItems} />
             </FullBleed>
           </Variant>
         </Showcase>

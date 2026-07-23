@@ -218,7 +218,6 @@ export const theme = createTheme({
     Anchor: {
       defaultProps: { c: 'slate.5', fz: 'sm', underline: 'never' },
     },
-    // SdHeader 모바일 드로어의 2단 아코디언 타이포를 SdLink와 맞춘다.
     NavLink: {
       defaultProps: { c: 'slate.7', fz: 'sm' },
     },

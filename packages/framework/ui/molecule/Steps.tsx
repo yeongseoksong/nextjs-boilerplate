@@ -20,7 +20,7 @@ function BubbleStep({ item, index, isLast }: { item: StepItem; index: number; is
       <Box
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}
       >
-        <SdNumberIcon value={String(index + 1).padStart(2, '0')} />
+        <SdNumberIcon value={String(index + 1).padStart(2, '0')} color='primary'/>
         {!isLast && (
           <Box
             style={{

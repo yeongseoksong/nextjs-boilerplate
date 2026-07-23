@@ -19,7 +19,14 @@ function LogoImage({ client, height }: { client: ClientItem; height: number }) {
         <img
           src={client.logo}
           alt={client.name}
-          style={{ height, width: 'auto', objectFit: 'contain', display: 'block', ...grayStyle }}
+          style={{
+            height,
+            width: 'auto',
+            maxWidth: '100%',
+            objectFit: 'contain',
+            display: 'block',
+            ...grayStyle,
+          }}
           onMouseEnter={(e) => Object.assign(e.currentTarget.style, colorStyle)}
           onMouseLeave={(e) => Object.assign(e.currentTarget.style, grayStyle)}
         />
@@ -52,6 +59,8 @@ function Grid({
             alignItems: 'center',
             justifyContent: 'center',
             padding: '12px 8px',
+            minWidth: 0, // 그리드 트랙이 이미지 intrinsic width로 밀려 깨지는 것 방지
+            overflow: 'hidden',
           }}
         >
           <LogoImage client={client} height={logoHeight} />

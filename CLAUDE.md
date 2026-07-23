@@ -55,7 +55,7 @@ Follows Atomic Design with `Sd` prefix on all design system components:
 
 - `ui/atom/` — Base components: `SdButton`, `SdText`, `SdTitle`, `SdLogo`, `SdModal`, `SdQuote`, `SdTable`, `SdTabs`, `SdTimeline`, `SdContainer`, `SdNumberIcon`, `SdBadge`, `SdInput`(Mantine 입력 한 벌 — 텍스트·숫자·선택·불리언·파일/색상 + `@mantine/dates` 날짜/시각. 라벨 프로퍼티가 없는 Slider·Rating·Segmented·PinCode는 `Input.Wrapper`로 감싸 API를 통일), `SdLink`, `SdToast`(컴포넌트가 아니라 `notifications.show()`를 감싼 함수 네임스페이스 + `SdToastProvider`)
 - `ui/molecule/` — Composite components: `SdTextBox`, `SdFeatures`, `SdSteps`, `SdTestimonial`, `SdPricingCard`, `SdFaq`, `SdCta`, `SdSolution`, `SdSolutionCard`, `SdClients`, `SdMap`
-- `ui/organism/` — Full-page sections: `SdHeader`(`parentId` 2단 — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출, `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운, 모바일은 둘 다 `NavLink` 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`, `SdResult`(작업 결과 화면 — 성공/실패), `SdLoginView`(`Card` 중앙 카드 / `Split` 좌측 브랜드 패널 + 우측 폼 — 비제어 폼이라 `onSubmit`이 `{ email, password, remember }`를 넘긴다)
+- `ui/organism/` — Full-page sections: `SdHeader`(`parentId`로 상위→자식→손자 **3단**(`MAX_DEPTH`) — `Mega`(기본)는 hover/focus 시 헤더가 확장되며 하위 링크가 상위 항목 아래 컬럼으로 노출(손자는 자식을 그룹 제목으로 얹은 하위 그룹), `Simple`은 바 높이를 고정한 채 상위 항목마다 Mantine `Menu`가 붙는 개별 드롭다운(손자는 `Menu.Sub` 플라이아웃), `Panel`은 `Simple`과 같은 고정 바 + 개별 `Menu`지만 드롭다운 내부를 `Mega`식 그룹 컬럼(자식 링크 + 손자를 자식 아래 하위 링크)으로 채운다, 모바일은 셋 다 `NavLink` 재귀 아코디언), `SdFooter`, `HeroCarousel`, `SdFeatureSection`, `SdTimelineSection`, `SdStepsSection`, `SdErrorView`, `SdResult`(작업 결과 화면 — 성공/실패), `SdLoginView`(`Card` 중앙 카드 / `Split` 좌측 브랜드 패널 + 우측 폼 — 비제어 폼이라 `onSubmit`이 `{ email, password, remember }`를 넘긴다)
 - `ui/template/` — Page layouts: `MainLayout`, `PageLayout`
 - `ui/typography.ts` — `textStyles` 토큰(fw·c·fz·style). `SdText`와 `SdLink`가 공유하는 유일한 출처이며(`SdLink.X`는 `href`가 없으면 같은 강조도의 `SdText.X`로 폴백한다 — `NavItem.href`가 선택이라 호출부의 삼항을 없애기 위함), `SdLink`는 여기에 `underline: 'never'` 같은 링크 전용 프로퍼티만 `Object.assign`으로 얹는다 (`AnchorProps`가 `TextProps`를 포함하므로 토큰 하나로 양쪽이 통한다). 변형 값 수정은 이 파일에서만.
 - `ui/surface.ts` — `brandSurface`(slate 바탕 + primary radial 광원) · `brandDotTexture`. `PageLayout.Brand` 히어로와 `SdLoginView.Split` 좌측 패널이 공유하는 어두운 브랜드 면의 유일한 출처.
@@ -223,7 +223,7 @@ The same pattern applies to:
 | `SdLoginView`    | Card(= default) / Split                                                                                         |
 | `SdResult`       | Success / Error                                                                                                 |
 | `SdToast`        | Success / Error / Warning / Info / Loading (+ `Update` / `Hide` / `Clean`)                                       |
-| `SdHeader`       | Mega(= default) / Simple                                                                                        |
+| `SdHeader`       | Mega(= default) / Simple / Panel                                                                               |
 
 All UI components are Client Components — tsup adds `"use client"` banner to the UI bundle only.
 

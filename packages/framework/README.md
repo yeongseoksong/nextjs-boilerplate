@@ -174,7 +174,7 @@ import { SdTextBody } from '@yeongseoksong/framework/ui'
 | `SdLoginView`    | `SdLoginViewCard` `SdLoginViewSplit`                                                                                                                                          |
 | `SdResult`       | `SdResultSuccess` `SdResultError`                                                                                                                                             |
 | `SdToast`        | `SdToastSuccess` `SdToastError` `SdToastWarning` `SdToastInfo` `SdToastLoading` `SdToastUpdate` `SdToastHide` `SdToastClean`                                                                                                                                       |
-| `SdHeader`       | `SdHeaderMega` `SdHeaderSimple` (`SdHeader` 자체는 `Mega`와 동일)                                                                                                             |
+| `SdHeader`       | `SdHeaderMega` `SdHeaderSimple` `SdHeaderPanel` (`SdHeader` 자체는 `Mega`와 동일)                                                                                             |
 
 **클라이언트 컴포넌트에서는 네임스페이스 형태(`SdText.Body`)를 그대로 써도 됩니다.** `SdModal`은 `opened`/`onClose` 상태가 필요해 애초에 클라이언트 전용이므로 flat export가 없습니다.
 
@@ -491,6 +491,15 @@ const policyLinks: NavItem[] = [
 <SdHeader.Simple navItems={navItems} loginFlag />
 ```
 
+바 높이는 `Simple`처럼 60px로 고정하되 드롭다운 내부는 `Mega`와 같은 그룹 컬럼으로 펼치고 싶다면
+`SdHeader.Panel`(서버 컴포넌트에서는 `SdHeaderPanel`)을 씁니다. 상위 항목마다 붙는 개별 `Menu`는 그대로지만,
+드롭다운 안을 `Menu.Item`/`Menu.Sub` 플라이아웃 대신 자식 링크 + 손자를 자식 아래 하위 링크로 얹은
+세로 패널로 채웁니다. 모바일 드로어는 다른 변형과 동일합니다.
+
+```tsx
+<SdHeader.Panel navItems={navItems} loginFlag />
+```
+
 `navItems`는 같은 `parentId` 구조로 푸터 링크 컬럼도 만들고, 구분선 아래 하단 바에 카피라이트 · `policyLinks` · `company.socials` 아이콘이 놓입니다.
 `socials.platform`은 `x | youtube | instagram | facebook | linkedin | github | blog`를 지원합니다.
 
@@ -734,7 +743,7 @@ export default function Page() {
 }
 ```
 
-`headerVariant`로 어떤 헤더를 쓸지 고릅니다 — `mega`(기본, hover 시 확장되는 메가 메뉴) 또는 `simple`(바 높이 고정 + 항목별 드롭다운).
+`headerVariant`로 어떤 헤더를 쓸지 고릅니다 — `mega`(기본, hover 시 확장되는 메가 메뉴), `simple`(바 높이 고정 + 항목별 드롭다운), `panel`(바 높이 고정 + 드롭다운 내부를 Mega식 그룹 컬럼으로).
 
 ```tsx
 <MainLayout navItems={navItems} companyInfo={company} headerVariant="simple" loginFlag>

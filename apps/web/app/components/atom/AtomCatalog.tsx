@@ -331,6 +331,29 @@ export default function AtomCatalog() {
                 </SdTabs.Outline.Panel>
               </SdTabs.Outline>
             </Variant>
+            <Variant label="syncHash — URL 해시(#id)와 동기화">
+              <Stack gap="sm">
+                <SdText.Sub>
+                  아래 링크를 누르면 탭이 바뀌고, 탭을 누르면 주소창 해시가 갱신됩니다.
+                </SdText.Sub>
+                <Group gap="xs">
+                  <SdLink.Sub href="#tab-overview">#tab-overview 로 이동</SdLink.Sub>
+                  <SdLink.Sub href="#tab-detail">#tab-detail 로 이동</SdLink.Sub>
+                </Group>
+                <SdTabs.Underline syncHash defaultValue="tab-overview">
+                  <SdTabs.Underline.List>
+                    <SdTabs.Underline.Tab value="tab-overview">개요</SdTabs.Underline.Tab>
+                    <SdTabs.Underline.Tab value="tab-detail">상세</SdTabs.Underline.Tab>
+                  </SdTabs.Underline.List>
+                  <SdTabs.Underline.Panel value="tab-overview">
+                    <SdText.Body>개요 패널 — 해시 #tab-overview</SdText.Body>
+                  </SdTabs.Underline.Panel>
+                  <SdTabs.Underline.Panel value="tab-detail">
+                    <SdText.Body>상세 패널 — 해시 #tab-detail</SdText.Body>
+                  </SdTabs.Underline.Panel>
+                </SdTabs.Underline>
+              </Stack>
+            </Variant>
           </Stack>
         </Showcase>
 

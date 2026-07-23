@@ -1,5 +1,11 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { Box, Tabs, TabsListProps, TabsProps, TabsPanelProps } from '@mantine/core'
 import { SdContainer } from './Container'
+
+// syncHash: 활성 탭 value ↔ URL 해시(#id)를 양방향 동기화
+type SdTabsRootProps = TabsProps & { syncHash?: boolean }
 
 function SdPanel({ children, ...props }: TabsPanelProps) {
   return (
@@ -18,8 +24,36 @@ function SdScrollableList({ children, ...props }: TabsListProps) {
 }
 
 function createTabs(defaults: TabsProps, scrollable = false) {
-  function SdTabsRoot(props: TabsProps) {
-    return <Tabs {...defaults} {...props} />
+  function SdTabsRoot({ syncHash, value, onChange, ...props }: SdTabsRootProps) {
+    // 서버 HTML과 첫 렌더를 맞추기 위해 해시는 마운트 후(useEffect)에만 반영
+    const [hashValue, setHashValue] = useState<string | null>(null)
+
+    useEffect(() => {
+      if (!syncHash) return
+      const apply = () => {
+        const id = decodeURIComponent(window.location.hash.slice(1))
+        if (id) setHashValue(id)
+      }
+      apply()
+      window.addEventListener('hashchange', apply)
+      return () => window.removeEventListener('hashchange', apply)
+    }, [syncHash])
+
+    if (!syncHash) {
+      return <Tabs {...defaults} {...props} value={value} onChange={onChange} />
+    }
+
+    const handleChange = (next: string | null) => {
+      if (next) {
+        // 히스토리 오염 없이 해시만 교체 (뒤로가기로 탭 이동을 원하면 pushState로)
+        window.history.replaceState(null, '', `#${next}`)
+        setHashValue(next)
+      }
+      onChange?.(next)
+    }
+
+    // 제어(value)가 우선, 없으면 해시 값으로 제어
+    return <Tabs {...defaults} {...props} value={value ?? hashValue} onChange={handleChange} />
   }
   SdTabsRoot.List = (scrollable ? SdScrollableList : Tabs.List) as typeof Tabs.List
   SdTabsRoot.Tab = Tabs.Tab

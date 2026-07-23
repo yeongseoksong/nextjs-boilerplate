@@ -8,11 +8,29 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { useDisclosure, useFocusWithin, useHover, useMergedRef } from '@mantine/hooks'
 import { NavItem } from '../../types'
 import { filterAndSort } from '../../util/sort.util'
+import { textStyles } from '../typography'
+import { toCssColor } from '../style.util'
 
 export type { NavItem }
 
 /** 상단 바 높이. MainLayout의 AppShell `header={{ height }}`와 맞춘다. */
 const BAR_HEIGHT = 60
+
+/** 지원 계층 깊이: 상위(1) → 자식(2) → 손자(3). 이 이상은 렌더하지 않는다. */
+const MAX_DEPTH = 3
+
+/**
+ * NavLink 라벨을 SdLink.Body(= textStyles.Body)와 같은 글씨체로 통일한다.
+ * 토큰을 직접 참조하므로 typography.ts의 Body가 바뀌면 함께 따라온다.
+ */
+const NAV_LINK_STYLES = {
+  label: {
+    fontWeight: textStyles.Body.fw,
+    fontSize: `var(--mantine-font-size-${textStyles.Body.fz})`,
+    color: toCssColor(textStyles.Body.c),
+    lineHeight: textStyles.Body.lh,
+  },
+} as const
 
 interface HeaderProps {
   navItems: NavItem[]
@@ -37,39 +55,60 @@ interface MobileNavProps {
   loginFlag?: boolean
 }
 
+interface MobileNavNodeProps {
+  item: NavItem
+  depth: number // 1 = 최상위
+  childrenOf: (parentId: number) => NavItem[]
+  close: () => void
+}
+
+/** 드로어 한 항목을 재귀로 그린다. depth가 MAX_DEPTH에 닿으면 자식을 조회하지 않는다. */
+function MobileNavNode({ item, depth, childrenOf, close }: MobileNavNodeProps) {
+  const kids = depth < MAX_DEPTH ? childrenOf(item.id) : []
+
+  // 잎(자식 없음)은 아코디언이 아니라 단순 링크로 — 클릭 시 드로어를 닫는다.
+  if (kids.length === 0) {
+    return (
+      <Box px="sm" py={8}>
+        <SdLink.Body href={item.href} onClick={close}>
+          {item.label}
+        </SdLink.Body>
+      </Box>
+    )
+  }
+
+  return (
+    <NavLink
+      label={item.label}
+      /* 라벨 글씨체를 SdLink.Body(잎 항목)와 통일한다. */
+      styles={NAV_LINK_STYLES}
+      /* href 없는 상위 항목은 아코디언 토글 전용 — <a href> 없이는 포커스가 안 잡힌다. */
+      component={item.href ? 'a' : 'button'}
+      href={item.href}
+      childrenOffset={28}
+      /* 자식이 있으므로 클릭은 아코디언 토글 전용 — 드로어를 닫지 않으려 onClick을 두지 않는다. */
+    >
+      {kids.map((kid) => (
+        <MobileNavNode
+          key={kid.id}
+          item={kid}
+          depth={depth + 1}
+          childrenOf={childrenOf}
+          close={close}
+        />
+      ))}
+    </NavLink>
+  )
+}
+
 /** 모바일 버거 드로어. 데스크톱 변형과 무관하게 동일한 아코디언을 쓴다. */
 function MobileNav({ opened, close, topItems, childrenOf, loginFlag }: MobileNavProps) {
   return (
     <Drawer opened={opened} onClose={close} hiddenFrom="sm" size="xs">
       <Stack gap={0}>
-        {topItems.map((item) => {
-          const kids = childrenOf(item.id)
-          if (kids.length === 0) {
-            return (
-              <Box key={item.id} px="sm" py={8}>
-                <SdLink.Body href={item.href} onClick={close}>
-                  {item.label}
-                </SdLink.Body>
-              </Box>
-            )
-          }
-
-          return (
-            <NavLink
-              key={item.id}
-              label={item.label}
-              /* href 없는 상위 항목은 아코디언 토글 전용 — <a href> 없이는 포커스가 안 잡힌다. */
-              component={item.href ? 'a' : 'button'}
-              href={item.href}
-              childrenOffset={28}
-              onClick={kids.length > 0 ? undefined : close}
-            >
-              {kids.map((kid) => (
-                <NavLink key={kid.id} label={kid.label} href={kid.href} onClick={close} />
-              ))}
-            </NavLink>
-          )
-        })}
+        {topItems.map((item) => (
+          <MobileNavNode key={item.id} item={item} depth={1} childrenOf={childrenOf} close={close} />
+        ))}
         {loginFlag && (
           <Stack gap="xs" mt="md">
             <SdButton.Primary size="xs">로그인</SdButton.Primary>
@@ -149,11 +188,28 @@ function MegaHeader({ navItems, loginFlag }: HeaderProps) {
                         }}
                       >
                         <Stack gap="xs" pt={4} pb="lg" align="center">
-                          {kids.map((kid) => (
-                            <SdLink.Sub key={kid.id} href={kid.href}>
-                              {kid.label}
-                            </SdLink.Sub>
-                          ))}
+                          {kids.map((kid) => {
+                            const grandkids = childrenOf(kid.id)
+                            // 손자가 없으면 기존과 동일하게 단일 링크.
+                            if (grandkids.length === 0) {
+                              return (
+                                <SdLink.Body key={kid.id} href={kid.href}>
+                                  {kid.label}
+                                </SdLink.Body>
+                              )
+                            }
+                            // 손자가 있으면 자식을 그룹 제목으로, 손자를 그 아래 링크로.
+                            return (
+                              <Stack key={kid.id} gap={2} align="center">
+                                <SdLink.Body href={kid.href}>{kid.label}</SdLink.Body>
+                                {grandkids.map((gk) => (
+                                  <SdLink.Sub key={gk.id} href={gk.href}>
+                                    {gk.label}
+                                  </SdLink.Sub>
+                                ))}
+                              </Stack>
+                            )
+                          })}
                         </Stack>
                       </Box>
                     )}
@@ -183,6 +239,20 @@ function MegaHeader({ navItems, loginFlag }: HeaderProps) {
         loginFlag={loginFlag}
       />
     </>
+  )
+}
+
+/**
+ * Simple 변형의 잎 항목 한 줄. href 없는 항목은 <a>가 아니라 비활성 라벨로 —
+ * 죽은 링크를 만들지 않는다. 자식 드롭다운과 손자 서브드롭다운이 공유한다.
+ */
+function renderMenuLeaf(item: NavItem) {
+  return item.href ? (
+    <Menu.Item key={item.id} component="a" href={item.href}>
+      {item.label}
+    </Menu.Item>
+  ) : (
+    <Menu.Label key={item.id}>{item.label}</Menu.Label>
   )
 }
 
@@ -243,16 +313,23 @@ function SimpleHeader({ navItems, loginFlag }: HeaderProps) {
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                      {/* href 없는 자식은 <a>가 아니라 비활성 항목으로 — 죽은 링크를 만들지 않는다. */}
-                      {kids.map((kid) =>
-                        kid.href ? (
-                          <Menu.Item key={kid.id} component="a" href={kid.href}>
-                            {kid.label}
-                          </Menu.Item>
-                        ) : (
-                          <Menu.Label key={kid.id}>{kid.label}</Menu.Label>
-                        ),
-                      )}
+                      {kids.map((kid) => {
+                        const grandkids = childrenOf(kid.id)
+                        // 손자가 있으면 Menu.Sub 플라이아웃으로 한 단계 더 펼친다.
+                        if (grandkids.length > 0) {
+                          return (
+                            <Menu.Sub key={kid.id}>
+                              <Menu.Sub.Target>
+                                <Menu.Sub.Item>{kid.label}</Menu.Sub.Item>
+                              </Menu.Sub.Target>
+                              <Menu.Sub.Dropdown>
+                                {grandkids.map(renderMenuLeaf)}
+                              </Menu.Sub.Dropdown>
+                            </Menu.Sub>
+                          )
+                        }
+                        return renderMenuLeaf(kid)
+                      })}
                     </Menu.Dropdown>
                   </Menu>
                 )
@@ -283,7 +360,123 @@ function SimpleHeader({ navItems, loginFlag }: HeaderProps) {
   )
 }
 
-export const SdHeader = Object.assign(MegaHeader, { Mega: MegaHeader, Simple: SimpleHeader })
+/**
+ * Panel 변형 — Simple처럼 바 높이는 60px로 고정하고 상위 항목마다 Mantine `Menu`가 붙지만,
+ * 드롭다운 내부는 Mega와 동일한 그룹 레이아웃으로 편다: 손자가 없는 자식은 단일 링크,
+ * 손자가 있는 자식은 그룹 제목(`SdLink.Body`) 아래로 손자를 `SdLink.Sub`로 얹는다.
+ * Simple의 개별 드롭다운 안정성 + Mega의 풍부한 그룹 구성이 함께 필요할 때 쓴다.
+ */
+function PanelHeader({ navItems, loginFlag }: HeaderProps) {
+  const [opened, { toggle, close }] = useDisclosure()
+
+  const { topItems, childrenOf } = useNavTree(navItems)
+
+  return (
+    <>
+      <Box bg="var(--mantine-color-body)">
+        <SdContainer>
+          <Group h={BAR_HEIGHT} justify="space-between" align="center" wrap="nowrap">
+            <Logo />
+
+            <Group gap="xl" align="center" wrap="nowrap" visibleFrom="sm">
+              {topItems.map((item) => {
+                const kids = childrenOf(item.id)
+
+                // SdLink.Body는 href가 없으면 SdText.Body로 폴백한다.
+                if (kids.length === 0) {
+                  return (
+                    <SdLink.Body key={item.id} href={item.href}>
+                      {item.label}
+                    </SdLink.Body>
+                  )
+                }
+
+                return (
+                  <Menu
+                    key={item.id}
+                    trigger="click-hover"
+                    openDelay={50}
+                    closeDelay={120}
+                    position="bottom"
+                    offset={12}
+                    shadow="md"
+                    radius="md"
+                    withinPortal
+                  >
+                    <Menu.Target>
+                      <Box style={{ cursor: 'pointer' }}>
+                        <Group gap={4} align="center" wrap="nowrap">
+                          <SdLink.Body href={item.href}>{item.label}</SdLink.Body>
+                          <IconChevronDown size={14} stroke={2} />
+                        </Group>
+                      </Box>
+                    </Menu.Target>
+
+                    {/*
+                      Simple과 달리 Menu.Item / Menu.Sub를 쓰지 않는다 — 드롭다운 안을
+                      Mega와 같은 SdLink 그룹으로 채워, 자식/손자 계층을 플라이아웃 없이
+                      한 패널에서 세로로 보여준다.
+                    */}
+                    <Menu.Dropdown>
+                      <Stack gap="xs" p="xs">
+                        {kids.map((kid) => {
+                          const grandkids = childrenOf(kid.id)
+                          // 손자가 없으면 단일 링크.
+                          if (grandkids.length === 0) {
+                            return (
+                              <SdLink.Body key={kid.id} href={kid.href}>
+                                {kid.label}
+                              </SdLink.Body>
+                            )
+                          }
+                          // 손자가 있으면 자식을 그룹 제목으로, 손자를 그 아래 하위 링크로.
+                          return (
+                            <Stack key={kid.id} gap={2}>
+                              <SdLink.Body href={kid.href}>{kid.label}</SdLink.Body>
+                              {grandkids.map((gk) => (
+                                <SdLink.Sub key={gk.id} href={gk.href} pl="sm">
+                                  {gk.label}
+                                </SdLink.Sub>
+                              ))}
+                            </Stack>
+                          )
+                        })}
+                      </Stack>
+                    </Menu.Dropdown>
+                  </Menu>
+                )
+              })}
+            </Group>
+
+            <Group align="center" gap="sm" wrap="nowrap">
+              <Burger hiddenFrom="sm" opened={opened} onClick={toggle} />
+
+              {loginFlag && (
+                <Group gap="sm" visibleFrom="sm">
+                  <SdButton.Primary size="xs">로그인</SdButton.Primary>
+                </Group>
+              )}
+            </Group>
+          </Group>
+        </SdContainer>
+      </Box>
+
+      <MobileNav
+        opened={opened}
+        close={close}
+        topItems={topItems}
+        childrenOf={childrenOf}
+        loginFlag={loginFlag}
+      />
+    </>
+  )
+}
+
+export const SdHeader = Object.assign(MegaHeader, {
+  Mega: MegaHeader,
+  Simple: SimpleHeader,
+  Panel: PanelHeader,
+})
 
 // Server Component에서 직접 import 가능한 개별 export.
 // dist/ui 번들 전체에 "use client" 배너가 붙으므로, 서버 컴포넌트가
@@ -291,3 +484,4 @@ export const SdHeader = Object.assign(MegaHeader, { Mega: MegaHeader, Simple: Si
 // undefined가 반환되어 렌더가 실패한다. 아래 flat export를 사용할 것.
 export const SdHeaderMega = MegaHeader
 export const SdHeaderSimple = SimpleHeader
+export const SdHeaderPanel = PanelHeader
